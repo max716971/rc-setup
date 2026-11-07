@@ -1,3 +1,8 @@
+## 2026-11-07 — Impression des fiches et comparaisons
+- Ajout d’une commande « Imprimer / PDF » dans la fiche détaillée d’un setup et dans le comparateur.
+- Mise en page dédiée à l’impression, avec les réglages, conditions de piste, chronos, notes et photos disponibles.
+- Les actions de modification ne sont pas incluses dans le document imprimé. Le navigateur permet d’imprimer sur papier ou d’enregistrer en PDF.
+
 ## 2026-11-07 — Architecture des différentiels par voiture
 - Proposition automatique : 1 différentiel pour les 2WD, 2 pour les 4WD au 1/10 et 3 pour les 4WD au 1/8.
 - Le nombre de différentiels est modifiable manuellement dans la fiche voiture (1, 2 ou 3).
