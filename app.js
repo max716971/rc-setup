@@ -451,19 +451,59 @@ const CAR_CATALOG = [
   },
   {
     "brand": "F.A.N. RC",
-    "era": "Vintage",
-    "name": "Modèles vintage F.A.N. RC (à préciser)",
-    "scale": "Autre",
-    "drive": "À préciser",
-    "type": "Autre"
+    "era": "Moderne",
+    "name": "Graphite Worlds RC10 FR-01",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
   },
   {
     "brand": "F.A.N. RC",
     "era": "Moderne",
-    "name": "Modèles modernes F.A.N. RC (à préciser)",
-    "scale": "Autre",
-    "drive": "À préciser",
-    "type": "Autre"
+    "name": "Graphite Worlds Special Edition Blue FR-01BU",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "F.A.N. RC",
+    "era": "Moderne",
+    "name": "Composite Worlds RC10 FR-02",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "F.A.N. RC",
+    "era": "Moderne",
+    "name": "Composite Worlds Carbon Tub FR-02CT",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "F.A.N. RC",
+    "era": "Moderne",
+    "name": "Racer Worlds FR-007",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "F.A.N. RC",
+    "era": "Moderne",
+    "name": "Long Arm Worlds Kit",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "F.A.N. RC",
+    "era": "Moderne",
+    "name": "JRX2 Graphite",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
   },
   {
     "brand": "Tamiya",
