@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="38" fill="#fff"/><path d="M42 173C132 48 357 35 465 137" fill="none" stroke="#0754bd" stroke-width="22" stroke-linecap="round"/><path d="M42 359C126 467 347 477 465 379" fill="none" stroke="#ffd400" stroke-width="23" stroke-linecap="round"/><g font-family="Arial,Helvetica,sans-serif" font-style="italic" font-weight="900" text-anchor="middle" paint-order="stroke fill"><text x="256" y="251" font-size="128" fill="#ffdf00" stroke="#101010" stroke-width="12" letter-spacing="-8">FAN</text><text x="256" y="372" font-size="148" fill="#0754bd" stroke="#101010" stroke-width="12" letter-spacing="-7">RC</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="42" fill="#101b2b"/>
+<path d="M0 94h512v20H0z" fill="#f5c928"/>
+<path d="M0 398h512v20H0z" fill="#f5c928"/>
+<path d="M52 150h408" stroke="#52677f" stroke-width="3"/>
+<text x="256" y="274" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="150" font-weight="900" font-style="italic" letter-spacing="-12" fill="#fff">FAN</text>
+<text x="256" y="367" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="92" font-weight="900" letter-spacing="12" fill="#f5c928">R C</text>
+</svg>
