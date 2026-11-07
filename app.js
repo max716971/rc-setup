@@ -6235,7 +6235,9 @@ document.getElementById('setupForm').elements.namedItem('carId').addEventListene
 ['frontDiffType','centerDiffType','rearDiffType','slipperPresence'].forEach(name=>document.getElementById('setupForm').elements.namedItem(name).addEventListener('change',updateVehicleSpecificFields));
 document.getElementById('setupSearch')?.addEventListener('input',renderSetups);
 ['setupCarFilter','setupTrackFilter','setupSurfaceFilter','setupGripFilter','setupDateFrom','setupDateTo'].forEach(id=>document.getElementById(id)?.addEventListener('change',renderSetups));
-document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);\ndocument.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);\ndocument.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
+document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
+document.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);
+document.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
 document.getElementById('exportButton').addEventListener('click', exportJson);
 document.getElementById('importInput').addEventListener('change', (event) => { importJson(event.target.files?.[0]); event.target.value = ''; });
