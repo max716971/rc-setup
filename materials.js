@@ -43,18 +43,43 @@
 
     // Bibliothèque complémentaire demandée : entrées de gamme sans SKU inventé.
     // Ajouter la référence exacte du flacon lorsque le fabricant/revendeur la confirme.
-    { brand: 'XRT Racing', category: 'Huile amortisseur', name: 'Huile silicone amortisseur 10 WT', reference: '10 WT — format à préciser', detail: 'Huile amortisseur XRT Racing. Vérifier le format et la référence du flacon.', url: 'https://rsrc.biz/' },
-    { brand: 'XRT Racing', category: 'Huile amortisseur', name: 'Huile silicone amortisseur 30 WT', reference: '30 WT — format à préciser', detail: 'Huile amortisseur XRT Racing. Vérifier le format et la référence du flacon.', url: 'https://rsrc.biz/' },
-    { brand: 'XRT Racing', category: 'Huile différentiel', name: 'Huile silicone différentiel', reference: 'Viscosité à préciser', detail: 'Gamme XRT Racing ; choisir la viscosité exacte selon le différentiel.', url: 'https://rsrc.biz/' },
-    { brand: '6MIK', category: 'Huile amortisseur', name: 'Huile silicone amortisseur', reference: 'Viscosité à préciser', detail: 'Entrée de gamme 6MIK ; référence et viscosité du flacon à confirmer.', url: 'https://www.6mik-racing.com/' },
-    { brand: '6MIK', category: 'Huile différentiel', name: 'Huile silicone différentiel', reference: 'Viscosité à préciser', detail: 'Entrée de gamme 6MIK ; référence et viscosité du flacon à confirmer.', url: 'https://www.6mik-racing.com/' },
-    { brand: 'Team Associated', category: 'Huile différentiel', name: 'Factory Team Differential Fluid', reference: 'Viscosité à préciser', detail: 'Fluide de différentiel Team Associated ; choisir la viscosité et vérifier le SKU.', url: 'https://www.associatedelectrics.com/teamassociated/parts/fluids/' },
-
-    ...['1105','5420','5421','5422','5423','5424','5425','5427','5428','5429','5435','5436','5437','5444','5450','5451','5452','5453','5454','5455','5456','5457','5458','5459','5461','5463','5465','6588','6591','6636'].map(reference => ({ brand: 'Team Associated', category: 'Huile / graisse', name: 'Produit fluide / graisse Team Associated — réf. ' + reference, reference, detail: 'Référence reprise du tableau précédent ; nature exacte (huile amortisseur, huile de différentiel ou graisse) à confirmer avant utilisation.', url: 'https://www.associatedelectrics.com/teamassociated/parts/fluids/' })),
-    { brand: 'XRT Racing', category: 'Graisse', name: 'Graisse multi-usage RC', reference: 'Référence à confirmer', detail: 'Gamme XRT Racing ; préciser le type (différentiel, transmission ou roulements) selon le produit.', url: 'https://rsrc.biz/' },
-    { brand: '6MIK', category: 'Graisse', name: 'Graisse RC', reference: 'Référence à confirmer', detail: 'Gamme 6MIK ; type et référence à confirmer sur le produit.', url: 'https://www.6mik-racing.com/' },
-    { brand: 'Team Associated', category: 'Graisse', name: 'Stealth Differential Grease', reference: 'Référence à confirmer', detail: 'Graisse pour différentiel ; vérifier la référence du conditionnement.', url: 'https://www.associatedelectrics.com/teamassociated/parts/fluids/' },
-    { brand: '1UP Racing', category: 'Graisse', name: 'Graisse RC', reference: 'Référence à confirmer', detail: 'Gamme 1UP Racing ; choisir le produit selon l’application.', url: 'https://1upracing.com/' },
+    // XTR Racing — huiles silicone et graisses. Viscosités/formats relevés sur les catalogues XTR/RSRC.
+    ...['10','15','20','22.5','25','27.5','30','32.5','35','37.5','40','42.5','45','47.5','50','52.5','55','57.5','60','65','70'].map(wt => ({
+      brand: 'XTR Racing', category: 'Huile amortisseur',
+      name: 'Huile silicone amortisseur XTR Ronnefalk — ' + wt + ' WT',
+      reference: wt + ' WT — 150 ml',
+      detail: 'Huile silicone pure XTR Ronnefalk Edition pour amortisseurs. Contenance catalogue : 150 ml. Référence fabricant/SKU non affichée dans la fiche consultée.',
+      url: 'https://rsrc.biz/en/318-oils'
+    })),
+    ...['525','575'].map(cst => ({
+      brand: 'XTR Racing', category: 'Huile amortisseur',
+      name: 'Huile silicone amortisseur XTR — ' + cst + ' CST',
+      reference: cst + ' CST — 80 ml',
+      detail: 'Huile silicone pure XTR pour amortisseurs. Contenance 80 ml ; viscosité CST indiquée au catalogue constructeur.',
+      url: 'https://xtr-rc.com/en/235-shock-oils'
+    })),
+    ...['1000','2000','12500','15000','40000','50000','60000','70000','80000','90000','100000','150000','200000','300000','400000','500000'].map(cst => ({
+      brand: 'XTR Racing', category: 'Huile différentiel',
+      name: 'Huile silicone différentiel XTR — ' + Number(cst).toLocaleString('fr-FR') + ' CST',
+      reference: cst + ' CST — 80 ml (format à confirmer selon viscosité)',
+      detail: 'Huile silicone pure XTR pour différentiel. Viscosité CST relevée dans les gammes XTR ; vérifier la contenance disponible pour cette viscosité.',
+      url: 'https://xtr-rc.com/en/237-differential-oils'
+    })),
+    ...[
+      ['Graisse transparente XTR','Clear Grease','Tiges d’amortisseurs et joints toriques'],
+      ['Graisse bleue premium XTR','Blue Premium Grease','Joints toriques'],
+      ['Graisse cuivre XTR','Copper Grease','Engrenages'],
+      ['Graisse lithium XTR','Lithium Grease','Sorties de différentiel / outdrives']
+    ].map(([name, product, use]) => ({
+      brand: 'XTR Racing', category: 'Graisse',
+      name, reference: '40 g',
+      detail: product + ' XTR. Utilisation fabricant : ' + use + '.',
+      url: 'https://xtr-rc.com/en/232-greases-lubricants'
+    })),
+    { brand: 'XTR Racing', category: 'Huile moteur', name: 'Huile After Run XTR', reference: 'XTR-0234 — 80 ml', detail: 'Huile de conservation après utilisation pour moteurs thermiques.', url: 'https://www.rcnest.it/en/15-oli' },
+    { brand: 'XTR Racing', category: 'Huile filtre à air', name: 'Huile XTR pour filtre à air mousse', reference: 'ACE-01 — 100 ml', detail: 'Huile adhésive pour filtre à air mousse de moteur thermique.', url: 'https://www.rcnest.it/en/15-oli' },
+    { brand: 'XTR Racing', category: 'Huile roulements', name: 'Huile XTR Long Life pour roulements', reference: 'XTR-0253 — 20 ml', detail: 'Lubrifiant longue durée pour roulements.', url: 'https://www.rcnest.it/en/15-oli' },
+        { brand: '1UP Racing', category: 'Graisse', name: 'Graisse RC', reference: 'Référence à confirmer', detail: 'Gamme 1UP Racing ; choisir le produit selon l’application.', url: 'https://1upracing.com/' },
     { brand: 'SRT', category: 'Servo', name: 'Servo SRT', reference: 'Modèle à préciser', detail: 'Catalogue SRT : choisir couple, vitesse, tension et dimensions selon le véhicule.', url: 'https://www.srt-rc.com/' },
     { brand: 'Power HD', category: 'Servo', name: 'Servo Power HD', reference: 'Modèle à préciser', detail: 'Catalogue Power HD : choisir couple, vitesse, tension et dimensions.', url: 'https://www.powerhd.com.tw/' },
     { brand: 'Savox', category: 'Servo', name: 'SC-1258TG Black Edition', reference: 'SC-1258TG', detail: 'Servo numérique à pignons titane ; vérifier tension d’alimentation et dimensions.', url: 'https://www.savoxusa.com/' },
