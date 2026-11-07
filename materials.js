@@ -1024,9 +1024,7 @@
     const carPickerMap = [
       ['engineEquipment', 'Moteur', 'moteur'],
       ['escEquipment', 'Variateur (ESC)', 'variateur / ESC'],
-      ['servoEquipment', 'Servo', 'servo'],
-      ['tiresEquipment', 'Pneus / roues', 'pneus'],
-      ['shocksEquipment', 'Huile amortisseur|Ressort', 'suspension (huile / ressorts)']
+      ['servoEquipment', 'Servo', 'servo']
     ];
     for (const [fieldName, categories, labelText] of carPickerMap) {
       const input = carForm.elements.namedItem(fieldName);
