@@ -420,7 +420,7 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Moderne",
-    "name": "RC10 B84.1 Team",
+    "name": "RC10B84 Team Kit (#90050)",
     "scale": "1/10",
     "drive": "4WD",
     "type": "Buggy"
@@ -428,7 +428,7 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Moderne",
-    "name": "RC10 B84.1D Team",
+    "name": "RC10B84D Team Kit (#90051)",
     "scale": "1/10",
     "drive": "4WD",
     "type": "Buggy"
@@ -616,6 +616,22 @@ const CAR_CATALOG = [
     "scale": "1/10",
     "drive": "2WD",
     "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 4WD Kit (#6040)",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 4WD Team Car Kit (#6046)",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
   },
   {
     "brand": "Schumacher",
