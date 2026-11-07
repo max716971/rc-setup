@@ -795,7 +795,7 @@
   const pickerMap = [
     ['frontTires','Pneus / roues'], ['rearTires','Pneus / roues'], ['inserts','Insert pneu'], ['frontInserts','Insert pneu'], ['rearInserts','Insert pneu'],
     ['frontShocks','Huile amortisseur'], ['frontSpring','Ressort'], ['rearShocks','Huile amortisseur'], ['rearSpring','Ressort'],
-    ['differentials','Huile différentiel|Graisse'], ['frontDiffOil','Huile différentiel|Graisse'], ['rearDiffOil','Huile différentiel|Graisse'], ['centerDiff','Huile différentiel|Graisse'], ['slipper','Graisse'], ['ballDiff','Graisse'],
+    ['frontDiffOil','Huile différentiel'], ['centerDiffOil','Huile différentiel'], ['rearDiffOil','Huile différentiel'], ['frontDiffGrease','Graisse'], ['centerDiffGrease','Graisse'], ['rearDiffGrease','Graisse'], ['ballDiff','Graisse'],
     ['motor','Moteur'], ['escModel','Variateur (ESC)'], ['servoSteering','Servo'],
     ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur'],
     ['lubricants','Graisse']
