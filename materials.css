@@ -32,3 +32,6 @@
 #setupForm .setup-library-picker{display:grid;grid-template-columns:1fr;gap:6px;width:100%;padding:9px;border:1px solid rgba(116,217,232,.14);border-radius:12px;background:rgba(116,217,232,.035)}
 #setupForm .setup-library-picker span{color:var(--cyan);font-size:10px;font-weight:750}
 #setupForm .setup-library-picker input,#setupForm .setup-library-picker select{min-height:40px}
+
+#setupForm .setup-library-picker{margin-top:7px;padding:10px 11px;background:rgba(116,217,232,.045);border-color:rgba(116,217,232,.22)}
+#setupForm .setup-library-picker span{line-height:1.35}
