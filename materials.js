@@ -155,13 +155,13 @@
   function materialLabel(item) { return `${item.brand} ${item.name}${item.reference ? ` — réf. ${item.reference}` : ''}`; }
   function refreshPickers() {
     document.querySelectorAll('[data-library-category]').forEach((select) => {
-      const category = select.dataset.libraryCategory;
+      const categories = select.dataset.libraryCategory.split('|');
       const search = select.parentElement.querySelector('[data-library-search]');
       const query = (search?.value || '').trim().toLocaleLowerCase('fr');
       const current = select.value;
-      const items = allMaterials().filter((item) => item.category === category &&
+      const items = allMaterials().filter((item) => categories.includes(item.category) &&
         (!query || [item.brand,item.name,item.reference,item.detail].join(' ').toLocaleLowerCase('fr').includes(query)));
-      select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(materialLabel(item))}</option>`).join('');
+      select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(item.category)} · ${esc(materialLabel(item))}</option>`).join('');
       if (items.some((item) => materialLabel(item) === current)) select.value = current;
     });
   }
@@ -201,20 +201,24 @@
   const setupForm = document.getElementById('setupForm');
   if (!setupForm) return;
   const pickerMap = [
-    ['frontTires','Pneus / roues'], ['rearTires','Pneus / roues'], ['inserts','Insert pneu'],
+    ['frontTires','Pneus / roues'], ['rearTires','Pneus / roues'], ['inserts','Insert pneu'], ['wheels','Pneus / roues'],
     ['frontShocks','Huile amortisseur'], ['rearShocks','Huile amortisseur'], ['springs','Ressort'],
-    ['differentials','Huile différentiel'], ['centerDiff','Huile différentiel'],
+    ['differentials','Huile différentiel|Graisse'], ['centerDiff','Huile différentiel|Graisse'],
     ['motor','Moteur'], ['escModel','Variateur (ESC)'], ['servoSteering','Servo'],
-    ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur']
+    ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur'],
+    ['escMode','Programmation'], ['escTiming','Programmation'], ['escPunch','Programmation'],
+    ['escBrake','Programmation'], ['escCutoff','Programmation'], ['electronicsNotes','Programmation'],
+    ['radioExpo','Programmation'], ['radioEPA','Programmation'], ['radioTrim','Programmation'], ['radio','Programmation'],
+    ['lubricants','Graisse|Huile moteur|Huile filtre à air|Huile roulements']
   ];
-  for (const [fieldName, category] of pickerMap) {
+  for (const [fieldName, categories] of pickerMap) {
     const input = setupForm.elements.namedItem(fieldName);
     if (!input || input.dataset.libraryEnhanced) continue;
     input.dataset.libraryEnhanced = 'true';
     const picker = document.createElement('div'); picker.className = 'setup-library-picker';
     const label = document.createElement('span'); label.textContent = 'Rechercher dans la bibliothèque';
     const search = document.createElement('input'); search.type = 'search'; search.placeholder = 'Marque, nom ou référence…'; search.setAttribute('aria-label', label.textContent); search.dataset.librarySearch = 'true';
-    const select = document.createElement('select'); select.dataset.libraryCategory = category; select.setAttribute('aria-label', 'Choisir un matériel de la bibliothèque');
+    const select = document.createElement('select'); select.dataset.libraryCategory = categories; select.setAttribute('aria-label', 'Choisir un matériel de la bibliothèque');
     search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
     select.addEventListener('change', () => { if (select.value) input.value = select.value; });
     picker.append(label, search, select);
