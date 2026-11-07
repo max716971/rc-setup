@@ -5790,11 +5790,12 @@ function loadState() {
     return {
       cars: Array.isArray(saved.cars) ? saved.cars : [],
       tracks: Array.isArray(saved.tracks) ? saved.tracks : [],
-      setups: Array.isArray(saved.setups) ? saved.setups : []
+      setups: Array.isArray(saved.setups) ? saved.setups : [],
+      maintenance: Array.isArray(saved.maintenance) ? saved.maintenance : []
     };
   } catch (error) {
     console.error('Impossible de lire les données locales', error);
-    return { cars: [], tracks: [], setups: [] };
+    return { cars: [], tracks: [], setups: [], maintenance: [] };
   }
 }
 
@@ -6114,19 +6115,20 @@ function runSetupDiagnosis(){
   const symptom=document.getElementById('diagnosisSymptom')?.value,grip=document.getElementById('diagnosisGrip')?.value,drive=document.getElementById('diagnosisDrive')?.value;
   const output=document.getElementById('diagnosisResult');if(!output)return;
   if(!symptom){output.textContent='Choisis le comportement à corriger pour afficher des pistes de réglage.';return;}
-  const advice={
-    understeer_entry:['Vérifie d’abord le train avant : pneus avant, pincement/ouverture, chasse et liberté de direction.','Teste une seule modification à la fois, par exemple un peu plus de pincement avant ou un avant légèrement plus souple.'],
-    understeer_mid:['Contrôle le roulis et le grip latéral : ressorts, huile/pistons, hauteur de caisse et différentiel avant si présent.','Évite de modifier simultanément les deux trains ; note le ressenti au milieu du virage.'],
-    understeer_exit:['Contrôle la motricité et la répartition de grip à la remise des gaz.','Adoucis progressivement la commande des gaz à la radio/ESC et vérifie le différentiel ou slipper selon l’architecture.'],
-    oversteer_entry:['Vérifie la stabilité au freinage et au lever de gaz, puis le pincement arrière et l’état des pneus.','Teste une petite augmentation de stabilité arrière avant de toucher à la puissance moteur.'],
-    oversteer_mid:['Vérifie le grip arrière latéral, les pneus, la hauteur arrière et la progressivité de la suspension.','Sur faible grip, privilégie des changements modestes et conserve une motricité régulière.'],
-    oversteer_exit:['Vérifie pneus arrière, slipper/différentiel et progressivité des gaz.','Réduis d’abord l’agressivité de l’accélération (punch, expo gaz) avant de changer plusieurs paramètres mécaniques.'],
-    traction:['Contrôle pneus/inserts, transfert de charge et différentiel ou slipper.','Sur faible grip, évite de rendre l’accélération trop brutale ; compare ensuite un seul réglage de suspension.'],
-    instability:['Contrôle hauteur de caisse, droop, amortisseurs, jeu mécanique et répartition des masses.','Vérifie aussi que les pneus sont propres et adaptés à la surface avant d’intervenir sur la géométrie.']
+  const sets={
+    understeer_entry:[['Priorité 1 · Direction','Contrôle les points durs, le servo, le débattement et le pincement avant.','Retrouver une réponse immédiate et régulière à l’inscription.'],['Priorité 2 · Pneus avant','Vérifie gomme, usure, collage et inserts ; teste une gomme plus accrocheuse si nécessaire.','Augmenter le grip latéral du train avant.'],['Priorité 3 · Chasse','Augmente légèrement la chasse si le châssis le permet.','Améliorer le maintien et la précision en entrée.']],
+    understeer_mid:[['Priorité 1 · Grip avant','Contrôle les pneus avant et leur température après quelques tours.','Récupérer du grip constant au milieu du virage.'],['Priorité 2 · Équilibre de roulis','Teste une barre avant plus souple ou une barre arrière légèrement plus ferme, si disponible.','Aider la voiture à pivoter sans rendre les changements brutaux.'],['Priorité 3 · Géométrie','Vérifie carrossage et largeur de voie avant.','Optimiser l’appui du pneu avant en virage.']],
+    understeer_exit:[['Priorité 1 · Transmission','Vérifie le différentiel avant sur 4WD ou le slipper et la remise des gaz sur 2WD.','Éviter que la transmission tire la voiture tout droit.'],['Priorité 2 · Pneus','Contrôle le grip arrière et l’état des pneus avant.','Conserver un équilibre entre motricité et rotation.'],['Priorité 3 · Électronique','Adoucis légèrement punch et réponse des gaz.','Rendre la sortie plus progressive et contrôlable.']],
+    oversteer_entry:[['Priorité 1 · Stabilité arrière','Vérifie le pincement arrière et les jeux de suspension.','Stabiliser la voiture au freinage et au lever de gaz.'],['Priorité 2 · Freinage','Réduis légèrement le frein initial si le train arrière se déleste.','Limiter le blocage et les transferts brusques.'],['Priorité 3 · Pneus arrière','Contrôle gomme, inserts et collage.','Augmenter la réserve de grip arrière.']],
+    oversteer_mid:[['Priorité 1 · Pneus arrière','Vérifie usure, température et propreté.','Retrouver du grip latéral au milieu du virage.'],['Priorité 2 · Barre arrière','Essaie une barre arrière plus souple si le châssis en possède une.','Réduire la vivacité du train arrière.'],['Priorité 3 · Géométrie','Contrôle carrossage et largeur de voie arrière.','Rendre l’appui arrière plus progressif.']],
+    oversteer_exit:[['Priorité 1 · Gaz','Réduis le punch ou augmente légèrement l’expo gaz négative.','Éviter la perte d’adhérence à la remise des gaz.'],['Priorité 2 · Slipper / différentiels','Contrôle le slipper en 2WD ou la cohérence des différentiels en 4WD.','Rendre le transfert de couple plus progressif.'],['Priorité 3 · Suspension arrière','Vérifie détente, précontrainte et liberté des amortisseurs.','Garder le pneu arrière en contact avec le sol.']],
+    traction:[['Priorité 1 · Pneus et inserts','Vérifie gomme, diamètre, inserts et propreté des pneus moteurs.','Augmenter le grip disponible sans toucher au châssis.'],['Priorité 2 · Commande des gaz','Adoucis punch et accélération à la radio/ESC.','Réduire le patinage à l’accélération.'],['Priorité 3 · Suspension','Contrôle droop et liberté des amortisseurs arrière.','Améliorer le suivi du sol et le transfert de charge.']],
+    instability:[['Priorité 1 · Contrôle mécanique','Vérifie jeux, roulements, visserie, triangles et amortisseurs.','Éliminer les réactions parasites avant tout réglage.'],['Priorité 2 · Assiette','Contrôle hauteurs de caisse, droop et symétrie gauche/droite.','Retrouver une voiture équilibrée et prévisible.'],['Priorité 3 · Amortissement','Vérifie huile, pistons et ressorts ; ne change qu’un élément à la fois.','Calmer les rebonds et améliorer le contact au sol.']]
   };
-  const lines=advice[symptom]||[];
-  const gripText=grip==='low'?'Contexte faible grip : recherche une voiture progressive et évite les changements extrêmes.':grip==='high'?'Contexte fort grip : vérifie que la voiture ne roule pas excessivement sur ses suspensions.':'Adapte les essais à l’adhérence réelle de la piste.';
-  output.innerHTML='<strong>Pistes à tester — '+(drive==='2wd'?'2WD':drive==='4wd'?'4WD':'architecture non précisée')+'</strong><ol>'+lines.map(x=>'<li>'+x+'</li>').join('')+'</ol><p class="item-sub">'+gripText+'</p><p class="item-sub">Ce sont des pistes de diagnostic, pas une recette universelle : note le réglage de départ et ne change qu’un paramètre à la fois.</p>';
+  const proposals=sets[symptom]||sets.instability;
+  const gripText=grip==='low'?'Faible grip : privilégie les changements modestes et la progressivité.':grip==='high'?'Fort grip : surveille le roulis, les réactions brusques et le risque de retournement.':'Grip moyen : procède par petits incréments.';
+  const driveText=drive==='2wd'?'2WD':drive==='4wd'?'4WD':'architecture non précisée';
+  output.innerHTML='<strong>Plan d’action · '+driveText+'</strong><div class="diagnosis-proposals">'+proposals.map((p,i)=>'<article class="diagnosis-proposal"><span class="diagnosis-rank">'+(i+1)+'</span><div><strong>'+p[0]+'</strong><p>'+p[1]+'</p><small><b>Effet attendu :</b> '+p[2]+'</small></div></article>').join('')+'</div><p class="item-sub">'+gripText+'</p><p class="item-sub">Teste dans cet ordre, une seule modification à la fois. Les effets dépendent du châssis et de la piste : vérifie toujours le manuel constructeur.</p>';
 }
 
 function formatDate(value) {
@@ -6146,6 +6148,27 @@ function populateSelects() {
   if (state.tracks.some((track) => track.id === selectedTrack)) trackSelect.value = selectedTrack;
 }
 function renderAll() { renderDashboard(); renderCars(); renderTracks(); renderSetups(); populateSelects(); }
+function populateMaintenanceCars(){
+ const select=document.getElementById('maintenanceCar');if(!select)return;
+ const value=select.value;select.innerHTML='<option value="">Choisir une voiture…</option>'+state.cars.map(car=>'<option value="'+escapeHtml(car.id)+'">'+escapeHtml(car.name)+'</option>').join('');
+ if(state.cars.some(car=>car.id===value))select.value=value;
+ renderMaintenanceList();
+}
+function renderMaintenanceList(){
+ const select=document.getElementById('maintenanceCar'),list=document.getElementById('maintenanceList');if(!select||!list)return;
+ const id=select.value;const entries=(state.maintenance||[]).filter(item=>item.carId===id).sort((x,y)=>String(y.date).localeCompare(String(x.date)));
+ list.innerHTML=!id?'<p class="item-sub">Sélectionne une voiture pour consulter son carnet.</p>':!entries.length?'<p class="item-sub">Aucune révision enregistrée pour cette voiture.</p>':entries.map(item=>'<article class="maintenance-entry"><strong>'+escapeHtml(item.part)+'</strong><p>'+escapeHtml(formatDate(item.date))+' · '+Number(item.sessions||0)+' session(s) depuis la révision</p><p>'+(item.next? 'Prochaine vérification dans '+Number(item.next)+' session(s).':'Prochaine vérification non programmée.')+'</p>'+(item.notes?'<p>'+escapeHtml(item.notes)+'</p>':'')+'</article>').join('');
+}
+function populateGeometryCars(){
+ const select=document.getElementById('geometryCar');if(!select)return;
+ select.innerHTML='<option value="">Choisir une voiture…</option>'+state.cars.map(car=>'<option value="'+escapeHtml(car.id)+'">'+escapeHtml(car.name)+'</option>').join('');
+}
+function loadGeometryForm(){
+ const car=getCarById(document.getElementById('geometryCar')?.value),form=document.getElementById('geometryForm');if(!form)return;
+ form.reset();const data=car?.techGeometry||{};
+ Object.entries(data).forEach(([key,value])=>{const field=form.elements.namedItem(key);if(field)field.value=value||'';});
+}
+
 function formValues(form, names) {
   const data = new FormData(form);
   return Object.fromEntries(names.map((name) => [name, String(data.get(name) || '').trim()]));
@@ -6606,11 +6629,11 @@ function importJson(file) {
       const parsed = JSON.parse(String(event.target?.result || ''));
       if (!parsed || !Array.isArray(parsed.cars) || !Array.isArray(parsed.tracks) || !Array.isArray(parsed.setups)) throw new Error('Format invalide');
       if (!confirm('L’import remplacera les voitures, pistes, setups et, si présents, les articles personnels de la bibliothèque. Continuer ?')) return;
-      const previous={cars:state.cars,tracks:state.tracks,setups:state.setups};
-      state.cars=parsed.cars;state.tracks=parsed.tracks;state.setups=parsed.setups.map(setup=>({...setup,photos:Array.isArray(setup.photos)?setup.photos:[],history:Array.isArray(setup.history)?setup.history:[]}));
+      const previous={cars:state.cars,tracks:state.tracks,setups:state.setups,maintenance:state.maintenance};
+      state.cars=parsed.cars;state.tracks=parsed.tracks;state.maintenance=Array.isArray(parsed.maintenance)?parsed.maintenance:[];state.setups=parsed.setups.map(setup=>({...setup,photos:Array.isArray(setup.photos)?setup.photos:[],history:Array.isArray(setup.history)?setup.history:[]}));
       if(!saveState()){Object.assign(state,previous);return;}
       if(Array.isArray(parsed.materials)&&window.RCSetupMaterials&&!window.RCSetupMaterials.importData(parsed.materials)){Object.assign(state,previous);saveState();showToast('Import matériel impossible : les données précédentes ont été conservées.');return;}
-      renderAll();showToast(Array.isArray(parsed.materials)?'Sauvegarde complète importée.':'Sauvegarde importée. La bibliothèque personnelle actuelle a été conservée.');
+      renderAll();populateMaintenanceCars();populateGeometryCars();showToast(Array.isArray(parsed.materials)?'Sauvegarde complète importée.':'Sauvegarde importée. La bibliothèque personnelle actuelle a été conservée.');
     } catch (error) {
       console.error(error); showToast('Fichier JSON invalide ou incompatible.');
     }
@@ -6752,6 +6775,23 @@ try{setTracksideMode(localStorage.getItem('rc-setup-trackside-mode')==='1');}cat
 document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
 document.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);
 document.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
+document.getElementById('maintenanceCar')?.addEventListener('change',renderMaintenanceList);
+document.getElementById('maintenanceForm')?.addEventListener('submit',event=>{
+ event.preventDefault();
+ const carId=document.getElementById('maintenanceCar').value,part=document.getElementById('maintenancePart').value;
+ if(!carId||!part)return;
+ state.maintenance=Array.isArray(state.maintenance)?state.maintenance:[];
+ state.maintenance.unshift({id:uid('maintenance'),carId,part,date:document.getElementById('maintenanceDate').value,sessions:Number(document.getElementById('maintenanceSessions').value||0),next:Number(document.getElementById('maintenanceNext').value||0),notes:document.getElementById('maintenanceNotes').value.trim()});
+ if(!saveState())return;
+ event.target.reset();document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);renderMaintenanceList();showToast('Révision enregistrée.');
+});
+document.getElementById('geometryCar')?.addEventListener('change',loadGeometryForm);
+document.getElementById('geometryForm')?.addEventListener('submit',event=>{
+ event.preventDefault();const car=getCarById(document.getElementById('geometryCar').value);if(!car){showToast('Choisis une voiture.');return;}
+ car.techGeometry=Object.fromEntries(new FormData(event.target).entries());
+ if(!saveState())return;showToast('Fiche technique enregistrée pour '+car.name+'.');
+});
+
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
 document.getElementById('exportButton').addEventListener('click', exportJson);
 document.getElementById('importInput').addEventListener('change', (event) => { importJson(event.target.files?.[0]); event.target.value = ''; });
@@ -6765,6 +6805,9 @@ document.getElementById('assistantPhase')?.addEventListener('change',renderAssis
 document.getElementById('assistantSeverity')?.addEventListener('change',renderAssistantRecommendations);
 document.getElementById('assistantSaveProposal')?.addEventListener('click',saveAssistantProposal);
 renderAll();
+populateMaintenanceCars();
+populateGeometryCars();
+document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);
 updateCarBrandPicker();
 updateVehicleSpecificFields();
 setView('dashboard');
