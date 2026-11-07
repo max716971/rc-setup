@@ -845,6 +845,7 @@
   }
   const MATERIAL_BRAND_LOGOS = {
     'Fan RC': './assets/fan-rc-logo.svg',
+    'F.A.N. RC': './assets/fan-rc-logo.svg',
     'X-Factory': './assets/x-factory-logo.svg',
     'Kyosho': 'https://cdn.brandfetch.io/idXDBNlT9W/w/568/h/133/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1792896373403',
     'PR Racing': 'https://i0.wp.com/circusrc.com/CRC/wp-content/uploads/2019/09/PR-Racing.jpg?fit=1024%2C512&ssl=1',
