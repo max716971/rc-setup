@@ -375,6 +375,7 @@ function openCarEditor(id) {
   for(const name of ['name','brand','scale','drive','type','notes','engineEquipment','escEquipment','servoEquipment','tiresEquipment','shocksEquipment']){const field=form.elements.namedItem(name);if(field)field.value=name==='drive'?normalizeDriveType(car[name]):(car[name]||'');}const diffField=form.elements.namedItem('diffCount');if(diffField)diffField.value=car.diffCount?String(car.diffCount):'auto';
   pendingCarPhotos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
   renderCarPhotoPreviews();
+  updateCarBrandPicker();
   form.querySelector('h2').textContent='Modifier la voiture';
   form.querySelector('button[type="submit"]').textContent='Enregistrer les modifications';
   form.classList.remove('hidden');form.scrollIntoView({behavior:'smooth',block:'start'});
@@ -385,6 +386,7 @@ function resetCarEditor() {
   const heading=form.querySelector('h2');if(heading)heading.textContent='Ajouter une autre voiture';
   const submit=form.querySelector('button[type="submit"]');if(submit)submit.textContent='Enregistrer';
   renderCarPhotoPreviews();
+  updateCarBrandPicker();
 }
 function handleCarSubmit(event) {
   event.preventDefault();
@@ -726,8 +728,22 @@ document.getElementById('importSetupInput')?.addEventListener('change', (event) 
 document.querySelectorAll('form').forEach(form=>form.addEventListener('reset',()=>{const keepOpen=form.id==='setupForm'&&form.dataset.preserveOnReset==='true';form.dataset.preserveOnReset='false';setTimeout(()=>{if(keepOpen){skipSetupReset=false;return;}form.classList.add('hidden');if(form.id==='setupForm'){pendingPhotos=[];editingSetupId=null;setupDraftSource=null;renderPhotoPreviews();const submit=form.querySelector('button[type="submit"]');if(submit)submit.textContent='Enregistrer le setup';}},0);}));
 document.getElementById('setupDialog').addEventListener('click', (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
 
+document.getElementById('carBrandPicker')?.addEventListener('click',event=>{const button=event.target.closest('[data-brand]');if(!button)return;const input=document.getElementById('carBrand');if(input)input.value=button.dataset.brand;updateCarBrandPicker();});
+document.getElementById('carBrand')?.addEventListener('input',updateCarBrandPicker);
+function updateCarBrandPicker(){const input=document.getElementById('carBrand');const value=(input?.value||'').trim().toLocaleLowerCase('fr');document.querySelectorAll('#carBrandPicker [data-brand]').forEach(button=>{const active=button.dataset.brand.toLocaleLowerCase('fr')===value;button.classList.toggle('selected',active);button.setAttribute('aria-pressed',String(active));});}
 renderAll();
+updateCarBrandPicker();
 updateVehicleSpecificFields();
 setView('dashboard');
 registerServiceWorker();
 setupInstallPrompt();
+
+/* Sélecteur de marques visuel dans le Garage */
+.car-brand-field{display:flex;flex-direction:column;gap:7px}
+.brand-picker-caption{font-size:10px;color:var(--muted)}
+.brand-picker-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:4px}
+.brand-tile,.material-brand-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:65px;padding:8px 5px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.025);color:var(--text);font-size:10px;font-weight:700;text-align:center;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}
+.brand-tile:hover,.material-brand-tile:hover{border-color:var(--accent);transform:translateY(-1px)}
+.brand-tile.selected,.material-brand-tile.selected{border-color:var(--accent);background:rgba(197,243,107,.12);box-shadow:inset 0 0 0 1px var(--accent)}
+.brand-logo-mark{display:grid;place-items:center;width:31px;height:31px;border-radius:9px;background:linear-gradient(145deg,#263b56,#111c2c);color:#d8f29c;font-size:11px;font-weight:900;letter-spacing:-.5px}
+@media(max-width:650px){.brand-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
