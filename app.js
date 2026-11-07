@@ -5961,6 +5961,31 @@ function renderPerformanceTrend(){
   const values=samples.map(s=>parseLapTime(s.lapTime)),best=Math.min(...values),worst=Math.max(...values);
   root.innerHTML='<div class="trend-chart">'+samples.map((s,i)=>{const v=values[i],height=worst===best?75:Math.max(18,Math.round(100-(v-best)/(worst-best)*72));return `<div class="trend-column" title="${escapeHtml(getCarById(s.carId)?.name||'Voiture')} · ${escapeHtml(s.lapTime)}"><span>${escapeHtml(s.lapTime)}</span><i style="height:${height}%"></i><small>${escapeHtml((s.sessionDate||s.createdAt||'').slice(0,10))}</small></div>`;}).join('')+'</div><p class="item-sub">Meilleur temps enregistré : <strong>'+escapeHtml(samples[values.indexOf(best)].lapTime)+'</strong> · '+samples.length+' sessions</p>';
 }
+function printSetupDetails(){
+  const source=document.getElementById('setupDetails');
+  if(!source)return;
+  const printable=source.cloneNode(true);
+  printable.querySelectorAll('.item-actions,.restore-version').forEach(node=>node.remove());
+  const heading=printable.querySelector('h2')?.textContent?.trim()||'Fiche RC SETUP';
+  const printWindow=window.open('','_blank');
+  if(!printWindow){showToast('Autorise les fenêtres pop-up pour imprimer la fiche.');return;}
+  const styles=`
+    *{box-sizing:border-box}body{margin:0;padding:24px;color:#172033;background:#fff;font:14px/1.45 Arial,sans-serif}
+    h1{font-size:23px;margin:0 0 6px}h2{font-size:19px;margin:8px 0}h3{font-size:15px;margin:0 0 10px;border-bottom:1px solid #ccd3dd;padding-bottom:6px}
+    .kicker{font-size:10px;letter-spacing:2px;color:#53627a;font-weight:bold}.dialog-subtitle{color:#53627a;margin:0 0 18px}
+    .detail-group{break-inside:avoid;margin:18px 0;padding:12px 14px;border:1px solid #dce1e8;border-radius:8px}
+    dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:7px 18px}dl>div{display:grid;grid-template-columns:minmax(110px, .8fr) 1.2fr;gap:8px;border-bottom:1px solid #edf0f4;padding:4px 0}
+    dt{color:#53627a}dd{margin:0;font-weight:600;overflow-wrap:anywhere}.setup-gallery{display:flex;flex-wrap:wrap;gap:10px}.setup-gallery img{max-width:180px;max-height:140px;object-fit:contain}
+    .history-entry{padding:5px 0}.compare-table{display:block}.compare-row{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:10px;padding:7px;border-bottom:1px solid #e5e9ef}.compare-head{font-weight:bold;background:#f0f3f7}
+    @page{size:auto;margin:12mm}@media print{body{padding:0}.detail-group{break-inside:avoid}}
+  `;
+  printWindow.document.open();
+  printWindow.document.write('<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>'+escapeHtml(heading)+'</title><style>'+styles+'</style></head><body><h1>RC SETUP</h1>'+printable.innerHTML+'</body></html>');
+  printWindow.document.close();
+  printWindow.focus();
+  setTimeout(()=>{printWindow.print();},350);
+}
+
 function compareSetups(){
   const a=state.setups.find(s=>s.id===document.getElementById('compareSetupA')?.value),b=state.setups.find(s=>s.id===document.getElementById('compareSetupB')?.value);
   if(!a||!b){showToast('Sélectionne deux setups à comparer.');return;}if(a.id===b.id){showToast('Choisis deux setups différents.');return;}
@@ -5968,7 +5993,8 @@ function compareSetups(){
   const fields=[...new Set(SETUP_FIELDS)].filter(k=>String(a[k]??'')!==String(b[k]??'')&&(a[k]||b[k]));
   const label=k=>k.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase()).replace(/esc/gi,'ESC').replace(/radio/gi,'Radio').replace(/front/gi,'avant').replace(/rear/gi,'arrière');
   const content=document.getElementById('setupDetails');
-  content.innerHTML=`<span class="kicker">COMPARAISON DE CONFIGURATIONS</span><h2>${escapeHtml(carA?.name||'Voiture')} ↔ ${escapeHtml(carB?.name||'Voiture')}</h2><p class="dialog-subtitle">${escapeHtml(trackA?.name||'Piste')} · ${escapeHtml(a.sessionDate||formatDate(a.createdAt))} <span class="arrow">vs</span> ${escapeHtml(trackB?.name||'Piste')} · ${escapeHtml(b.sessionDate||formatDate(b.createdAt))}</p><section class="detail-group"><h3>Chronos</h3><dl><div><dt>Setup A</dt><dd>${escapeHtml(a.lapTime||'—')}</dd></div><div><dt>Setup B</dt><dd>${escapeHtml(b.lapTime||'—')}</dd></div></dl></section><section class="detail-group"><h3>Réglages différents (${fields.length})</h3>${fields.length?`<div class="compare-table"><div class="compare-row compare-head"><strong>Réglage</strong><strong>Setup A</strong><strong>Setup B</strong></div>${fields.map(k=>`<div class="compare-row"><span>${escapeHtml(label(k))}</span><span>${escapeHtml(a[k]||'—')}</span><span>${escapeHtml(b[k]||'—')}</span></div>`).join('')}</div>`:'<p class="item-sub">Les réglages enregistrés sont identiques.</p>'}</section>`;
+  content.innerHTML=`<span class="kicker">COMPARAISON DE CONFIGURATIONS</span><h2>${escapeHtml(carA?.name||'Voiture')} ↔ ${escapeHtml(carB?.name||'Voiture')}</h2><p class="dialog-subtitle">${escapeHtml(trackA?.name||'Piste')} · ${escapeHtml(a.sessionDate||formatDate(a.createdAt))} <span class="arrow">vs</span> ${escapeHtml(trackB?.name||'Piste')} · ${escapeHtml(b.sessionDate||formatDate(b.createdAt))}</p><section class="detail-group"><h3>Chronos</h3><dl><div><dt>Setup A</dt><dd>${escapeHtml(a.lapTime||'—')}</dd></div><div><dt>Setup B</dt><dd>${escapeHtml(b.lapTime||'—')}</dd></div></dl></section><section class="detail-group"><h3>Réglages différents (${fields.length})</h3>${fields.length?`<div class="compare-table"><div class="compare-row compare-head"><strong>Réglage</strong><strong>Setup A</strong><strong>Setup B</strong></div>${fields.map(k=>`<div class="compare-row"><span>${escapeHtml(label(k))}</span><span>${escapeHtml(a[k]||'—')}</span><span>${escapeHtml(b[k]||'—')}</span></div>`).join('')}</div>`:'<p class="item-sub">Les réglages enregistrés sont identiques.</p>'}</section><div class="item-actions detail-actions"><button class="button button-primary" id="printSetupDetails" type="button">Imprimer / PDF</button></div>`;
+  content.querySelector('#printSetupDetails').addEventListener('click',printSetupDetails);
   document.getElementById('setupDialog').showModal();
 }
 
@@ -6284,10 +6310,11 @@ function showSetup(id) {
     return `<section class="detail-group"><h3>${escapeHtml(title)}</h3><dl>${filled.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></section>`;
   }).join('');
   const history=Array.isArray(setup.history)?setup.history:[];
-  content.insertAdjacentHTML('beforeend',`<section class="detail-group"><h3>Historique des modifications</h3>${history.length?history.map((h,index)=>`<div class="history-entry"><span>${escapeHtml(new Date(h.savedAt).toLocaleString('fr-FR'))}</span><button class="button button-quiet restore-version" data-index="${index}" type="button">Restaurer cette version</button></div>`).join(''):'<p class="item-sub">Aucune modification enregistrée pour le moment.</p>'}</section><div class="item-actions detail-actions"><button class="button button-primary" id="detailEditSetup" type="button">Modifier ce setup</button><button class="button button-soft" id="detailExportSetup" type="button">Exporter ce setup</button><button class="button button-soft" id="detailDuplicateSetup" type="button">Dupliquer</button><button class="button button-soft" id="detailFavoriteSetup" type="button">${setup.favorite?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</button></div>`);
+  content.insertAdjacentHTML('beforeend',`<section class="detail-group"><h3>Historique des modifications</h3>${history.length?history.map((h,index)=>`<div class="history-entry"><span>${escapeHtml(new Date(h.savedAt).toLocaleString('fr-FR'))}</span><button class="button button-quiet restore-version" data-index="${index}" type="button">Restaurer cette version</button></div>`).join(''):'<p class="item-sub">Aucune modification enregistrée pour le moment.</p>'}</section><div class="item-actions detail-actions"><button class="button button-primary" id="detailEditSetup" type="button">Modifier ce setup</button><button class="button button-soft" id="detailExportSetup" type="button">Exporter ce setup</button><button class="button button-soft" id="detailPrintSetup" type="button">Imprimer / PDF</button><button class="button button-soft" id="detailDuplicateSetup" type="button">Dupliquer</button><button class="button button-soft" id="detailFavoriteSetup" type="button">${setup.favorite?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</button></div>`);
   content.querySelectorAll('.restore-version').forEach(button=>button.addEventListener('click',()=>restoreSetupVersion(id,Number(button.dataset.index))));
   content.querySelector('#detailEditSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();openSetupEditor(id);});
   content.querySelector('#detailExportSetup').addEventListener('click',()=>exportSingleSetup(id));
+  content.querySelector('#detailPrintSetup').addEventListener('click',printSetupDetails);
   content.querySelector('#detailDuplicateSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();openSetupEditor(id,true);});
   content.querySelector('#detailFavoriteSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();toggleSetupFavorite(id);});
   document.getElementById('setupDialog').showModal();
