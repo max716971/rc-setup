@@ -652,6 +652,33 @@
     { brand:'Pro-Line', category:'Insert pneu', name:'Open Cell Medium Rear Foam 1/10 Buggy', reference:'6365-00', compatibility:'Arrière 2WD/4WD', detail:'Insert arrière mousse ouverte medium pour buggy 1/10.', url:'https://teams.prolineracing.com/Images/pricelist.pdf' },
 
 
+    // Hobbywing — gamme officielle XeRun V10 G3 (Modified, Stock et variantes JMRCA).
+    ...[
+      ['30401106','3.5T','9 450 kV','Modified 1/12 piste'],
+      ['30401102','4.5T','7 340 kV','Modified 1/10 et 1/12 piste'],
+      ['30401116','5T','6 500 kV','Modified 1/10 et 1/12 piste'],
+      ['30401107','5.5T','5 900 kV','Modified 4WD TT 1/10'],
+      ['30401117','6T','5 500 kV','Modified 4WD TT 1/10'],
+      ['30401109','6.5T','5 120 kV','Modified 4WD TT 1/10'],
+      ['30401118','7T','4 800 kV','Drift et TT 2WD 1/10'],
+      ['30401110','7.5T','4 420 kV','Drift et TT 2WD 1/10'],
+      ['30401119','8T','4 200 kV','Drift et TT 2WD 1/10'],
+      ['30401111','8.5T','3 970 kV','Drift et TT 2WD 1/10'],
+      ['30401112','10.5T','4 500 kV','Stock / drift 1/10'],
+      ['30401103','13.5T','3 710 kV','Stock 1/10'],
+      ['30401104','17.5T','2 830 kV','Stock 1/10'],
+      ['30401105','21.5T','2 250 kV','Stock 1/10'],
+      ['30401113','25.5T','1 500 kV','Stock 1/10'],
+      ['30401120','13.5T JMRCA','3 610 kV','Stock JMRCA 1/10'],
+      ['30401121','17.5T JMRCA','2 790 kV','Stock JMRCA 1/10'],
+      ['30401122','21.5T JMRCA','2 240 kV','Stock JMRCA 1/10'],
+      ['30401123','6.5T OnRoad Spec','6 300 kV','Modified piste 1/10']
+    ].map(([reference,turn,kv,application])=>({
+      brand:'Hobbywing',category:'Moteur',name:'XeRun V10 G3 '+turn,
+      reference,compatibility:application,
+      detail:'Moteur brushless sensored 2 pôles, '+kv+', gamme officielle XeRun V10 G3. Application : '+application+'.',
+      url:'https://www.hobbywing.com/en/products/xerun-v10-g327'
+    })),
     // Hobbywing — versions 1/10 stock officielles XeRun V10 G4 et G4R.
     ...[
       ['30401140','13.5T','3 950 kV'],['30401141','17.5T','3 020 kV'],['30401142','21.5T','2 500 kV']
