@@ -6730,9 +6730,7 @@ document.getElementById('importSetupInput')?.addEventListener('change', (event) 
 document.querySelectorAll('form').forEach(form=>form.addEventListener('reset',()=>{const keepOpen=form.id==='setupForm'&&form.dataset.preserveOnReset==='true';form.dataset.preserveOnReset='false';setTimeout(()=>{if(keepOpen){skipSetupReset=false;return;}form.classList.add('hidden');if(form.id==='setupForm'){pendingPhotos=[];editingSetupId=null;setupDraftSource=null;renderPhotoPreviews();const submit=form.querySelector('button[type="submit"]');if(submit)submit.textContent='Enregistrer le setup';}},0);}));
 document.getElementById('setupDialog').addEventListener('click', (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
 
-document.getElementById('carBrandPicker')?.addEventListener('click',event=>{const button=event.target.closest('[data-brand]');if(!button)return;const input=document.getElementById('carBrand');if(input)input.value=button.dataset.brand;updateCarBrandPicker();});
-document.getElementById('carBrand')?.addEventListener('input',updateCarBrandPicker);
-function updateCarBrandPicker(){const input=document.getElementById('carBrand');const value=(input?.value||'').trim().toLocaleLowerCase('fr');document.querySelectorAll('#carBrandPicker [data-brand]').forEach(button=>{const active=button.dataset.brand.toLocaleLowerCase('fr')===value;button.classList.toggle('selected',active);button.setAttribute('aria-pressed',String(active));});}
+function updateCarBrandPicker(){const select=document.getElementById('carBrand');if(!select)return;const value=(select.value||'').trim();if(value&&!Array.from(select.options).some(option=>option.value===value)){const option=document.createElement('option');option.value=value;option.textContent=value;select.add(option);}select.value=value;}
 document.getElementById('assistantSymptom')?.addEventListener('change',renderAssistantRecommendations);
 document.getElementById('assistantPhase')?.addEventListener('change',renderAssistantRecommendations);
 document.getElementById('assistantSeverity')?.addEventListener('change',renderAssistantRecommendations);
