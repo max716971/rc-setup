@@ -19,19 +19,18 @@
     { brand: 'Hobbywing', category: 'Moteur', name: 'EzRun 3660 / 3665 G3', reference: 'KV à préciser', detail: 'Choisir taille et KV selon le véhicule.', url: 'https://www.hobbywing.com/en/rc-systems' },
     { brand: 'Hobbywing', category: 'Programmation', name: 'LCD Program Box Pro', reference: '30502002', detail: 'Boîtier de programmation pour matériels compatibles Hobbywing.', url: 'https://www.hobbywing.com/en/rc-systems' },
 
-    // Schumacher 1/10 buggy tire families. SKU depends on position, compound and mounted/unmounted version.
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mini Dart — avant 4x2', reference: 'U6830', detail: 'Exemple buggy 1/10 ; confirmer gomme et variante.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Cactus Fusion 2 — avant 4x4', reference: 'U6895 / U6898', detail: 'Références exemple ; vérifier version montée/collée.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mezzo — arrière', reference: 'U6885 / U6886', detail: 'Exemples de variantes de gomme ; confirmer la position et le composé.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mezzo — avant 4x4', reference: 'U6888', detail: 'Buggy 1/10 ; confirmer gomme et compatibilité.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mini Spike 2 — avant 4WD', reference: 'U6517', detail: 'Buggy 1/10 ; vérifier profil et gomme exacte.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mini Spike 2 — arrière', reference: 'U6518', detail: 'Buggy 1/10 ; vérifier profil et gomme exacte.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Cut Stagger Low Profile — avant 2WD', reference: 'U6770 / U6775', detail: 'Références selon composé ; vérifier la variante au catalogue.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Fusion Slim — avant 2WD', reference: 'U6901 / U6902', detail: 'Références selon composé ; vérifier génération et montage.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Cactus — arrière 2WD', reference: 'U6838', detail: 'Référence exemple buggy 1/10 ; vérifier gomme et compatibilité.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Splinter Slim — avant 2WD', reference: 'U6906Y / U6908S', detail: 'Références selon gomme ; vérifier code de composé et châssis.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Azami — arrière', reference: 'U6905 / U6912', detail: 'Références selon variante ; vérifier gomme et compatibilité.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    ...['Mini Pin', 'Cactus Fusion', 'Azami', 'Splinter', 'Fusion Slim', 'Cut Stagger', 'Shard', 'Spiral', 'Ridge Pin', 'Mini Dart', 'Mezzo'].map((name) => ({ brand: 'Schumacher', category: 'Pneus / roues', name, reference: 'Varie par position, gomme et génération', detail: 'Famille de pneus ; choisir la référence exacte selon voiture, piste et composé.', url: 'https://www.racing-cars.com/wheels-tyres' })),
+    // Schumacher buggy 1/10 — références reprises du tableau établi précédemment.
+    ...[
+      ['Mini Dart — jaune','U6825'],['Mini Dart — jaune','U6826'],
+      ['Mini Dart — bleu','U6828'],['Mini Dart — bleu','U6829'],
+      ['Mini Dart — Silver','U6831'],['Mini Dart — Silver','U6832'],
+      ['Cactus — jaune','U6838'],['Cactus — jaune','U6840'],
+      ['Cactus — Silver','U6842'],['Cactus — Silver','U6843'],
+      ['Cactus — bleu','U6844'],['Cactus — bleu','U6845'],
+      ['Wide Stagger Rib','U6810'],['Wide Stagger Rib','U6811'],['Wide Stagger Rib','U6846'],
+      ['Mini Pin 1','U6817'],['Mini Pin 1','U6819'],['Mini Pin 1','U6820'],
+      ['Mini Pin 2','U6821'],['Mini Pin 2','U6805']
+    ].map(([name, reference]) => ({ brand: 'Schumacher', category: 'Pneus / roues', name, reference, detail: 'Référence reprise du tableau précédent ; vérifier la position et la gomme exacte sur la fiche fabricant.', url: 'https://www.racing-cars.com/wheels-tyres' })),
 
     // Bibliothèque complémentaire demandée : entrées de gamme sans SKU inventé.
     // Ajouter la référence exacte du flacon lorsque le fabricant/revendeur la confirme.
@@ -55,15 +54,10 @@
     // Ressorts Team Associated 12 mm : taux connus pour RC10B4.2FT.
     ...[['BRN','2.85'],['BLK','3.00'],['GRN','3.15'],['WHT','3.30'],['GRY','3.45'],['BLU','3.60'],['YLW','3.75'],['RED','3.90'],['ORN','4.05'],['PRL','4.20']].map(([code,rate]) => ({ brand: 'Team Associated', category: 'Ressort', name: `Ressort avant 12 mm RC10B4.2FT — ${code}`, reference: `${rate}`, detail: `Ressort avant 12 mm ; code couleur ${code}, taux ${rate} (unité selon nomenclature du kit).`, url: 'https://www.associatedelectrics.com/teamassociated/' })),
     ...[['BLK','1.90'],['GRN','2.00'],['WHT','2.10'],['GRY','2.20'],['BLU','2.30'],['YLW','2.40']].map(([code,rate]) => ({ brand: 'Team Associated', category: 'Ressort', name: `Ressort arrière 12 mm RC10B4.2FT — ${code}`, reference: `${rate}`, detail: `Ressort arrière 12 mm ; code couleur ${code}, taux ${rate} (unité selon nomenclature du kit).`, url: 'https://www.associatedelectrics.com/teamassociated/' })),
-    { brand: 'Team Associated', category: 'Ressort', name: 'Ressorts RC10B6.2', reference: 'Kit / taux à confirmer', detail: 'Entrée de gamme à compléter avec les références exactes du kit B6.2 ; ne pas assimiler aux ressorts B4.2FT.', url: 'https://www.associatedelectrics.com/teamassociated/' },
-    { brand: 'Team Associated', category: 'Ressort', name: 'Ressorts RC10B7', reference: 'Kit / taux à confirmer', detail: 'Entrée de gamme à compléter avec les références exactes du kit B7 ; ne pas assimiler aux ressorts B4.2FT.', url: 'https://www.associatedelectrics.com/teamassociated/' },
+    ...Array.from({length:12}, (_,i) => ({ brand: 'Team Associated', category: 'Ressort', name: 'Ressort RC10B6.2 — réf. ' + (91830+i), reference: String(91830+i), detail: 'Référence reprise du tableau précédent. Couleur/taux à confirmer avant utilisation ; ressorts 12 mm.', url: 'https://www.associatedelectrics.com/teamassociated/' })),
+    ...Array.from({length:12}, (_,i) => ({ brand: 'Team Associated', category: 'Ressort', name: 'Ressort RC10B7 — réf. ' + (91940+i), reference: String(91940+i), detail: 'Référence reprise du tableau précédent. Couleur/taux/longueur à confirmer avant utilisation ; ressorts 13 mm.', url: 'https://www.associatedelectrics.com/teamassociated/' })),
 
-    { brand: 'XRAY', category: 'Huile amortisseur', name: 'Premium Silicone Oil 400 cSt, 50 ml', reference: '359248', detail: 'Exemple ; vérifier disponibilité et viscosité.', url: 'https://www.teamxray.com/eshop/' },
-    { brand: 'HUDY', category: 'Huile amortisseur', name: 'Premium Silicone Oil 50 000 cSt', reference: '106350', detail: 'Exemple de viscosité/référence ; choisir selon le véhicule.', url: 'https://www.hudy.net/' },
     { brand: 'Team Associated', category: 'Huile amortisseur', name: 'Factory Team Shock Oil 35 wt', reference: '5435', detail: 'Exemple ; confirmer compatibilité et catalogue actuel.', url: 'https://www.associatedelectrics.com/teamassociated/parts/fluids/' },
-    { brand: 'Donuts Racing', category: 'Huile amortisseur', name: 'Huile silicone amortisseur', reference: 'Viscosité à préciser', detail: 'Référence selon viscosité/disponibilité du revendeur.', url: 'https://www.donuts-racing.com/huiles-silicones/99-huile-amortisseur-rc.html' },
-    { brand: 'XRAY', category: 'Ressort', name: 'C1.9 Springs (2)', reference: '308390', detail: 'Vérifier génération et compatibilité châssis.', url: 'https://www.teamxray.com/eshop/' },
-    { brand: 'HUDY', category: 'Outil', name: 'Professional Allen Wrench 2.0 mm', reference: '189080', detail: 'Outil hexagonal 2,0 mm.', url: 'https://www.hudy.net/' }
   ];
   const root = document.getElementById('materialsApp');
   if (!root) return;
@@ -71,7 +65,12 @@
   function loadSaved() { try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); return Array.isArray(data) ? data : []; } catch { return []; } }
   // Move automatically seeded catalogue entries out of the personal inventory.
   const legacyPrefixes = ['seed-hobbywing-esc-v1-', 'seed-hobbywing-motors-v3-', 'seed-rsrc-xrt-oils-v3-', 'seed-associated-spring-v1-'];
+  const RESET_INVENTORY_KEY = 'rc-setup-materials-reset-20261107';
   let savedItems = loadSaved();
+  if (localStorage.getItem(RESET_INVENTORY_KEY) !== 'done') {
+    savedItems = [];
+    try { localStorage.setItem(STORAGE_KEY, '[]'); localStorage.setItem(RESET_INVENTORY_KEY, 'done'); } catch {}
+  }
   const legacyCatalogItems = savedItems.filter(item => legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
   for (const item of legacyCatalogItems) {
     if (!catalog.some(existing => existing.brand === item.brand && existing.name === item.name && existing.reference === item.reference)) catalog.push({ ...item, id: undefined });
