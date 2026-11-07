@@ -741,7 +741,7 @@
     savedItems = savedItems.filter(item => !legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); } catch {}
   }
-  function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); return true; } catch { alert('Stockage local plein : retire une fiche ou libère de l’espace.'); return false; } }
+  function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); window.dispatchEvent(new Event('rc-setup-data-changed')); return true; } catch { alert('Stockage local plein : retire une fiche ou libère de l’espace.'); return false; } }
   function esc(value) { return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c]); }
   function allMaterials() { return [...catalog, ...savedItems]; }
   function materialLabel(item) { return `${item.brand} ${item.name}${item.reference ? ` — réf. ${item.reference}` : ''}`; }
