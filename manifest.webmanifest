@@ -9,10 +9,10 @@
   "lang": "fr",
   "icons": [
     {
-      "src": "assets/rc-setup-logo.png",
-      "sizes": "192x192",
+      "src": "assets/rc-setup-logo.png?v=172",
+      "sizes": "180x180",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
