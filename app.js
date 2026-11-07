@@ -6188,7 +6188,7 @@ function renderMaintenanceList(){
   const select=document.getElementById('maintenanceCar'),list=document.getElementById('maintenanceList');if(!select||!list)return;
   const id=select.value;const entries=(state.maintenance||[]).filter(item=>item.carId===id).sort((x,y)=>String(y.date).localeCompare(String(x.date)));
   list.innerHTML=!id?'<p class="item-sub">Sélectionne une voiture pour consulter son carnet.</p>':!entries.length?'<p class="item-sub">Aucune intervention enregistrée pour cette voiture.</p>':entries.map(item=>{
-    const remaining=Number(item.next||0)-Number(item.sessions||0);
+    const remaining=Number(item.next||0);
     const due=item.next?(remaining<=0?'<span class="maintenance-status overdue">À effectuer</span>':remaining<=1?'<span class="maintenance-status soon">Bientôt</span>':'<span class="maintenance-status ok">À jour</span>'):'';
     return '<article class="maintenance-entry"><div class="maintenance-entry-head"><div><strong>'+escapeHtml(item.part)+'</strong><p>'+escapeHtml(item.workType||'Entretien')+' · '+escapeHtml(formatDate(item.date))+'</p></div>'+due+'</div><p>'+Number(item.sessions||0)+' session(s) depuis l’intervention'+(item.next?' · échéance à '+Number(item.next)+' session(s)':'')+'</p>'+(item.replacedParts?'<p><b>Pièces :</b> '+escapeHtml(item.replacedParts)+'</p>':'')+(item.notes?'<p>'+escapeHtml(item.notes)+'</p>':'')+'<div class="maintenance-entry-actions"><button class="button button-quiet maintenance-delete" data-id="'+escapeHtml(item.id)+'" type="button">Supprimer</button></div></article>';
   }).join('');
@@ -6711,7 +6711,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v203';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v204';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6719,7 +6719,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=99', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=100', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
