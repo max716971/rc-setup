@@ -1,3 +1,9 @@
+## 2026-11-07 — Architecture des différentiels par voiture
+- Proposition automatique : 1 différentiel pour les 2WD, 2 pour les 4WD au 1/10 et 3 pour les 4WD au 1/8.
+- Le nombre de différentiels est modifiable manuellement dans la fiche voiture (1, 2 ou 3).
+- Les setups affichent uniquement les différentiels correspondant à la voiture sélectionnée : arrière seul, avant/arrière ou avant/central/arrière.
+- Les positions non disponibles sont marquées absentes dans la fiche enregistrée.
+
 # Historique des versions — RC SETUP
 
 ## Version de travail 1.1 — 7 novembre 2026
