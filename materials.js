@@ -803,8 +803,7 @@
     root.querySelector('#materialForm').addEventListener('submit', addItem);
     root.querySelector('#materialSearch').addEventListener('input', renderCards);
     root.querySelector('#brandFilter').addEventListener('change', renderCards);
-    root.querySelector('#categoryFilter').addEventListener('change', renderCards);
-    root.querySelector('#positionFilter').addEventListener('change', renderCards);
+    root.querySelector('#categoryFilter').addEventListener('change', renderCards);\n    root.querySelector('#positionFilter').addEventListener('change', renderCards);
     renderCards(); refreshPickers();
   }
   function renderCards() {
@@ -860,10 +859,8 @@
   refreshPickers();
   setupForm.addEventListener('submit', () => {
     const value = (name) => String(setupForm.elements.namedItem(name)?.value || '').trim();
-    const radio = [['Émetteur',value('txModel')],['Récepteur / gyro',value('rxModel')],['Dual rate / expo',value('radioExpo')],['EPA',value('radioEPA')],['Trim / failsafe',value('radioTrim')],['Autres',value('radio')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('
-');
-    const escText = [['Modèle ESC',value('escModel')],['Mode / profil',value('escMode')],['Timing / boost',value('escTiming')],['Punch',value('escPunch')],['Frein / drag brake',value('escBrake')],['Cutoff',value('escCutoff')],['Autres paramètres',value('electronicsNotes')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('
-');
+    const radio = [['Émetteur',value('txModel')],['Récepteur / gyro',value('rxModel')],['Dual rate / expo',value('radioExpo')],['EPA',value('radioEPA')],['Trim / failsafe',value('radioTrim')],['Autres',value('radio')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
+    const escText = [['Modèle ESC',value('escModel')],['Mode / profil',value('escMode')],['Timing / boost',value('escTiming')],['Punch',value('escPunch')],['Frein / drag brake',value('escBrake')],['Cutoff',value('escCutoff')],['Autres paramètres',value('electronicsNotes')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
     setupForm.elements.namedItem('radio').value = radio;
     setupForm.elements.namedItem('esc').value = escText;
   }, true);
