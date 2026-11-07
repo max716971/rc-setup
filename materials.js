@@ -224,6 +224,8 @@
     picker.append(label, search, select);
     input.closest('label').before(picker);
   }
+  // Populate every library selector immediately when the setup form is initialized.
+  refreshPickers();
   setupForm.addEventListener('submit', () => {
     const value = (name) => String(setupForm.elements.namedItem(name)?.value || '').trim();
     const radio = [['Émetteur',value('txModel')],['Récepteur / gyro',value('rxModel')],['Dual rate / expo',value('radioExpo')],['EPA',value('radioEPA')],['Trim / failsafe',value('radioTrim')],['Autres',value('radio')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
