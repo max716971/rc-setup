@@ -67,6 +67,8 @@
       ['Splinter','U6906','Avant 2WD','Jaune','Slim ultra-low'],
       ['Splinter','U6907','Avant 2WD','Bleu','Slim ultra-low'],
       ['Splinter','U6908','Avant 2WD','Silver','Slim ultra-low'],
+      ['Fusion Slim','U6904','Avant 2WD','Jaune','Pré-collé'],
+      ['Splinter','U6910','Avant 2WD','Jaune','Pré-collé'],
 
       // Variantes avant 4WD / arrière déjà présentes dans la bibliothèque.
       ['Mini Dart','U6825','Avant 4WD','Jaune','Standard'],['Mini Dart','U6826','Arrière 2WD/4WD','Jaune','Standard'],
