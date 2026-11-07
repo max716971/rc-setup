@@ -845,8 +845,8 @@
   }
   const rcBrandWordmark=(label,sub='')=>'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120"><rect width="420" height="120" rx="12" fill="#fff"/><path d="M24 88 70 25h36L60 88z" fill="#111"/><text x="125" y="73" font-family="Arial,Helvetica,sans-serif" font-size="52" font-weight="900" font-style="italic" fill="#111">'+label+'</text><text x="128" y="98" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" letter-spacing="4" fill="#555">'+sub+'</text></svg>');
   const MATERIAL_BRAND_LOGOS = {
-    'Fan RC': rcBrandWordmark('FAN RC','R/C PERFORMANCE'),
-    'Kyosho': 'https://www.kyosho.com/eng/support/instructionmanual/images/kyosho_logo.gif',
+    'Fan RC': 'https://i.ebayimg.com/images/g/1~UAAeSwMqRoz49L/s-l960.jpg',
+    'Kyosho': 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Kyosho_corp_logo.png',
     'Mugen Seiki': 'https://www.autocollant-tuning.com/3061-product_main/sticker-et-autocollant-mugen-seiki.jpg',
     'PR Racing': 'https://www.pr-rc.com/images/aa_03.jpg',
     'Team Losi': 'https://images.seeklogo.com/logo-png/32/1/team-losi-racing-logo-png_seeklogo-324214.png',
