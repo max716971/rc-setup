@@ -296,3 +296,11 @@ select { color-scheme: dark; } textarea { min-height: 90px; resize: vertical; li
 .tool-result{margin-top:14px;padding:15px;border:1px solid rgba(116,217,232,.2);border-radius:13px;background:rgba(116,217,232,.045);color:var(--text);font-size:13px;line-height:1.65}
 .tool-result ol{margin:9px 0;padding-left:21px}.tool-result li{margin:6px 0}
 @media(max-width:700px){.tool-form-grid{grid-template-columns:1fr}}
+
+/* Mode piste : commandes plus lisibles et tactiles sur smartphone */
+.heading-actions{display:flex;gap:9px;align-items:center}
+.trackside-mode .topbar{padding-top:8px;padding-bottom:8px}
+.trackside-mode #setupForm input,.trackside-mode #setupForm select,.trackside-mode #setupForm textarea{min-height:54px;font-size:15px}
+.trackside-mode #setupForm label{font-size:13px}
+.trackside-mode .nav{position:sticky;top:0;z-index:20}
+@media(max-width:700px){.heading-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.heading-actions .button{min-height:46px}.trackside-mode #setupForm>.form-grid{padding:16px}.trackside-mode .nav-item{min-height:48px}}
