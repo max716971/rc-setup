@@ -11,8 +11,8 @@
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'QuicRun WP 10BL80 Crawler', reference: '30108002', detail: 'Gamme QuicRun crawler ; vérifier compatibilité.', url: 'https://www.hobbywing.com/en/rc-systems' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'QuicRun 10BL60 Sensored G2', reference: '30108001', detail: 'Vérifier la révision exacte.', url: 'https://www.hobbywing.com/en/rc-systems' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'QuicRun WP 10BL60', reference: '30109000', detail: 'Famille QuicRun ; confirmer la référence de la version au catalogue.', url: 'https://www.hobbywing.com/en/rc-systems' },
-    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4 4.5T', reference: '30401159', detail: 'Moteur compétition 1/10 ; vérifier variante et compatibilité ESC.', url: 'https://www.hobbywing.com/goods.php?id=718&pid=1' },
-    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4 5.5T', reference: '30401161', detail: 'Moteur compétition 1/10 ; vérifier variante et compatibilité ESC.', url: 'https://www.hobbywing.com/goods.php?id=718&pid=1' },
+
+
     { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun 4268SD G3 1900KV', reference: '30402653', detail: 'Moteur brushless 1/8 ; contrôler KV et compatibilité véhicule.', url: 'https://www.hobbywing.com/goods.php?id=699&pid=1' },
     { brand: 'Hobbywing', category: 'Moteur', name: 'Justock G2.1 10.5T', reference: '30408010', detail: 'Moteur stock 1/10 ; vérifier la combinaison ESC/moteur.', url: 'https://www.hobbywing.com/goods.php?id=719&pid=1' },
     
@@ -502,9 +502,9 @@
     // REDS Racing — électronique 1/10 et programmation.
     { brand:'REDS', category:'Variateur (ESC)', name:'ZX PRO 160A 1/10 GEN3', reference:'SPCO0018', detail:'Variateur brushless sensored 1/10, BEC 6–7,4 V / 10 A ; programmation via application.', url:'https://www.reds-racing.com/shop/ESC-REDS-ZX-PRO-160A-1-10-GEN3-p646849677' },
     { brand:'REDS', category:'Programmation', name:'LCD Program Box REDS Z-Line 1/10', reference:'SPCS0015', detail:'Boîtier de programmation pour ESC REDS 1/10 compatibles.', url:'https://www.reds-racing.com/download' },
-    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 13.5T', reference:'MTTE0036C', detail:'Moteur brushless sensored 540, version Factory Selected.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
-    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 17.5T', reference:'MTTE0037C', detail:'Moteur brushless sensored 540, version Factory Selected.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
-    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 21.5T', reference:'MTTE0038C', detail:'Moteur brushless sensored 540, version Factory Selected.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
+    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 13.5T', reference:'MTTE0036PC', detail:'Moteur brushless sensored 540, version Factory Selected High Torque, stator mis à jour.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
+    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 17.5T', reference:'MTTE0037PC', detail:'Moteur brushless sensored 540, version Factory Selected, stator mis à jour.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
+    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 21.5T', reference:'MTTE0038PC', detail:'Moteur brushless sensored 540, version Factory Selected, stator mis à jour.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
     // SRT / Power HD / Sanwa / Futaba : modèles réels plutôt que fiches génériques.
     { brand:'SRT', category:'Servo', name:'BH8015 HV Brushless Low Profile', reference:'BH8015', detail:'Servo brushless low profile 1/10, 13 kg·cm à 7,4 V et 0,055 s/60°.', url:'https://srt-rc.com/index.php?id=43' },
     { brand:'Power HD', category:'Servo', name:'GTS-2 Low Profile Brushless HV', reference:'HD-GTS-2', detail:'Servo brushless low profile HV, 23 kg·cm / 0,06 s selon fiche revendeur.', url:'https://rc78.fr/75-servos' },
