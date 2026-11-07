@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="theme-color" content="#090d17" /><meta name="apple-mobile-web-app-capable" content="yes" /><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /><meta name="description" content="RC SETUP — carnet de réglages radio-commandés." />
-  <title>RC SETUP — Carnet de réglages</title><link rel="manifest" href="manifest.webmanifest" /><link rel="icon" href="icon.svg" type="image/svg+xml" /><link rel="apple-touch-icon" href="icon.svg" /><link rel="stylesheet" href="app.css?v=16" /><link rel="stylesheet" href="materials.css?v=16" />
+  <title>RC SETUP — Carnet de réglages</title><link rel="manifest" href="manifest.webmanifest" /><link rel="icon" href="icon.svg" type="image/svg+xml" /><link rel="apple-touch-icon" href="icon.svg" /><link rel="stylesheet" href="app.css?v=17" /><link rel="stylesheet" href="materials.css?v=17" />
 </head>
 <body><div class="app-shell">
   <header class="topbar"><a class="brand" href="#" aria-label="RC SETUP accueil" data-go-view="dashboard"><span class="brand-mark">RC</span><span><span class="eyebrow">GARAGE NUMÉRIQUE</span><strong>SETUP<span class="brand-dot">.</span></strong></span></a><button id="installButton" class="button button-soft hidden" type="button">Installer</button></header>
@@ -22,5 +22,5 @@
     <section id="materialsView" class="view"><div class="section-heading"><div><span class="kicker">CATALOGUE & INVENTAIRE</span><h1>Matériel</h1><p>Références disponibles, recherche et ajout manuel.</p></div></div><div id="materialsApp"></div></section>
     <section id="toolsView" class="view"><div class="section-heading"><div><span class="kicker">TES DONNÉES</span><h1>Outils</h1><p>Sauvegarde tes fiches.</p></div></div><div class="panel tool-panel"><div><h2>Sauvegarde & restauration</h2><p>Export JSON de tes voitures, pistes et setups.</p></div><div class="actions-row"><button id="exportButton" class="button button-primary" type="button">Exporter JSON</button><label class="button button-soft upload-button"><input id="importInput" type="file" accept="application/json" /><span>Importer JSON</span></label></div></div></section>
   </main></div><dialog id="setupDialog" class="details-dialog"><form method="dialog"><button class="dialog-close" aria-label="Fermer">×</button></form><div id="setupDetails"></div></dialog><div id="toast" class="toast" role="status" aria-live="polite"></div><template id="emptyStateTemplate"><div class="empty-state"><span class="empty-icon">✳</span><strong>Rien pour le moment</strong><span>Ajoute une première fiche pour commencer.</span></div></template>
-  <script src="app.js?v=16"></script><script src="materials.js?v=17"></script>
+  <script src="app.js?v=16"></script><script src="materials.js?v=18"></script>
 </body></html>
