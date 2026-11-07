@@ -5926,7 +5926,7 @@ function openSetupEditor(id,duplicate=false){
 }
 function updateVehicleSpecificFields(){
   const form=document.getElementById('setupForm'),car=getCarById(form.elements.namedItem('carId')?.value);
-  const isFour=String(car?.drive||'').toLowerCase().includes('4');
+  const drive=String(car?.drive||'').toLowerCase();const isFour=/(4wd|4x4)/.test(drive);
   ['frontDiffOil','centerDiff'].forEach(name=>{const label=form.elements.namedItem(name)?.closest('label');if(label)label.classList.toggle('vehicle-field-hidden',!isFour);});
   ['slipper','ballDiff'].forEach(name=>{const label=form.elements.namedItem(name)?.closest('label');if(label)label.classList.toggle('vehicle-field-hidden',isFour);});
   const hint=document.getElementById('vehicleSetupHint');if(hint)hint.textContent=car?`${car.brand||''} ${car.name} · ${car.drive||'architecture non précisée'} · Les champs affichés sont adaptés à cette transmission.`:'Sélectionne une voiture pour adapter les réglages à son architecture.';
@@ -6169,7 +6169,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=62').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=63').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
