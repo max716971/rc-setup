@@ -6056,16 +6056,22 @@ function handleCarCatalogAdd() {
   if (selected === '' || selected == null) { showToast('Choisis d’abord un modèle.'); return; }
   const model = CAR_CATALOG[Number(selected)];
   if (!model) return;
-  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: model.drive, type: model.type, era: model.era, diffCount: inferDifferentialCount(model), photos: [], createdAt: new Date().toISOString() });
+  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: normalizeDriveType(model.drive), type: model.type, era: model.era, diffCount: inferDifferentialCount(model), photos: [], createdAt: new Date().toISOString() });
   saveState(); renderAll();
   document.getElementById('carCatalogModel').value = '';
   showToast(model.name + ' ajouté au garage.');
 }
+function normalizeDriveType(value) {
+  const drive=String(value||'').toLocaleLowerCase('fr').trim();
+  if (/2wd|4x2|propulsion|traction avant/.test(drive)) return '2WD';
+  if (/4wd|4x4/.test(drive)) return '4WD';
+  return drive ? 'Autre' : '';
+}
 function inferDifferentialCount(car) {
-  const drive=String(car?.drive||'').toLocaleLowerCase('fr');
-  if (/2wd|4x2|propulsion|traction avant/.test(drive)) return 1;
+  const drive=normalizeDriveType(car?.drive);
+  if (drive==='2WD') return 1;
   if (/1\s*\/\s*8/.test(String(car?.scale||''))) return 3;
-  if (/4wd|4x4/.test(drive)) return 2;
+  if (drive==='4WD') return 2;
   return 1;
 }
 function getCarDifferentialCount(car) {
@@ -6075,7 +6081,7 @@ function getCarDifferentialCount(car) {
 function openCarEditor(id) {
   const car=getCarById(id);if(!car)return;
   const form=document.getElementById('carForm');editingCarId=id;
-  for(const name of ['name','brand','scale','drive','notes']){const field=form.elements.namedItem(name);if(field)field.value=car[name]||'';}const diffField=form.elements.namedItem('diffCount');if(diffField)diffField.value=car.diffCount?String(car.diffCount):'auto';
+  for(const name of ['name','brand','scale','drive','notes']){const field=form.elements.namedItem(name);if(field)field.value=name==='drive'?normalizeDriveType(car[name]):(car[name]||'');}const diffField=form.elements.namedItem('diffCount');if(diffField)diffField.value=car.diffCount?String(car.diffCount):'auto';
   pendingCarPhotos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
   renderCarPhotoPreviews();
   form.querySelector('h2').textContent='Modifier la voiture';
@@ -6093,7 +6099,7 @@ function handleCarSubmit(event) {
   event.preventDefault();
   const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'diffCount', 'notes']);
   if (!data.name) return;
-  data.diffCount=data.diffCount==='auto'?inferDifferentialCount(data):Math.min(3,Math.max(1,Number(data.diffCount)||inferDifferentialCount(data)));
+  data.drive=normalizeDriveType(data.drive);data.diffCount=data.diffCount==='auto'?inferDifferentialCount(data):Math.min(3,Math.max(1,Number(data.diffCount)||inferDifferentialCount(data)));
   if(editingCarId){
     const car=getCarById(editingCarId);if(!car){showToast('Voiture introuvable.');return;}
     const previous={...car};Object.assign(car,data,{photos:[...pendingCarPhotos],updatedAt:new Date().toISOString()});
