@@ -218,15 +218,24 @@
 
     // Ressorts Team Associated — couleur, taux en lb/in, position et diamètre clairement affichés.
     ...[
-      ['Avant','BRN','Marron','2.85'],['Avant','BLK','Noir','3.00'],['Avant','GRN','Vert','3.15'],['Avant','WHT','Blanc','3.30'],['Avant','GRY','Gris','3.45'],['Avant','BLU','Bleu','3.60'],['Avant','YLW','Jaune','3.75'],['Avant','RED','Rouge','3.90'],['Avant','ORN','Orange','4.05'],['Avant','PRL','Violet nacré','4.20'],
-      ['Arrière','BLK','Noir','1.90'],['Arrière','GRN','Vert','2.00'],['Arrière','WHT','Blanc','2.10'],['Arrière','GRY','Gris','2.20'],['Arrière','BLU','Bleu','2.30'],['Arrière','YLW','Jaune','2.40']
-    ].map(([position,code,color,rate]) => ({
+      ['Avant','91325','BRN','Marron','2.85'],['Avant','91326','BLK','Noir','3.00'],['Avant','91327','GRN','Vert','3.15'],['Avant','91328','WHT','Blanc','3.30'],['Avant','91329','GRY','Gris','3.45'],['Avant','91330','BLU','Bleu','3.60'],['Avant','91331','YLW','Jaune','3.75'],['Avant','91332','RED','Rouge','3.90'],['Avant','91333','ORN','Orange','4.05'],['Avant','91334','PRL','Violet nacré','4.20'],
+      ['Arrière','91335','BLK','Noir','1.90'],['Arrière','91336','GRN','Vert','2.00'],['Arrière','91337','WHT','Blanc','2.10'],['Arrière','91338','GRY','Gris','2.20'],['Arrière','91339','BLU','Bleu','2.30'],['Arrière','91340','YLW','Jaune','2.40']
+    ].map(([position,reference,code,color,rate]) => ({
       brand:'Team Associated', category:'Ressort',
       name:`RC10B4.2FT — ${position} — ${color} (${rate} lb/in)`,
-      reference:`Code couleur ${code} — ${rate} lb/in`,
+      reference,
       compatibility:`RC10B4.2FT — ressort 12 mm — ${position.toLowerCase()}`,
-      detail:`Ressort ${position.toLowerCase()} 12 mm. Couleur : ${color} (code ${code}). Dureté : ${rate} lb/in.`,
-      url:'https://www.associatedelectrics.com/teamassociated/'
+      detail:`Ressort ${position.toLowerCase()} 12 mm. Couleur : ${color} (code ${code}). Dureté : ${rate} lb/in. Référence fabricant : ${reference}.`,
+      url:'https://apps.associatedelectrics.com/aereferencelibrary/manuals/manual_B4.2RS.pdf'
+    })),
+    ...[
+      ['91341','Avant','Soft'],['91342','Avant','Medium'],['91343','Avant','Hard'],
+      ['91344','Arrière','Soft'],['91345','Arrière','Medium']
+    ].map(([reference,position,grade])=>({
+      brand:'Team Associated',category:'Ressort',name:'12 mm Big Bore — kit '+position.toLowerCase()+' '+grade,
+      reference,compatibility:'Amortisseurs Big Bore 12 mm — '+position.toLowerCase(),
+      detail:'Kit de ressorts '+grade.toLowerCase()+' Team Associated pour amortisseurs Big Bore 12 mm.',
+      url:'https://apps.associatedelectrics.com/aereferencelibrary/manuals/manual_B4.2RS.pdf'
     })),
     ...[
       ['Avant','91830','Vert','3.1'],['Avant','91831','Blanc','3.4'],['Avant','91832','Gris','3.6'],['Avant','91833','Bleu','3.9'],['Avant','91834','Jaune','4.3'],['Avant','91835','Rouge','4.6'],['Avant','91836','Orange','5.1'],
@@ -250,35 +259,7 @@
     })),
     
 
-    // Marques complémentaires — pneus, inserts, huiles, ressorts et électronique.
-    ...[
-      ['Shock Wave Evo M4','VP-416','Arrière 2WD/4WD','M4'],
-      ['Shock Wave Evo M4','VP-316','Avant 4WD','M4'],
-      ['Gripz Evo M5','VP-413','Arrière 2WD/4WD','M5'],
-      ['Frontier Evo M5','VP-412','Arrière 2WD/4WD','M5'],
-      ['Cactus Evo M5','VP-408U','Arrière 2WD/4WD','M5'],
-      ['Turbo Trax Evo M5','VP-404','Arrière 2WD/4WD','M5'],
-      ['Cactus Evo M3','VP-208U','Avant 2WD','M3']
-    ].map(([name,reference,position,compound]) => ({
-      brand:'VP-Pro', category:'Pneus / roues', name:name+' — '+position+' — '+compound,
-      reference, compatibility:position, detail:'Pneu buggy TT 1/10 VP-Pro. Choisir la version avec jante ou sans jante selon la référence complète.',
-      url:'https://www.vp-racing.com/products/vppro/tires/1-10-buggy'
-    })),
-    ...[
-      ['Carpet','MX-FC001','Avant 2WD','Super Soft'],['Carpet','MX-FC002','Avant 2WD','Soft'],['Carpet','MX-FC003','Avant 2WD','Medium'],
-      ['Carpet','MX-RC001','Arrière 2WD/4WD','Super Soft'],['Carpet','MX-RC002','Arrière 2WD/4WD','Soft'],['Carpet','MX-RC003','Arrière 2WD/4WD','Medium'],
-      ['Dirt Clay','MX-FD001','Avant 2WD','Super Soft'],['Dirt Clay','MX-FD002','Avant 2WD','Soft'],['Dirt Clay','MX-FD003','Avant 2WD','Medium'],
-      ['Dirt Clay','MX-FD004','Avant 4WD','Super Soft'],['Dirt Clay','MX-FD005','Avant 4WD','Soft'],['Dirt Clay','MX-FD006','Avant 4WD','Medium'],
-      ['Dirt Clay','MX-RD001','Arrière 2WD/4WD','Super Soft'],['Dirt Clay','MX-RD002','Arrière 2WD/4WD','Soft'],['Dirt Clay','MX-RD003','Arrière 2WD/4WD','Medium']
-    ].map(([surface,reference,position,compound]) => ({
-      brand:'Matrix Racing', category:'Pneus / roues',
-      name:'Pneu buggy 1/10 '+surface+' — '+position+' — '+compound,
-      reference, compatibility:position,
-      detail:'Pneu Matrix Racing TT 1/10. Version avec insert selon les références catalogue.',
-      url:'https://www.mkracing.eu/matrix-racing-tires-fr-6673/'
-    })),
-    { brand:'Matrix Racing', category:'Insert pneu', name:'Insert closed-cell Matrix Dirt avant 1/10', reference:'MX-IN002', compatibility:'Avant buggy 1/10', detail:'Insert mousse closed-cell Matrix pour pneus Dirt buggy 1/10.', url:'https://www.mkracing.eu/matrix-racing-tires-fr-6673/' },
-    { brand:'Matrix Racing', category:'Insert pneu', name:'Insert closed-cell Matrix Dirt arrière 1/10', reference:'MX-IN001', compatibility:'Arrière buggy 1/10', detail:'Insert mousse closed-cell Matrix pour pneus Dirt buggy 1/10.', url:'https://www.mkracing.eu/matrix-racing-tires-fr-6673/' },
+    // Les variantes VP-Pro détaillées sont listées plus bas avec leurs SKU complets.
 
     // Huiles Yokomo — viscosités constructeur exprimées en indice Yokomo, pas en CST.
     ...['475','575','600'].map(value => ({
@@ -289,8 +270,8 @@
     })),
     // Ressorts Yokomo TT 1/10 — références de gammes RPU/Yatabe ; compatibilité à contrôler selon châssis.
     ...[
-      ['Avant','A750','Orange'],['Avant','A775','Green'],['Avant','A800','Pink'],['Avant','A850','Red'],['Avant','A875','Yellow'],['Avant','A900','Gold'],
-      ['Arrière','YOKYS-A1200','Green'],['Arrière','YOKYS-A1175','Orange']
+      ['Avant','YS-A750','Orange'],['Avant','YS-A775','Green'],['Avant','YS-A800','Pink'],['Avant','YS-A850','Red'],['Avant','YS-A875','Yellow'],['Avant','YS-A900','Gold'],
+      ['Arrière','YS-A1200','Green'],['Arrière','YS-A1175','Orange']
     ].map(([position,reference,colour]) => ({
       brand:'Yokomo', category:'Ressort', name:'Ressort '+position+' TT 1/10 — '+colour+' — taux non communiqué',
       reference, compatibility:'Buggy 1/10 Yokomo — vérifier longueur et diamètre',
@@ -307,15 +288,10 @@
       detail:'Moteur brushless sensored 540 compétition 1/10. Vérifier règlement de catégorie et compatibilité ESC.',
       url:'https://apps.associatedelectrics.com/aereferencelibrary/pages/reedy_motors.html'
     })),
-    { brand:'LRP', category:'Moteur', name:'Dynamic10 BL 3800 kV', reference:'53430', detail:'Moteur brushless 540/550 1/10, fonctionnement sensored/sensorless.', url:'https://www.lrp.cc/en/product/53430/' },
-    { brand:'LRP', category:'Moteur', name:'Dynamic10L BL 4700 kV', reference:'53550', detail:'Moteur brushless 1/10 format 540/550, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53550/' },
 
     // Variateurs 1/10.
     { brand:'Reedy', category:'Variateur (ESC)', name:'Blackbox 610R Competition', reference:'27016', detail:'Variateur compétition 1/10, 160 A, compatible moteurs brushless sensored.', url:'https://www.cml-racing.com/fr/369-1-10' },
     { brand:'Reedy', category:'Programmation', name:'Blackbox ESC Programmer 2', reference:'27027', detail:'Boîtier de programmation pour ESC Reedy Blackbox compatibles.', url:'https://www.cml-racing.com/fr/369-1-10' },
-    { brand:'Tekin', category:'Variateur (ESC)', name:'RS GEN3 1/10', reference:'TT1156', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
-    { brand:'Tekin', category:'Variateur (ESC)', name:'RS SPEC GEN3 1/10', reference:'TT1157', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
-    { brand:'Tekin', category:'Variateur (ESC)', name:'RSX PRO 1/10', reference:'TT1159', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
     // Servos de direction.
     { brand:'Sanwa', category:'Servo', name:'PGS-CL II', reference:'107A54514B', detail:'Servo programmable low-profile, compatible CODE10 dont MT-5 ; 16,6 kg·cm à 7,4 V.', url:'https://www.sanwa-denshi.co.jp/rc/car/servo/pgs-cl%E2%85%A1.html' },
     { brand:'Futaba', category:'Servo', name:'S9470SV', reference:'01000837', detail:'Servo numérique surface ; vérifier dimensions, tension et mode de transmission requis.', url:'https://futaba.fr/5-servos' },
