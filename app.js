@@ -1,16 +1,19 @@
 const STORAGE_KEY = 'rc-setup-v1';
+const MAX_SETUP_PHOTOS = 4;
+const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
 const SETUP_FIELDS = [
-  ['sessionDate', 'Date'], ['temperature', 'Température'], ['weather', 'Météo / adhérence'], ['goal', 'Objectif / ressenti'],
-  ['frontTires', 'Pneus avant'], ['rearTires', 'Pneus arrière'], ['inserts', 'Inserts'], ['tireTreatment', 'Traitement pneus'], ['wheels', 'Jantes / largeur'], ['tireCondition', 'État des pneus'],
-  ['frontShocks', 'Amortisseurs avant'], ['rearShocks', 'Amortisseurs arrière'], ['springs', 'Ressorts'], ['rideHeight', 'Hauteur de caisse'], ['camber', 'Carrossage'], ['toe', 'Pincement / ouverture'], ['casterAckermann', 'Chasse / Ackermann'], ['antiRollBars', 'Barres antiroulis'], ['droop', 'Débattement / droop'], ['stopsDiaphragms', 'Butées / membranes'],
-  ['gearing', 'Rapport / pignon-couronne'], ['differentials', 'Différentiels avant / arrière'], ['centerDiff', 'Différentiel central'], ['motor', 'Moteur / timing'], ['esc', 'ESC / réglages'], ['servoSteering', 'Servo / direction'], ['brakes', 'Frein'], ['battery', 'Batterie'], ['radio', 'Réglages radio / autres'],
-  ['lapTime', 'Meilleur temps au tour'], ['rating', 'Ressenti général'], ['notes', 'Notes & prochaines modifications']
+  'sessionDate', 'temperature', 'weather', 'goal',
+  'frontTires', 'rearTires', 'inserts', 'tireTreatment', 'wheels', 'tireCondition',
+  'frontShocks', 'rearShocks', 'springs', 'rideHeight', 'camber', 'toe', 'casterAckermann', 'antiRollBars', 'droop', 'stopsDiaphragms',
+  'gearing', 'differentials', 'centerDiff', 'motor', 'esc', 'servoSteering', 'brakes', 'battery', 'radio',
+  'lapTime', 'rating', 'notes'
 ];
 
 const state = loadState();
 const installButton = document.getElementById('installButton');
 let deferredPrompt = null;
 let toastTimer;
+let pendingPhotos = [];
 const emptyStateTemplate = document.getElementById('emptyStateTemplate');
 
 function loadState() {
@@ -30,39 +33,32 @@ function loadState() {
 function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
   } catch (error) {
     console.error('Impossible de sauvegarder les données locales', error);
-    showToast('Stockage indisponible. Exporte une sauvegarde.');
+    showToast('Stockage plein. Retire des photos ou exporte tes données.');
+    return false;
   }
 }
 
-function uid(prefix) {
-  return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
-}
-
+function uid(prefix) { return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`; }
 function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, (character) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-  })[character]);
+  return String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[character]);
 }
-
 function showToast(message) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
   toast.classList.add('visible');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('visible'), 2600);
+  toastTimer = setTimeout(() => toast.classList.remove('visible'), 3000);
 }
-
 function getCarById(id) { return state.cars.find((car) => car.id === id); }
 function getTrackById(id) { return state.tracks.find((track) => track.id === id); }
-
 function setView(viewName) {
   document.querySelectorAll('.nav-item').forEach((button) => button.classList.toggle('active', button.dataset.view === viewName));
   document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view.id === `${viewName}View`));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 function emptyState() { return emptyStateTemplate.content.cloneNode(true); }
 
 function renderDashboard() {
@@ -119,7 +115,7 @@ function renderSetups() {
     const track = getTrackById(setup.trackId);
     const item = document.createElement('article');
     item.className = 'list-item setup-card';
-    item.innerHTML = `<div class="setup-card-top"><span class="setup-tag">SETUP</span><span class="setup-date">${escapeHtml(setup.sessionDate || formatDate(setup.createdAt))}</span></div><div class="item-main"><h3>${escapeHtml(car?.name || 'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name || 'Piste inconnue')}</h3><p class="item-sub">${escapeHtml(setup.weather || 'Conditions non renseignées')} · ${escapeHtml(setup.temperature || 'Température —')}</p></div><div class="setup-chips">${setup.frontTires || setup.rearTires ? `<span>Pneus · ${escapeHtml(setup.frontTires || '—')} / ${escapeHtml(setup.rearTires || '—')}</span>` : ''}${setup.lapTime ? `<span>⏱ ${escapeHtml(setup.lapTime)}</span>` : ''}${setup.rating ? `<span>${escapeHtml(setup.rating)}</span>` : ''}</div><div class="item-actions"><button class="button button-soft view-setup" data-id="${escapeHtml(setup.id)}" type="button">Voir les détails</button><button class="button button-quiet danger-action delete-setup" data-id="${escapeHtml(setup.id)}" type="button">Supprimer</button></div>`;
+    item.innerHTML = `<div class="setup-card-top"><span class="setup-tag">SETUP</span><span class="setup-date">${escapeHtml(setup.sessionDate || formatDate(setup.createdAt))}</span></div><div class="item-main"><h3>${escapeHtml(car?.name || 'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name || 'Piste inconnue')}</h3><p class="item-sub">${escapeHtml(setup.weather || 'Conditions non renseignées')} · ${escapeHtml(setup.temperature || 'Température —')}</p></div>${setup.photos?.length ? `<div class="setup-photo-strip">${setup.photos.slice(0, 3).map((photo) => `<img src="${photo}" alt="Photo du setup" loading="lazy">`).join('')}<span>${setup.photos.length} photo${setup.photos.length > 1 ? 's' : ''}</span></div>` : ''}<div class="setup-chips">${setup.frontTires || setup.rearTires ? `<span>Pneus · ${escapeHtml(setup.frontTires || '—')} / ${escapeHtml(setup.rearTires || '—')}</span>` : ''}${setup.lapTime ? `<span>⏱ ${escapeHtml(setup.lapTime)}</span>` : ''}${setup.rating ? `<span>${escapeHtml(setup.rating)}</span>` : ''}</div><div class="item-actions"><button class="button button-soft view-setup" data-id="${escapeHtml(setup.id)}" type="button">Voir les détails</button><button class="button button-quiet danger-action delete-setup" data-id="${escapeHtml(setup.id)}" type="button">Supprimer</button></div>`;
     container.append(item);
   });
   container.querySelectorAll('.view-setup').forEach((button) => button.addEventListener('click', () => showSetup(button.dataset.id)));
@@ -132,7 +128,6 @@ function formatDate(value) {
   if (Number.isNaN(date.getTime())) return 'Date non précisée';
   return new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }).format(date);
 }
-
 function populateSelects() {
   const carSelect = document.querySelector('select[name="carId"]');
   const trackSelect = document.querySelector('select[name="trackId"]');
@@ -143,9 +138,7 @@ function populateSelects() {
   if (state.cars.some((car) => car.id === selectedCar)) carSelect.value = selectedCar;
   if (state.tracks.some((track) => track.id === selectedTrack)) trackSelect.value = selectedTrack;
 }
-
 function renderAll() { renderDashboard(); renderCars(); renderTracks(); renderSetups(); populateSelects(); }
-
 function formValues(form, names) {
   const data = new FormData(form);
   return Object.fromEntries(names.map((name) => [name, String(data.get(name) || '').trim()]));
@@ -158,7 +151,6 @@ function handleCarSubmit(event) {
   state.cars.unshift({ id: uid('car'), ...data, createdAt: new Date().toISOString() });
   saveState(); renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Voiture ajoutée au garage.');
 }
-
 function handleTrackSubmit(event) {
   event.preventDefault();
   const data = formValues(event.target, ['name', 'surface', 'type', 'location', 'details']);
@@ -167,13 +159,78 @@ function handleTrackSubmit(event) {
   saveState(); renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Piste ajoutée à ton carnet.');
 }
 
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(new Error('Lecture de la photo impossible'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function compressPhoto(file) {
+  if (!file.type.startsWith('image/')) throw new Error('Choisis uniquement des fichiers image.');
+  if (file.size > MAX_PHOTO_BYTES) throw new Error('Chaque photo doit faire moins de 12 Mo.');
+
+  let bitmap;
+  try {
+    bitmap = await createImageBitmap(file);
+    const maxSide = 1280;
+    const ratio = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(bitmap.width * ratio));
+    canvas.height = Math.max(1, Math.round(bitmap.height * ratio));
+    const context = canvas.getContext('2d');
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close?.();
+    return canvas.toDataURL('image/jpeg', 0.72);
+  } catch (error) {
+    if (bitmap) bitmap.close?.();
+    return readFileAsDataURL(file);
+  }
+}
+
+function renderPhotoPreviews() {
+  const container = document.getElementById('setupPhotoPreview');
+  container.replaceChildren();
+  pendingPhotos.forEach((photo, index) => {
+    const tile = document.createElement('div');
+    tile.className = 'photo-preview-tile';
+    tile.innerHTML = `<img src="${photo}" alt="Aperçu de la photo ${index + 1}"><button type="button" class="photo-remove" aria-label="Retirer la photo ${index + 1}">×</button>`;
+    tile.querySelector('.photo-remove').addEventListener('click', () => {
+      pendingPhotos.splice(index, 1);
+      renderPhotoPreviews();
+    });
+    container.append(tile);
+  });
+}
+
+async function handlePhotoSelection(event) {
+  const files = Array.from(event.target.files || []);
+  event.target.value = '';
+  const available = MAX_SETUP_PHOTOS - pendingPhotos.length;
+  if (available <= 0) { showToast(`Maximum ${MAX_SETUP_PHOTOS} photos par setup.`); return; }
+  if (files.length > available) showToast(`Jusqu’à ${MAX_SETUP_PHOTOS} photos : seules les premières pourront être ajoutées.`);
+  for (const file of files.slice(0, available)) {
+    try {
+      pendingPhotos.push(await compressPhoto(file));
+      renderPhotoPreviews();
+    } catch (error) {
+      showToast(error.message || 'Impossible de charger cette photo.');
+    }
+  }
+}
+
 function handleSetupSubmit(event) {
   event.preventDefault();
-  const data = formValues(event.target, ['carId', 'trackId', ...SETUP_FIELDS.map(([key]) => key)]);
+  const data = formValues(event.target, ['carId', 'trackId', ...SETUP_FIELDS]);
   if (!data.carId || !data.trackId) { showToast('Choisis une voiture et une piste.'); return; }
   const now = new Date().toISOString();
-  state.setups.unshift({ id: uid('setup'), ...data, createdAt: now, updatedAt: now });
-  saveState(); renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Setup enregistré. Bon run !');
+  state.setups.unshift({ id: uid('setup'), ...data, photos: [...pendingPhotos], createdAt: now, updatedAt: now });
+  if (!saveState()) { state.setups.shift(); return; }
+  pendingPhotos = [];
+  renderPhotoPreviews();
+  renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Setup enregistré. Bon run !');
 }
 
 function removeCar(id) {
@@ -183,7 +240,6 @@ function removeCar(id) {
   state.setups = state.setups.filter((setup) => setup.carId !== id);
   saveState(); renderAll(); showToast('Voiture et setups associés supprimés.');
 }
-
 function removeTrack(id) {
   const track = getTrackById(id);
   if (!track || !confirm(`Supprimer « ${track.name} » et les setups associés ?`)) return;
@@ -191,7 +247,6 @@ function removeTrack(id) {
   state.setups = state.setups.filter((setup) => setup.trackId !== id);
   saveState(); renderAll(); showToast('Piste et setups associés supprimés.');
 }
-
 function removeSetup(id) {
   if (!confirm('Supprimer ce setup ?')) return;
   state.setups = state.setups.filter((setup) => setup.id !== id);
@@ -211,7 +266,8 @@ function showSetup(id) {
     ['Bilan de session', [['Meilleur temps au tour', setup.lapTime], ['Ressenti général', setup.rating], ['Notes & prochaines modifications', setup.notes]]]
   ];
   const content = document.getElementById('setupDetails');
-  content.innerHTML = `<span class="kicker">FICHE DE RÉGLAGES</span><h2>${escapeHtml(car?.name || 'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name || 'Piste inconnue')}</h2><p class="dialog-subtitle">${escapeHtml(track?.surface || '')} ${track?.surface && setup.weather ? '·' : ''} ${escapeHtml(setup.weather || '')} ${setup.temperature ? `· ${escapeHtml(setup.temperature)}` : ''}</p>` + groups.map(([title, fields]) => {
+  const photoSection = setup.photos?.length ? `<section class="detail-group"><h3>Photos du setup</h3><div class="setup-gallery">${setup.photos.map((photo, index) => `<a href="${photo}" target="_blank" rel="noopener"><img src="${photo}" alt="Photo ${index + 1} du setup" loading="lazy"></a>`).join('')}</div></section>` : '';
+  content.innerHTML = `<span class="kicker">FICHE DE RÉGLAGES</span><h2>${escapeHtml(car?.name || 'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name || 'Piste inconnue')}</h2><p class="dialog-subtitle">${escapeHtml(track?.surface || '')} ${track?.surface && setup.weather ? '·' : ''} ${escapeHtml(setup.weather || '')} ${setup.temperature ? `· ${escapeHtml(setup.temperature)}` : ''}</p>` + photoSection + groups.map(([title, fields]) => {
     const filled = fields.filter(([, value]) => value);
     if (!filled.length) return '';
     return `<section class="detail-group"><h3>${escapeHtml(title)}</h3><dl>${filled.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></section>`;
@@ -220,14 +276,13 @@ function showSetup(id) {
 }
 
 function exportJson() {
-  const blob = new Blob([JSON.stringify({ ...state, exportedAt: new Date().toISOString(), version: 2 }, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify({ ...state, exportedAt: new Date().toISOString(), version: 3 }, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url; link.download = `rc-setup-${new Date().toISOString().slice(0, 10)}.json`;
   document.body.append(link); link.click(); link.remove(); URL.revokeObjectURL(url);
-  showToast('Sauvegarde JSON exportée.');
+  showToast('Sauvegarde JSON exportée (avec les photos).');
 }
-
 function importJson(file) {
   if (!file) return;
   const reader = new FileReader();
@@ -236,19 +291,17 @@ function importJson(file) {
       const parsed = JSON.parse(String(event.target?.result || ''));
       if (!parsed || !Array.isArray(parsed.cars) || !Array.isArray(parsed.tracks) || !Array.isArray(parsed.setups)) throw new Error('Format invalide');
       if (!confirm('L’import remplacera les données présentes sur cet appareil. Continuer ?')) return;
-      state.cars = parsed.cars; state.tracks = parsed.tracks; state.setups = parsed.setups;
-      saveState(); renderAll(); showToast('Sauvegarde importée.');
+      state.cars = parsed.cars; state.tracks = parsed.tracks; state.setups = parsed.setups.map((setup) => ({ ...setup, photos: Array.isArray(setup.photos) ? setup.photos : [] }));
+      if (saveState()) { renderAll(); showToast('Sauvegarde importée.'); }
     } catch (error) {
       console.error(error); showToast('Fichier JSON invalide ou incompatible.');
     }
   };
   reader.readAsText(file);
 }
-
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch((error) => console.error('Échec du service worker :', error)));
 }
-
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
   installButton.addEventListener('click', async () => {
@@ -269,9 +322,13 @@ document.querySelectorAll('[data-go-view]').forEach((button) => button.addEventL
 document.getElementById('carForm').addEventListener('submit', handleCarSubmit);
 document.getElementById('trackForm').addEventListener('submit', handleTrackSubmit);
 document.getElementById('setupForm').addEventListener('submit', handleSetupSubmit);
+document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
 document.getElementById('exportButton').addEventListener('click', exportJson);
 document.getElementById('importInput').addEventListener('change', (event) => { importJson(event.target.files?.[0]); event.target.value = ''; });
-document.querySelectorAll('form').forEach((form) => form.addEventListener('reset', () => setTimeout(() => form.classList.add('hidden'), 0)));
+document.querySelectorAll('form').forEach((form) => form.addEventListener('reset', () => setTimeout(() => {
+  form.classList.add('hidden');
+  if (form.id === 'setupForm') { pendingPhotos = []; renderPhotoPreviews(); }
+}, 0)));
 document.getElementById('setupDialog').addEventListener('click', (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
 
 renderAll();
