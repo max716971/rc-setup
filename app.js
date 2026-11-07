@@ -6657,7 +6657,23 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=92').catch((error) => console.error('Échec du service worker :', error)));
+  if (!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', async () => {
+    const hadController = Boolean(navigator.serviceWorker.controller);
+    let reloading = false;
+    const reloadAfterUpdate = () => {
+      if (!hadController || reloading) return;
+      reloading = true;
+      window.location.reload();
+    };
+    if (hadController) navigator.serviceWorker.addEventListener('controllerchange', reloadAfterUpdate, { once: true });
+    try {
+      const registration = await navigator.serviceWorker.register('./sw.js?v=93');
+      await registration.update();
+    } catch (error) {
+      console.error('Échec de la mise à jour du service worker :', error);
+    }
+  });
 }
 async function checkForAppUpdate() {
   const button = document.getElementById('checkAppUpdate');
