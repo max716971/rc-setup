@@ -844,8 +844,8 @@
     return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
   }
   const MATERIAL_BRAND_LOGOS = {
-    'Fan RC': 'https://www.gofasthobbies.com/cdn/shop/collections/Fan_RC.jpg?v=1706054433&width=1500',
-    'X-Factory': 'https://www.teamaj.jp/images/x-6kit.jpg',
+    'Fan RC': './assets/fan-rc-logo.svg',
+    'X-Factory': './assets/x-factory-logo.svg',
     'Kyosho': 'https://cdn.brandfetch.io/idXDBNlT9W/w/568/h/133/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1792896373403',
     'PR Racing': 'https://i0.wp.com/circusrc.com/CRC/wp-content/uploads/2019/09/PR-Racing.jpg?fit=1024%2C512&ssl=1',
     'Mugen Seiki': 'https://www.autocollant-tuning.com/3061-product_main/sticker-et-autocollant-mugen-seiki.jpg',
