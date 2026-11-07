@@ -216,12 +216,39 @@
     { brand: 'Schumacher', category: 'Insert pneu', name: 'Insert mousse buggy 1/10', reference: 'Modèle à préciser', detail: 'Choisir la densité et la forme selon le pneu Schumacher utilisé.', url: 'https://www.racing-cars.com/wheels-tyres' },
     { brand: '6MIK', category: 'Insert pneu', name: 'Insert pneu buggy 1/10', reference: 'Modèle à préciser', detail: 'Choisir la densité et la forme selon le pneu 6MIK utilisé.', url: 'https://www.6mik-racing.com/' },
 
-    // Ressorts Team Associated 12 mm : taux connus pour RC10B4.2FT.
-    ...[['BRN','2.85'],['BLK','3.00'],['GRN','3.15'],['WHT','3.30'],['GRY','3.45'],['BLU','3.60'],['YLW','3.75'],['RED','3.90'],['ORN','4.05'],['PRL','4.20']].map(([code,rate]) => ({ brand: 'Team Associated', category: 'Ressort', name: `Ressort avant 12 mm RC10B4.2FT — ${code}`, reference: `${rate}`, detail: `Ressort avant 12 mm ; code couleur ${code}, taux ${rate} (unité selon nomenclature du kit).`, url: 'https://www.associatedelectrics.com/teamassociated/' })),
-    ...[['BLK','1.90'],['GRN','2.00'],['WHT','2.10'],['GRY','2.20'],['BLU','2.30'],['YLW','2.40']].map(([code,rate]) => ({ brand: 'Team Associated', category: 'Ressort', name: `Ressort arrière 12 mm RC10B4.2FT — ${code}`, reference: `${rate}`, detail: `Ressort arrière 12 mm ; code couleur ${code}, taux ${rate} (unité selon nomenclature du kit).`, url: 'https://www.associatedelectrics.com/teamassociated/' })),
-    ...Array.from({length:12}, (_,i) => ({ brand: 'Team Associated', category: 'Ressort', name: 'Ressort RC10B6.2 — réf. ' + (91830+i), reference: String(91830+i), detail: 'Référence reprise du tableau précédent. Couleur/taux à confirmer avant utilisation ; ressorts 12 mm.', url: 'https://www.associatedelectrics.com/teamassociated/' })),
-    ...Array.from({length:12}, (_,i) => ({ brand: 'Team Associated', category: 'Ressort', name: 'Ressort RC10B7 — réf. ' + (91940+i), reference: String(91940+i), detail: 'Référence reprise du tableau précédent. Couleur/taux/longueur à confirmer avant utilisation ; ressorts 13 mm.', url: 'https://www.associatedelectrics.com/teamassociated/' })),
-
+    // Ressorts Team Associated — couleur, taux en lb/in, position et diamètre clairement affichés.
+    ...[
+      ['Avant','BRN','Marron','2.85'],['Avant','BLK','Noir','3.00'],['Avant','GRN','Vert','3.15'],['Avant','WHT','Blanc','3.30'],['Avant','GRY','Gris','3.45'],['Avant','BLU','Bleu','3.60'],['Avant','YLW','Jaune','3.75'],['Avant','RED','Rouge','3.90'],['Avant','ORN','Orange','4.05'],['Avant','PRL','Violet nacré','4.20'],
+      ['Arrière','BLK','Noir','1.90'],['Arrière','GRN','Vert','2.00'],['Arrière','WHT','Blanc','2.10'],['Arrière','GRY','Gris','2.20'],['Arrière','BLU','Bleu','2.30'],['Arrière','YLW','Jaune','2.40']
+    ].map(([position,code,color,rate]) => ({
+      brand:'Team Associated', category:'Ressort',
+      name:`RC10B4.2FT — ${position} — ${color} (${rate} lb/in)`,
+      reference:`Code couleur ${code} — ${rate} lb/in`,
+      compatibility:`RC10B4.2FT — ressort 12 mm — ${position.toLowerCase()}`,
+      detail:`Ressort ${position.toLowerCase()} 12 mm. Couleur : ${color} (code ${code}). Dureté : ${rate} lb/in.`,
+      url:'https://www.associatedelectrics.com/teamassociated/'
+    })),
+    ...[
+      ['Avant','91830','Vert','3.10'],['Avant','91831','Blanc','3.40'],['Avant','91832','Gris','3.61'],['Avant','91833','Bleu','3.91'],['Avant','91834','Jaune','4.30'],['Avant','91835','Rouge','4.60'],['Avant','91836','Orange','5.10'],
+      ['Arrière','91837','Vert','1.81'],['Arrière','91838','Blanc','1.91'],['Arrière','91839','Gris','2.00'],['Arrière','91840','Bleu','2.20'],['Arrière','91841','Jaune','2.30']
+    ].map(([position,reference,color,rate]) => ({
+      brand:'Team Associated', category:'Ressort',
+      name:`RC10B6.2 — ${position} — ${color} (${rate} lb/in)`,
+      reference, compatibility:`RC10B6.2 — ressort 12 mm — ${position.toLowerCase()}`,
+      detail:`Ressort ${position.toLowerCase()} 12 mm. Couleur : ${color}. Dureté : ${rate} lb/in. Référence fabricant : ${reference}.`,
+      url:'https://www.sodialed.com/rc-setup-tips/team-associated-rc10b6-2-manual'
+    })),
+    ...[
+      ['Avant','91940','Blanc','3.3'],['Avant','91941','Gris','3.4'],['Avant','91942','Bleu','3.6'],['Avant','91943','Jaune','3.8'],['Avant','91944','Rouge','4.0'],['Avant','91945','Orange','4.3'],['Avant','91946','Violet','4.6'],
+      ['Arrière','91947','Vert','1.8'],['Arrière','91948','Blanc','1.9'],['Arrière','91949','Gris','2.0'],['Arrière','91950','Bleu','2.2'],['Arrière','91951','Jaune','2.3']
+    ].map(([position,reference,color,rate]) => ({
+      brand:'Team Associated', category:'Ressort',
+      name:`RC10B7 — ${position} — ${color} (${rate} lb/in)`,
+      reference, compatibility:`RC10B7 — ressort 13 mm — ${position.toLowerCase()}`,
+      detail:`Ressort ${position.toLowerCase()} 13 mm. Couleur : ${color}. Dureté : ${rate} lb/in. Référence fabricant : ${reference}.`,
+      url:'https://hobbydex.com/rc/platforms/team-associated/rc10b7/parts/shock-spring/'
+    })),
+    
     { brand: 'Team Associated', category: 'Huile amortisseur', name: 'Factory Team Shock Oil 35 wt', reference: '5435', detail: 'Exemple ; confirmer compatibilité et catalogue actuel.', url: 'https://www.associatedelectrics.com/teamassociated/parts/fluids/' },
 
     // Marques complémentaires — pneus, inserts, huiles, ressorts et électronique.
