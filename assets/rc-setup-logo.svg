@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#152b48"/><stop offset="1" stop-color="#080e19"/></linearGradient>
+ <linearGradient id="silver" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".48" stop-color="#aebbc8"/><stop offset="1" stop-color="#657386"/></linearGradient>
+ <linearGradient id="red" x2="0" y2="1"><stop stop-color="#ff4b52"/><stop offset="1" stop-color="#b51220"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<rect x="9" y="9" width="494" height="494" rx="76" fill="#02060c"/>
+<rect x="14" y="14" width="484" height="484" rx="70" fill="url(#bg)" stroke="url(#silver)" stroke-width="7"/>
+<rect x="20" y="20" width="472" height="472" rx="64" fill="none" stroke="#d7192d" stroke-width="6"/>
+<path d="M112 170 A145 145 0 0 1 400 170" fill="none" stroke="#263e5b" stroke-width="20" stroke-linecap="round"/>
+<path d="M112 170 A145 145 0 0 1 350 75" fill="none" stroke="url(#silver)" stroke-width="17" stroke-linecap="round"/>
+<path d="M350 75 A145 145 0 0 1 400 170" fill="none" stroke="url(#red)" stroke-width="17" stroke-linecap="round"/>
+<path d="M256 170 L355 75" stroke="#ef2938" stroke-width="13" stroke-linecap="round"/>
+<g transform="translate(58 155)">
+ <ellipse cx="185" cy="137" rx="160" ry="22" fill="#000" opacity=".55" filter="url(#shadow)"/>
+ <path d="M20 105 L52 55 Q65 36 94 34 L205 34 Q229 34 248 52 L292 91 L316 100 L320 126 L300 141 L35 141 L12 126Z" fill="#101b2a" stroke="url(#silver)" stroke-width="7"/>
+ <path d="M88 39 L195 39 Q213 39 230 57 L253 87 L67 87Z" fill="#172d47" stroke="#b9c7d5" stroke-width="5"/>
+ <path d="M99 44 L145 44 L145 82 L75 82Z" fill="#263f5c"/>
+ <path d="M153 44 L193 44 Q209 45 224 65 L239 82 L153 82Z" fill="#263f5c"/>
+ <path d="M28 105 L68 92 L256 92 L298 106 L286 119 L40 119Z" fill="url(#red)"/>
+ <path d="M4 53 L-8 41 L-2 27 L44 31 L57 51 L42 59Z" fill="#dce4ec" stroke="#718095" stroke-width="4"/>
+ <path d="M271 54 L308 47 L334 55 L326 69 L292 72Z" fill="#dce4ec" stroke="#718095" stroke-width="4"/>
+ <g fill="#080d15" stroke="url(#silver)" stroke-width="7">
+  <circle cx="63" cy="130" r="34"/><circle cx="265" cy="130" r="34"/>
+ </g>
+ <g fill="#aebbc8"><circle cx="63" cy="130" r="12"/><circle cx="265" cy="130" r="12"/></g>
+ <path d="M76 92 L61 112 M243 91 L263 112" stroke="#d8e0e8" stroke-width="8" stroke-linecap="round"/>
+ <path d="M96 92 L82 120 M225 92 L245 120" stroke="#ef2938" stroke-width="6" stroke-linecap="round"/>
+</g>
+<g transform="translate(367 180)" fill="none" stroke="#dbe3ec" stroke-width="9" stroke-linejoin="round">
+ <path d="M0 18 Q0 4 16 4 H91 Q106 4 106 18 V116 Q106 130 91 130 H16 Q0 130 0 116Z"/>
+ <path d="M34 4 V-8 Q34 -22 53 -22 Q72 -22 72 -8 V4"/>
+ <path d="M20 45 L31 57 L52 34" stroke="#ed2938"/>
+ <path d="M20 82 L31 94 L52 71" stroke="#ed2938"/>
+ <path d="M63 47 H88 M63 84 H88" stroke="#aebbc8"/>
+</g>
+<path d="M49 334 H463 L439 357 H73Z" fill="#d7192d"/>
+<text x="256" y="391" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="94" font-weight="900" font-style="italic" letter-spacing="-5" fill="url(#silver)" stroke="#07101d" stroke-width="5" paint-order="stroke">RC</text>
+<text x="256" y="454" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="56" font-weight="900" font-style="italic" letter-spacing="4" fill="#f5f7fa">SETUP</text>
+<path d="M78 470 H434" stroke="#d7192d" stroke-width="8" stroke-linecap="round"/>
+</svg>
