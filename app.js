@@ -3332,42 +3332,10 @@ const CAR_CATALOG = [
   {
     "brand": "Team Losi",
     "era": "Vintage",
-    "name": "XXX4",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "Team Losi",
-    "era": "Vintage",
-    "name": "XXX4 G+",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "Team Losi",
-    "era": "Vintage",
     "name": "XX4 CR",
     "scale": "1/10",
     "drive": "4WD",
     "type": "Buggy"
-  },
-  {
-    "brand": "Team Losi",
-    "era": "Moderne",
-    "name": "Ten SCTE Race Roller",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Truck / Truggy"
-  },
-  {
-    "brand": "Team Losi",
-    "era": "Moderne",
-    "name": "Ten SCTE RTR",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Truck / Truggy"
   },
   {
     "brand": "Team Losi",
@@ -5098,38 +5066,6 @@ const CAR_CATALOG = [
     "type": "Pan Car"
   },
   {
-    "brand": "Mugen Seiki",
-    "era": "Moderne",
-    "name": "MBX-6T M-Spec",
-    "scale": "1/8",
-    "drive": "4WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "Mugen Seiki",
-    "era": "Moderne",
-    "name": "MBX-6TR",
-    "scale": "1/8",
-    "drive": "4WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "Mugen Seiki",
-    "era": "Moderne",
-    "name": "MBX-6T Eco",
-    "scale": "1/8",
-    "drive": "4WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "Mugen Seiki",
-    "era": "Moderne",
-    "name": "MBX-8TR ECO",
-    "scale": "1/8",
-    "drive": "4WD",
-    "type": "Buggy"
-  },
-  {
     "brand": "Traxxas",
     "era": "Vintage",
     "name": "Bullet TRX-10",
@@ -5197,14 +5133,6 @@ const CAR_CATALOG = [
     "brand": "Traxxas",
     "era": "Vintage",
     "name": "TRX-3",
-    "scale": "1/10",
-    "drive": "2WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "Traxxas",
-    "era": "Vintage",
-    "name": "Wildcat 4x4",
     "scale": "1/10",
     "drive": "2WD",
     "type": "Buggy"
@@ -5452,14 +5380,6 @@ const CAR_CATALOG = [
   {
     "brand": "Traxxas",
     "era": "Vintage",
-    "name": "Rustler XL-5",
-    "scale": "1/10",
-    "drive": "2WD",
-    "type": "Stadium Truck"
-  },
-  {
-    "brand": "Traxxas",
-    "era": "Vintage",
     "name": "Ford F-150 SVT Raptor",
     "scale": "1/10",
     "drive": "2WD",
@@ -5563,51 +5483,11 @@ const CAR_CATALOG = [
   },
   {
     "brand": "Traxxas",
-    "era": "Vintage",
-    "name": "Nitro Stampede",
-    "scale": "1/10",
-    "drive": "2WD",
-    "type": "Truck / Truggy"
-  },
-  {
-    "brand": "Traxxas",
-    "era": "Vintage",
-    "name": "Ten-T?",
-    "scale": "1/10",
-    "drive": "2WD",
-    "type": "Truck / Truggy"
-  },
-  {
-    "brand": "Traxxas",
-    "era": "Moderne",
-    "name": "T-Maxx 2.5R",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Truck / Truggy"
-  },
-  {
-    "brand": "Traxxas",
-    "era": "Moderne",
-    "name": "T-Maxx 3.3",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Truck / Truggy"
-  },
-  {
-    "brand": "Traxxas",
     "era": "Moderne",
     "name": "Sledge 6S",
-    "scale": "1/10",
+    "scale": "1/8",
     "drive": "4WD",
-    "type": "Truck / Truggy"
-  },
-  {
-    "brand": "Traxxas",
-    "era": "Moderne",
-    "name": "Unlimited Desert Racer",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Truck / Truggy"
+    "type": "Monster Truck"
   },
   {
     "brand": "Traxxas",
@@ -5871,14 +5751,6 @@ const CAR_CATALOG = [
     "name": "X-6 conversion kit",
     "scale": "1/10",
     "drive": "2WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "X-Factory",
-    "era": "Vintage",
-    "name": "X-7 prototype",
-    "scale": "1/10",
-    "drive": "4WD",
     "type": "Buggy"
   },
   {
@@ -6225,7 +6097,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=58').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=59').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
