@@ -77,3 +77,7 @@ Bibliothèque enrichie avec les variantes Mini Spike 2 (avant 2WD Slim, avant 4W
 - Ajout, aperçu et suppression des photos depuis le formulaire de création ou de modification d'une voiture.
 - Les images sont redimensionnées et compressées automatiquement avant stockage ; les anciennes voitures restent compatibles sans migration manuelle.
 - Les photos sont affichées dans la fiche de chaque voiture et restent incluses dans la sauvegarde et l'export JSON existants.
+
+
+## Déploiement — 7 novembre 2026
+- Relance propre de la publication GitHub Pages après détection d'artefacts de déploiement dupliqués dans une ancienne tentative.
