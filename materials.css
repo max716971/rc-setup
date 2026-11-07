@@ -1,3 +1,4 @@
+/* Bibliothèque de matériel */
 .material-controls { margin-bottom: 14px; }
 .material-tabs { display: flex; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 13px; }
 .material-tab { border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px; color: var(--muted); background: rgba(255,255,255,.025); font-size: 11px; font-weight: 750; }
@@ -7,7 +8,7 @@
 .material-add-row { display: flex; justify-content: flex-end; margin-bottom: 13px; }
 .material-form { margin-bottom: 15px; }
 .material-form h2 { margin: 0 0 15px; }
-.material-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.material-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 14px 0 16px; }
 .material-wide { grid-column: 1 / -1; }
 .material-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .material-card { min-width: 0; padding: 17px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, rgba(18,27,42,.96), rgba(14,21,33,.98)); box-shadow: 0 10px 28px rgba(0,0,0,.1); }
@@ -21,4 +22,6 @@
 .material-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; padding-top: 11px; border-top: 1px solid var(--line); }
 .material-card-actions .button { min-height: 35px; padding: 0 10px; font-size: 10px; }
 .material-empty { grid-column: 1 / -1; }
+.setup-library-picker { display: grid; gap: 5px; margin: 0 0 7px; color: var(--dim); font-size: 10px; font-weight: 600; }
+.setup-library-picker select { min-height: 37px; padding: 8px 10px; font-size: 11px; }
 @media (max-width: 700px) { .material-filter-row, .material-form-grid, .material-grid { grid-template-columns: 1fr; } .material-wide { grid-column: auto; } .material-add-row { justify-content: stretch; } .material-add-row .button { width: 100%; } .material-tabs { display: grid; grid-template-columns: 1fr 1fr; } }
