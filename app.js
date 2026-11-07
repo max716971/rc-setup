@@ -6445,7 +6445,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=87').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=88').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
@@ -6463,6 +6463,19 @@ document.querySelectorAll('[data-open-form]').forEach((button) => button.addEven
   const form = document.getElementById(button.dataset.openForm);
   form.classList.remove('hidden');
   form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}));
+document.querySelectorAll('[data-shortcut-view]').forEach(button=>button.addEventListener('click',()=>{
+  const view=button.dataset.shortcutView;
+  const targetId=button.dataset.shortcutTarget;
+  setView(view);
+  if(button.dataset.shortcutOpen){
+    const form=document.getElementById(button.dataset.shortcutOpen);
+    if(form)form.classList.remove('hidden');
+  }
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const target=document.getElementById(targetId);
+    if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
 }));
 document.querySelectorAll('[data-go-view]').forEach((button) => button.addEventListener('click', (event) => { event.preventDefault(); setView(button.dataset.goView); }));
 document.getElementById('carForm').addEventListener('submit', handleCarSubmit);
