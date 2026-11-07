@@ -30,3 +30,10 @@ Pour revenir en arrière, restaurer cette branche vers `main`. Les données pers
 ## Complément Schumacher — pneus TT 1/10
 
 Bibliothèque enrichie avec les variantes Mini Spike 2 (avant 2WD Slim, avant 4WD et arrière), ainsi que les modèles avant 2WD et leurs gommes documentées : Mini Pin, Stagger Rib, Cut Stagger, Cut Stagger Low Profile, 2 Row Stud, Mini Dart, Slim Rib Spike, Honeycomb, Fusion Slim et Splinter. Les profils et les positions sont affichés dans le nom et la compatibilité. Les références pré-collées Fusion Slim et Splinter sont également distinguées.
+
+
+## Conditions de piste — surfaces et adhérence
+- Ajout d'une liste de surfaces typiques TT 1/10 (tartan/EOS, moquettes, astro, terres/clay, herbe, béton, bitume, parquet/sol de gymnase, bois, mixte et autre).
+- Ajout d'un niveau d'adhérence distinct : très faible, faible, moyenne, forte et très forte.
+- Les pistes conservent leur surface et leur adhérence habituelles ; chaque setup peut préciser les conditions réellement rencontrées lors de la session.
+- Filtres de setups par surface et par niveau d'adhérence, avec affichage des conditions dans les fiches et les listes. Les anciennes fiches restent compatibles.
