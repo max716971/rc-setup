@@ -6163,17 +6163,7 @@ function updateCarCatalogOptions() {
     '<option value="' + index + '">' + escapeHtml(model.name + ' · ' + model.brand + ' · ' + model.scale + ' · ' + model.drive) + '</option>'
   ).join('');
   const count = document.getElementById('carCatalogCount');
-  if (count) count.textContent = filtered.length + ' modèles disponibles — clique sur « Ajouter au garage » ou sur un résultat ci-dessous.';
-  const results = document.getElementById('carCatalogResults');
-  if (results) {
-    const shown = filtered.slice(0, 30);
-    results.innerHTML = shown.length ? shown.map(({model,index}) =>
-      '<button type="button" class="car-catalog-result" data-catalog-index="' + index + '"><strong>' + escapeHtml(model.name) + '</strong><span>' + escapeHtml(model.brand + ' · ' + model.scale + ' · ' + model.drive + ' · ' + model.type) + '</span><em>＋ Ajouter</em></button>'
-    ).join('') : '<p class="item-sub car-catalog-empty">Aucun modèle ne correspond à ces filtres.</p>';
-    if (filtered.length > shown.length) {
-      results.insertAdjacentHTML('beforeend', '<p class="item-sub car-catalog-more">30 premiers résultats affichés. Affine la recherche pour retrouver un modèle précis.</p>');
-    }
-  }
+  if (count) count.textContent = filtered.length + ' modèles disponibles dans la liste déroulante.';
 }
 function handleCarCatalogAdd() {
   const selected = document.getElementById('carCatalogModel')?.value;
@@ -6538,7 +6528,7 @@ document.getElementById('carCatalogBrand').addEventListener('change', updateCarC
 document.getElementById('carCatalogEra').addEventListener('change', updateCarCatalogOptions);
 document.getElementById('carCatalogSearch').addEventListener('input', updateCarCatalogOptions);
 document.getElementById('addCatalogCar').addEventListener('click', handleCarCatalogAdd);
-document.getElementById('carCatalogResults')?.addEventListener('click', event => { const result = event.target.closest('[data-catalog-index]'); if (result) addCatalogCarByIndex(result.dataset.catalogIndex); });
+
 updateCarCatalogOptions();
 document.getElementById('carForm').addEventListener('submit', handleCarSubmit);
 document.getElementById('carPhotosInput')?.addEventListener('change',handleCarPhotoSelection);
