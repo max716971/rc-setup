@@ -61,18 +61,50 @@
 .material-brand-name{display:block;line-height:1.25;text-align:center}
 
 
-/* Zoom réel des six logos demandés : on agrandit l'image dans une vignette qui la masque proprement.
-   Le zoom compense les marges blanches intégrées aux fichiers sources, sans modifier les logos. */
-.material-brand-tile[data-brand="Futaba"],
-.material-brand-tile[data-brand="HUDY"],
-.material-brand-tile[data-brand="Sanwa"],
-.material-brand-tile[data-brand="Savöx"],
-.material-brand-tile[data-brand="Schumacher"],
-.material-brand-tile[data-brand="Yokomo"]{
-  min-height:132px;
-  padding:7px 5px;
-  gap:4px;
+/* Vignettes de marques uniformes : mêmes dimensions et même zone réservée au logo */
+.material-brand-tile{
+  box-sizing:border-box;
+  height:124px;
+  min-height:124px;
+  padding:8px 6px;
+  gap:5px;
   overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+}
+.material-brand-tile .material-brand-logo{
+  box-sizing:border-box;
+  display:block;
+  width:100%;
+  max-width:150px;
+  height:68px;
+  min-height:68px;
+  flex:0 0 68px;
+  object-fit:contain;
+  object-position:center;
+  transform:none;
+  border-radius:4px;
+}
+.material-brand-tile[data-brand="Hot Race Tires"] .material-brand-logo{
+  width:100%;
+  max-width:150px;
+  height:68px;
+  min-height:68px;
+  flex-basis:68px;
+  object-fit:contain;
+}
+.material-brand-tile .material-brand-name{
+  display:-webkit-box;
+  width:100%;
+  height:26px;
+  min-height:26px;
+  overflow:hidden;
+  line-height:13px;
+  text-align:center;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
 }
 .material-brand-tile[data-brand="Futaba"] .material-brand-logo,
 .material-brand-tile[data-brand="HUDY"] .material-brand-logo,
@@ -80,24 +112,10 @@
 .material-brand-tile[data-brand="Savöx"] .material-brand-logo,
 .material-brand-tile[data-brand="Schumacher"] .material-brand-logo,
 .material-brand-tile[data-brand="Yokomo"] .material-brand-logo{
-  width:calc(100% + 20px);
-  max-width:220px;
-  height:78px;
-  flex:0 0 78px;
-  object-fit:contain;
-  transform:scale(1.48);
-  transform-origin:center;
-  border-radius:3px;
+  transform:scale(1.22);
 }
 @media(max-width:620px){
-  .material-brand-tile[data-brand="Futaba"] .material-brand-logo,
-  .material-brand-tile[data-brand="HUDY"] .material-brand-logo,
-  .material-brand-tile[data-brand="Sanwa"] .material-brand-logo,
-  .material-brand-tile[data-brand="Savöx"] .material-brand-logo,
-  .material-brand-tile[data-brand="Schumacher"] .material-brand-logo,
-  .material-brand-tile[data-brand="Yokomo"] .material-brand-logo{
-    height:72px;
-    flex-basis:72px;
-    transform:scale(1.32);
-  }
+  .material-brand-tile{height:116px;min-height:116px}
+  .material-brand-tile .material-brand-logo{height:62px;min-height:62px;flex-basis:62px}
+  .material-brand-tile[data-brand="Hot Race Tires"] .material-brand-logo{height:62px;min-height:62px;flex-basis:62px}
 }
