@@ -542,6 +542,66 @@
     { brand:'Tamiya', category:'Graisse', name:'Cera-Grease HG', reference:'87099', detail:'Graisse haute performance Tamiya.', url:'https://hobbydex.com/rc/categories/oil-grease/tamiya/' },
 
 
+    // HUDY — inserts 1/10, huiles d'amortisseurs et de différentiels, références catalogue.
+    ...[
+      ['834201F','Insert HUDY 1/10 avant 4WD — mousse blanche S','Avant 4WD'],
+      ['834301F','Insert HUDY 1/10 avant 4WD Dirt — mousse','Avant 4WD'],
+      ['834302C','Insert HUDY 1/10 avant 4WD — cellule noire','Avant 4WD'],
+      ['836101F','Insert HUDY 1/10 arrière 2WD/4WD Carpet — mousse','Arrière 2WD/4WD'],
+      ['836201F','Insert HUDY 1/10 arrière 2WD/4WD — mousse blanche S','Arrière 2WD/4WD'],
+      ['836301F','Insert HUDY 1/10 arrière 2WD/4WD Dirt — mousse','Arrière 2WD/4WD'],
+      ['836302C','Insert HUDY 1/10 arrière 2WD/4WD — cellule noire','Arrière 2WD/4WD']
+    ].map(([reference,name,position]) => ({
+      brand:'HUDY', category:'Insert pneu', name, reference, compatibility:position,
+      detail:'Insert mousse HUDY buggy 1/10 ; paire.',
+      url:'https://hudy.net/xhudy/products/product_main.php?Hudy_Session=cf1596c1b02ac9279b287ee37fa66690&kategoria=11'
+    })),
+    ...[
+      ['08106310','100 cSt'],['08106315','150 cSt'],['08106320','200 cSt'],['08106325','250 cSt'],
+      ['08106330','300 cSt'],['08106335','350 cSt'],['08106337','375 cSt'],['08106340','400 cSt'],
+      ['08106342','425 cSt'],['08106345','450 cSt'],['08106347','475 cSt'],['08106350','500 cSt'],
+      ['08106352','525 cSt'],['08106355','550 cSt'],['08106358','575 cSt'],['08106360','600 cSt'],
+      ['08106363','625 cSt'],['08106365','650 cSt'],['08106370','700 cSt'],['08106375','750 cSt'],
+      ['08106380','800 cSt'],['08106390','900 cSt']
+    ].map(([reference,grade]) => ({
+      brand:'HUDY', category:'Huile amortisseur', name:'Premium Silicone Shock Oil — '+grade+' — 50 ml',
+      reference, detail:'Huile silicone HUDY pour amortisseurs ; viscosité exprimée en cSt.',
+      url:'https://www.hudy-shop.net/249-shocks-oils'
+    })),
+    ...[
+      ['08106410','1 000 cSt'],['08106420','2 000 cSt'],['08106430','3 000 cSt'],['08106440','4 000 cSt'],
+      ['08106450','5 000 cSt'],['08106470','7 000 cSt'],['08106480','8 000 cSt'],['08106490','9 000 cSt'],
+      ['08106510','10 000 cSt'],['08106515','15 000 cSt'],['08106520','20 000 cSt'],['08106530','30 000 cSt'],
+      ['08106540','40 000 cSt'],['08106550','50 000 cSt'],['08106610','100 000 cSt'],['08106620','200 000 cSt'],
+      ['08106630','300 000 cSt'],['08106650','500 000 cSt'],['08106690','1 000 000 cSt']
+    ].map(([reference,grade]) => ({
+      brand:'HUDY', category:'Huile différentiel', name:'Premium Silicone Diff Oil — '+grade,
+      reference, detail:'Huile silicone HUDY pour différentiels ; viscosité exprimée en cSt.',
+      url:'https://www.hudy-shop.net/250-differentials-oils'
+    })),
+    { brand:'HUDY', category:'Graisse', name:'Graphite Grease', reference:'106210', detail:'Graisse graphite HUDY pour pièces tournantes et engrenages chargés.', url:'https://www.hudy.net/xhudy/products/product_main.php?Hudy_Session=cf1596c1b02ac9279b287ee37fa66690&kategoria=333' },
+    { brand:'HUDY', category:'Graisse', name:'Diff Grease', reference:'106211', detail:'Graisse silicone pour différentiels à billes et butées.', url:'https://www.hudy.net/xhudy/products/proddesc.php?kategoria=333&prod_id=318' },
+    { brand:'HUDY', category:'Graisse', name:'Super Differential Grease', reference:'106212', detail:'Graisse plus épaisse pour plaques de différentiel à billes et butées.', url:'https://www.hudy.net/xhudy/products/proddesc.php?Hudy_Session=40d5a8565fc77e6c2393f2300f4143a6&prod_id=537' },
+    { brand:'HUDY', category:'Graisse', name:'Joint Grease', reference:'106213', detail:'Graisse spéciale pour joints et articulations de transmission.', url:'https://www.hudy.net/xhudy/products/product_main.php?Hudy_Session=cf1596c1b02ac9279b287ee37fa66690&kategoria=333' },
+    // Yokomo — huiles silicone de différentiel et graisses d'entretien.
+    ...[
+      ['CS-7500B','7 500'],['CS-10000B','10 000'],['CS-15000B','15 000'],['CS-20000B','20 000'],
+      ['CS-30000B','30 000'],['CS-50000B','50 000']
+    ].map(([reference,grade]) => ({
+      brand:'Yokomo', category:'Huile différentiel', name:'Super Blend Silicone Oil #'+grade+' — 30 cc',
+      reference, detail:'Huile silicone Yokomo pour différentiels ; viscosité nominale '+grade+'.',
+      url:'https://hobbydex.com/rc/releases/yokomo/so1-0/'
+    })),
+    { brand:'Yokomo', category:'Graisse', name:'Black Grease', reference:'CS-BGA', detail:'Graisse noire pour butées de différentiel à billes, arbres et pièces métalliques.', url:'https://www.teamyokomo.com/en/collections/series-bdfwd/products/cs-bga' },
+    { brand:'Yokomo', category:'Graisse', name:'Diff Grease', reference:'CS-DGA', detail:'Graisse Yokomo pour différentiel à billes.', url:'https://hobbydex.com/rc/releases/yokomo/so1-0/' },
+    { brand:'Yokomo', category:'Graisse', name:'Seal Grease', reference:'CS-SLGA', detail:'Graisse Yokomo pour joints toriques et joints d’étanchéité.', url:'https://hobbydex.com/rc/releases/yokomo/so1-0/' },
+    // Pro-Line — inserts 1/10 buggy.
+    { brand:'Pro-Line', category:'Insert pneu', name:'V2 Closed Cell Rear Foam 1/10 Buggy', reference:'6185-04', compatibility:'Arrière 2WD/4WD', detail:'Insert arrière cellule fermée V2 pour pneus buggy 2.2 pouces ; paire.', url:'https://www.jetmodel.it/prodotto/proline-closed-cell-v2-inserti/' },
+    { brand:'Pro-Line', category:'Insert pneu', name:'Closed Cell 4WD Front Inserts 1/10 Buggy', reference:'6185-02', compatibility:'Avant 4WD', detail:'Insert avant cellule fermée pour buggy 1/10 4WD.', url:'https://www.rc-passion.com/pneu-insert-jante-6mik-proline-procircuit-aka-grp-hobbytech-traxxas/' },
+    { brand:'Pro-Line', category:'Insert pneu', name:'Closed Cell 2WD Front Foam Inserts 1/10 Buggy', reference:'6185-03', compatibility:'Avant 2WD', detail:'Insert avant cellule fermée pour buggy 1/10 2WD.', url:'https://www.cml-racing.com/gb/pneus/3891-proline-1-10-closed-2wd-front-foam-inserts-2-proline-pl6185-03-675118156590.html' },
+    { brand:'Pro-Line', category:'Insert pneu', name:'Open Cell Medium Rear Foam 1/10 Buggy', reference:'6365-00', compatibility:'Arrière 2WD/4WD', detail:'Insert arrière mousse ouverte medium pour buggy 1/10.', url:'https://teams.prolineracing.com/Images/pricelist.pdf' },
+
+
   ];
   const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA'];
   const root = document.getElementById('materialsApp');
