@@ -9,6 +9,7 @@ Cette version ajoute des fonctions d'analyse et de suivi des essais.
 - Aide au diagnostic : pistes de vérification selon le symptôme, le niveau d'adhérence et l'architecture 2WD/4WD.
 - Mode piste : commandes et champs plus lisibles sur smartphone.
 - Bibliothèque matériel : filtre supplémentaire par compatibilité et position.
+- Export individuel d'un setup en JSON et import partagé dans un autre garage, sans écraser les données déjà présentes.
 - Conservation des fonctions déjà présentes : comparaison de setups, historique et restauration des anciennes versions d'un setup, favoris, recherche et filtres, sauvegarde automatique locale, export/import JSON.
 
 ### Retour à la version précédente
