@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rc-setup-v102';
+const CACHE_NAME = 'rc-setup-v103';
 const APP_SHELL = ['./', './index.html', './app.css', './app.js', './materials.css', './materials.js', './backup.js', './seed-schumacher.js', './seed-hobbywing.js', './seed-hobbywing-motors.js', './seed-xtr-oils.js', './hobbywing-setup-picker.js', './manifest.webmanifest', './icon.svg'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('rc-setup-') && key !== CACHE_NAME).map(key => caches.delete(key))))); self.clients.claim(); });
