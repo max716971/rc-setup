@@ -6053,7 +6053,7 @@ function printSetupDetails(){
     }
     @media(max-width:650px){body{padding:0 16px}.print-overview{grid-template-columns:1fr 1fr}.print-section dl{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr 1fr 1fr}}
   `;
-  const buggyDiagram='<section class="print-buggy"><div class="print-buggy-heading"><strong>VUE DE DESSUS · '+escapeHtml(getCarById((state.setups.find(s=>s.id===assistantSetupId)||{}).carId)?.name||'BUGGY TT 1/10')+'</strong><span>Schéma indicatif · implantation non contractuelle</span></div><svg viewBox="0 0 760 310" role="img" aria-label="Schéma générique de buggy vu de dessus"><g fill="none" stroke="#26313c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M190 72 L570 72 L620 112 L620 198 L570 238 L190 238 L140 198 L140 112 Z" fill="#eef1f3"/><path d="M235 85 L525 85 L555 225 L205 225 Z" fill="#d9e0e5" stroke-width="3"/><path d="M300 100 L460 100 L485 210 L275 210 Z" fill="#9ca9b4"/><path d="M340 115 L420 115 L440 195 L320 195 Z" fill="#303b46"/><path d="M140 112 L70 90 L42 105 L62 142 L140 150 M620 112 L690 90 L718 105 L698 142 L620 150 M140 198 L70 220 L42 205 L62 168 L140 160 M620 198 L690 220 L718 205 L698 168 L620 160"/><path d="M235 85 L180 48 M525 85 L580 48 M205 225 L180 262 M555 225 L580 262" stroke-width="8"/><path d="M250 90 L190 50 M510 90 L570 50 M250 220 L190 260 M510 220 L570 260" stroke="#c8202f" stroke-width="7"/></g><g fill="#202832"><rect x="45" y="75" width="45" height="76" rx="12"/><rect x="670" y="75" width="45" height="76" rx="12"/><rect x="45" y="159" width="45" height="76" rx="12"/><rect x="670" y="159" width="45" height="76" rx="12"/></g><g fill="#fff" font-family="Arial" font-size="14" font-weight="700" text-anchor="middle"><text x="67" y="119">AV</text><text x="692" y="119">AV</text><text x="67" y="203">AR</text><text x="692" y="203">AR</text></g><path d="M380 18 V52 M366 38 L380 52 L394 38" stroke="#c8202f" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="380" y="12" font-family="Arial" font-size="12" font-weight="700" fill="#c8202f" text-anchor="middle">AVANT</text></svg></section>';
+  const buggyDiagram='<section class="print-buggy"><div class="print-buggy-heading"><strong>VUE DE DESSUS · '+escapeHtml(getCarById((state.setups.find(s=>s.id===currentDetailSetupId)||{}).carId)?.name||'BUGGY TT 1/10')+'</strong><span>Schéma indicatif · implantation non contractuelle</span></div><svg viewBox="0 0 760 310" role="img" aria-label="Schéma générique de buggy vu de dessus"><g fill="none" stroke="#26313c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M190 72 L570 72 L620 112 L620 198 L570 238 L190 238 L140 198 L140 112 Z" fill="#eef1f3"/><path d="M235 85 L525 85 L555 225 L205 225 Z" fill="#d9e0e5" stroke-width="3"/><path d="M300 100 L460 100 L485 210 L275 210 Z" fill="#9ca9b4"/><path d="M340 115 L420 115 L440 195 L320 195 Z" fill="#303b46"/><path d="M140 112 L70 90 L42 105 L62 142 L140 150 M620 112 L690 90 L718 105 L698 142 L620 150 M140 198 L70 220 L42 205 L62 168 L140 160 M620 198 L690 220 L718 205 L698 168 L620 160"/><path d="M235 85 L180 48 M525 85 L580 48 M205 225 L180 262 M555 225 L580 262" stroke-width="8"/><path d="M250 90 L190 50 M510 90 L570 50 M250 220 L190 260 M510 220 L570 260" stroke="#c8202f" stroke-width="7"/></g><g fill="#202832"><rect x="45" y="75" width="45" height="76" rx="12"/><rect x="670" y="75" width="45" height="76" rx="12"/><rect x="45" y="159" width="45" height="76" rx="12"/><rect x="670" y="159" width="45" height="76" rx="12"/></g><g fill="#fff" font-family="Arial" font-size="14" font-weight="700" text-anchor="middle"><text x="67" y="119">AV</text><text x="692" y="119">AV</text><text x="67" y="203">AR</text><text x="692" y="203">AR</text></g><path d="M380 18 V52 M366 38 L380 52 L394 38" stroke="#c8202f" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="380" y="12" font-family="Arial" font-size="12" font-weight="700" fill="#c8202f" text-anchor="middle">AVANT</text></svg></section>';
   const overview=meta.slice(0,4).map((value,index)=>{
     const labels=['SURFACE','ADHÉRENCE','MÉTÉO','TEMPÉRATURE'];
     return '<div class="print-overview-item"><small>'+labels[index]+'</small><strong>'+escapeHtml(value)+'</strong></div>';
@@ -6436,6 +6436,7 @@ function removeSetup(id) {
 
 
 let assistantSetupId=null;
+let currentDetailSetupId=null;
 let assistantLastProposal=[];
 function assistantRecommendations(setup,symptom,phase){
  const car=getCarById(setup.carId),track=getTrackById(setup.trackId);
@@ -6479,6 +6480,7 @@ function saveAssistantProposal(){
 }
 
 function showSetup(id) {
+  currentDetailSetupId=id;
   const setup = state.setups.find((entry) => entry.id === id);
   if (!setup) return;
   const car = getCarById(setup.carId);
@@ -6656,6 +6658,10 @@ document.getElementById('setupDialog').addEventListener('click', (event) => { if
 document.getElementById('carBrandPicker')?.addEventListener('click',event=>{const button=event.target.closest('[data-brand]');if(!button)return;const input=document.getElementById('carBrand');if(input)input.value=button.dataset.brand;updateCarBrandPicker();});
 document.getElementById('carBrand')?.addEventListener('input',updateCarBrandPicker);
 function updateCarBrandPicker(){const input=document.getElementById('carBrand');const value=(input?.value||'').trim().toLocaleLowerCase('fr');document.querySelectorAll('#carBrandPicker [data-brand]').forEach(button=>{const active=button.dataset.brand.toLocaleLowerCase('fr')===value;button.classList.toggle('selected',active);button.setAttribute('aria-pressed',String(active));});}
+document.getElementById('assistantSymptom')?.addEventListener('change',renderAssistantRecommendations);
+document.getElementById('assistantPhase')?.addEventListener('change',renderAssistantRecommendations);
+document.getElementById('assistantSeverity')?.addEventListener('change',renderAssistantRecommendations);
+document.getElementById('assistantSaveProposal')?.addEventListener('click',saveAssistantProposal);
 renderAll();
 updateCarBrandPicker();
 updateVehicleSpecificFields();
