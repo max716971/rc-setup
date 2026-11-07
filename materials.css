@@ -131,3 +131,8 @@
 .material-brand-tile[data-brand="Reedy"] .material-brand-logo{transform:scale(1.18);}
 
 .material-brand-tile[data-brand="PR Racing"] .material-brand-logo{transform:scale(1.28);}
+
+/* Logos Fan RC, Kyosho et PR Racing : cadrage adapté aux fichiers sources. */
+.material-brand-tile[data-brand="Fan RC"] .material-brand-logo{object-fit:cover;transform:scale(1.45);}
+.material-brand-tile[data-brand="Kyosho"] .material-brand-logo{transform:scale(1.12);}
+.material-brand-tile[data-brand="PR Racing"] .material-brand-logo{transform:scale(1.45);}
