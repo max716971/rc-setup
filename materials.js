@@ -863,7 +863,6 @@
     'Power HD': 'https://chd.hk/images/logo.jpg',
     'REDS': 'https://rsrc.biz/img/m/26.jpg',
     'Sanwa': 'https://thepihut.com/cdn/shop/files/sanwa-logo_500x.jpg?v=1663172495',
-    'X-Factory': rcBrandWordmark('X-FACTORY','R/C RACING'),
     'XRAY': 'https://www.xraystore.cz/user/categories/orig/xray-1.png',
     'SRT': 'https://www.srt-rc.com/data/upload/image/201805/112c8f371d4d46d72955761ae81ced0d.jpg',
     'Tekin': 'https://www.teamtekin.com/images/tekin_logo_hires_2015.png?crc=4065896322',
