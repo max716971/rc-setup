@@ -2,7 +2,7 @@ const STORAGE_KEY = 'rc-setup-v1';
 const MAX_SETUP_PHOTOS = 4;
 const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
 const SETUP_FIELDS = [
-  'sessionDate', 'temperature', 'weather', 'goal',
+  'sessionDate', 'temperature', 'weather', 'goal', 'lubricants',
   'frontTires', 'rearTires', 'inserts', 'tireTreatment', 'wheels', 'tireCondition',
   'frontShocks', 'rearShocks', 'springs', 'rideHeight', 'camber', 'toe', 'casterAckermann', 'antiRollBars', 'droop', 'stopsDiaphragms',
   'gearing', 'differentials', 'centerDiff', 'motor', 'esc', 'servoSteering', 'brakes', 'battery', 'radio',
@@ -263,6 +263,7 @@ function showSetup(id) {
     ['Pneus & roues', [['Pneus avant', setup.frontTires], ['Pneus arrière', setup.rearTires], ['Inserts', setup.inserts], ['Traitement pneus', setup.tireTreatment], ['Jantes / largeur', setup.wheels], ['État des pneus', setup.tireCondition]]],
     ['Suspension & géométrie', [['Amortisseurs avant', setup.frontShocks], ['Amortisseurs arrière', setup.rearShocks], ['Ressorts', setup.springs], ['Hauteur de caisse', setup.rideHeight], ['Carrossage', setup.camber], ['Pincement / ouverture', setup.toe], ['Chasse / Ackermann', setup.casterAckermann], ['Barres antiroulis', setup.antiRollBars], ['Débattement / droop', setup.droop], ['Butées / membranes', setup.stopsDiaphragms]]],
     ['Transmission & électronique', [['Rapport / pignon-couronne', setup.gearing], ['Différentiels AV / AR', setup.differentials], ['Différentiel central', setup.centerDiff], ['Moteur / timing', setup.motor], ['ESC / réglages', setup.esc], ['Servo / direction', setup.servoSteering], ['Frein', setup.brakes], ['Batterie', setup.battery], ['Réglages radio / autres', setup.radio]]],
+    ['Entretien & lubrification', [['Graisses et huiles d’entretien', setup.lubricants]]],
     ['Bilan de session', [['Meilleur temps au tour', setup.lapTime], ['Ressenti général', setup.rating], ['Notes & prochaines modifications', setup.notes]]]
   ];
   const content = document.getElementById('setupDetails');
@@ -300,7 +301,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=27').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=28').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
