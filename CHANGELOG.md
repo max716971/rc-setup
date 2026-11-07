@@ -59,3 +59,10 @@ Bibliothèque enrichie avec les variantes Mini Spike 2 (avant 2WD Slim, avant 4W
 - Statuts automatiques : épuisé (0), stock faible (1 à 2), en stock (plus de 2), avec filtre dédié.
 - Extension des catégories de saisie manuelle aux inserts, huiles de différentiel et graisses.
 - Les quantités restent incluses dans les sauvegardes et exports JSON existants.
+
+
+## Galerie photo du garage — 7 novembre 2026
+- Chaque voiture du garage peut désormais conserver jusqu'à trois photos, qu'elle provienne du catalogue ou d'un ajout manuel.
+- Ajout, aperçu et suppression des photos depuis le formulaire de création ou de modification d'une voiture.
+- Les images sont redimensionnées et compressées automatiquement avant stockage ; les anciennes voitures restent compatibles sans migration manuelle.
+- Les photos sont affichées dans la fiche de chaque voiture et restent incluses dans la sauvegarde et l'export JSON existants.
