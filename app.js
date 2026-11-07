@@ -5791,11 +5791,12 @@ function loadState() {
       cars: Array.isArray(saved.cars) ? saved.cars : [],
       tracks: Array.isArray(saved.tracks) ? saved.tracks : [],
       setups: Array.isArray(saved.setups) ? saved.setups : [],
-      maintenance: Array.isArray(saved.maintenance) ? saved.maintenance : []
+      maintenance: Array.isArray(saved.maintenance) ? saved.maintenance : [],
+      batteries: Array.isArray(saved.batteries) ? saved.batteries : []
     };
   } catch (error) {
     console.error('Impossible de lire les données locales', error);
-    return { cars: [], tracks: [], setups: [], maintenance: [] };
+    return { cars: [], tracks: [], setups: [], maintenance: [], batteries: [] };
   }
 }
 
@@ -6184,9 +6185,58 @@ function populateMaintenanceCars(){
  renderMaintenanceList();
 }
 function renderMaintenanceList(){
- const select=document.getElementById('maintenanceCar'),list=document.getElementById('maintenanceList');if(!select||!list)return;
- const id=select.value;const entries=(state.maintenance||[]).filter(item=>item.carId===id).sort((x,y)=>String(y.date).localeCompare(String(x.date)));
- list.innerHTML=!id?'<p class="item-sub">Sélectionne une voiture pour consulter son carnet.</p>':!entries.length?'<p class="item-sub">Aucune révision enregistrée pour cette voiture.</p>':entries.map(item=>'<article class="maintenance-entry"><strong>'+escapeHtml(item.part)+'</strong><p>'+escapeHtml(formatDate(item.date))+' · '+Number(item.sessions||0)+' session(s) depuis la révision</p><p>'+(item.next? 'Prochaine vérification dans '+Number(item.next)+' session(s).':'Prochaine vérification non programmée.')+'</p>'+(item.notes?'<p>'+escapeHtml(item.notes)+'</p>':'')+'</article>').join('');
+  const select=document.getElementById('maintenanceCar'),list=document.getElementById('maintenanceList');if(!select||!list)return;
+  const id=select.value;const entries=(state.maintenance||[]).filter(item=>item.carId===id).sort((x,y)=>String(y.date).localeCompare(String(x.date)));
+  list.innerHTML=!id?'<p class="item-sub">Sélectionne une voiture pour consulter son carnet.</p>':!entries.length?'<p class="item-sub">Aucune intervention enregistrée pour cette voiture.</p>':entries.map(item=>{
+    const remaining=Number(item.next||0)-Number(item.sessions||0);
+    const due=item.next?(remaining<=0?'<span class="maintenance-status overdue">À effectuer</span>':remaining<=1?'<span class="maintenance-status soon">Bientôt</span>':'<span class="maintenance-status ok">À jour</span>'):'';
+    return '<article class="maintenance-entry"><div class="maintenance-entry-head"><div><strong>'+escapeHtml(item.part)+'</strong><p>'+escapeHtml(item.workType||'Entretien')+' · '+escapeHtml(formatDate(item.date))+'</p></div>'+due+'</div><p>'+Number(item.sessions||0)+' session(s) depuis l’intervention'+(item.next?' · échéance à '+Number(item.next)+' session(s)':'')+'</p>'+(item.replacedParts?'<p><b>Pièces :</b> '+escapeHtml(item.replacedParts)+'</p>':'')+(item.notes?'<p>'+escapeHtml(item.notes)+'</p>':'')+'<div class="maintenance-entry-actions"><button class="button button-quiet maintenance-delete" data-id="'+escapeHtml(item.id)+'" type="button">Supprimer</button></div></article>';
+  }).join('');
+  list.querySelectorAll('.maintenance-delete').forEach(button=>button.addEventListener('click',()=>{
+    if(!confirm('Supprimer cette intervention du carnet ?'))return;
+    state.maintenance=state.maintenance.filter(item=>item.id!==button.dataset.id);
+    if(saveState())renderMaintenanceList();
+  }));
+}
+function populateBatterySelect(){
+  const select=document.getElementById('batteryLogSelect');if(!select)return;
+  const value=select.value;select.innerHTML='<option value="">Choisir une batterie…</option>'+(state.batteries||[]).map(b=>'<option value="'+escapeHtml(b.id)+'">'+escapeHtml(b.name)+' · '+escapeHtml(b.capacity)+' mAh</option>').join('');
+  if((state.batteries||[]).some(b=>b.id===value))select.value=value;
+}
+function renderBatteries(){
+  const list=document.getElementById('batteryList');if(!list)return;
+  const batteries=Array.isArray(state.batteries)?state.batteries:[];
+  list.innerHTML=!batteries.length?'<p class="item-sub">Aucune batterie enregistrée. Ajoute ta première LiPo ci-dessus.</p>':batteries.map(b=>{
+    const latest=(b.history||[])[0],voltage=b.voltage?Number(b.voltage).toFixed(2)+' V':latest?.voltage?Number(latest.voltage).toFixed(2)+' V':'Non renseignée',cells=Number(b.cells||0);
+    const perCell=b.voltage&&cells?(Number(b.voltage)/cells).toFixed(2)+' V':'';
+    return '<article class="battery-entry"><div class="battery-entry-head"><div><strong>'+escapeHtml(b.name)+'</strong><p>'+escapeHtml(b.brand||'Marque non précisée')+' · '+escapeHtml(b.capacity)+' mAh · '+cells+'S</p></div><span class="battery-cycles">'+Number(b.cycles||0)+' cycles</span></div><div class="battery-metrics"><span><small>Tension</small><b>'+voltage+'</b></span><span><small>Par cellule (moy.)</small><b>'+(perCell||'—')+'</b></span><span><small>Connecteur</small><b>'+escapeHtml(b.connector||'—')+'</b></span></div>'+(b.notes?'<p class="item-sub">'+escapeHtml(b.notes)+'</p>':'')+'<details class="battery-history"><summary>Historique ('+(b.history||[]).length+')</summary>'+((b.history||[]).length?(b.history||[]).map(h=>'<p>'+escapeHtml(formatDate(h.date))+' · '+escapeHtml(h.type||'Utilisation')+(h.voltage?' · '+Number(h.voltage).toFixed(2)+' V':'')+(h.cycles?' · +'+Number(h.cycles)+' cycle(s)':'')+(h.notes?' — '+escapeHtml(h.notes):'')+'</p>').join(''):'<p class="item-sub">Aucun événement enregistré.</p>')+'</details><div class="battery-entry-actions"><button class="button button-quiet battery-delete" data-id="'+escapeHtml(b.id)+'" type="button">Supprimer</button></div></article>';
+  }).join('');
+  populateBatterySelect();
+  list.querySelectorAll('.battery-delete').forEach(button=>button.addEventListener('click',()=>{
+    if(!confirm('Supprimer cette batterie et son historique ?'))return;
+    state.batteries=state.batteries.filter(b=>b.id!==button.dataset.id);
+    if(saveState()){renderBatteries();showToast('Batterie supprimée.');}
+  }));
+}
+function handleBatterySubmit(event){
+  event.preventDefault();const form=event.currentTarget,data=new FormData(form);
+  const name=String(data.get('name')||'').trim(),capacity=Number(data.get('capacity')||0),cells=Number(data.get('cells')||0);
+  if(!name||capacity<=0||cells<1)return;
+  const battery={id:uid('battery'),name,brand:String(data.get('brand')||'').trim(),capacity,cells,connector:String(data.get('connector')||'').trim(),cycles:Number(data.get('cycles')||0),voltage:Number(data.get('voltage')||0),notes:String(data.get('notes')||'').trim(),history:[]};
+  state.batteries=Array.isArray(state.batteries)?state.batteries:[];
+  state.batteries.unshift(battery);
+  if(!saveState()){state.batteries.shift();return;}
+  form.reset();renderBatteries();showToast('Batterie ajoutée au gestionnaire.');
+}
+function handleBatteryLog(event){
+  event.preventDefault();const battery=state.batteries?.find(b=>b.id===document.getElementById('batteryLogSelect').value);if(!battery)return;
+  const type=document.getElementById('batteryLogType').value,voltage=Number(document.getElementById('batteryLogVoltage').value||0),cycles=Number(document.getElementById('batteryLogCycles').value||0),notes=document.getElementById('batteryLogNotes').value.trim();
+  if(voltage>0)battery.voltage=voltage;
+  battery.cycles=Math.max(0,Number(battery.cycles||0)+cycles);
+  battery.history=Array.isArray(battery.history)?battery.history:[];
+  battery.history.unshift({date:new Date().toISOString().slice(0,10),type,voltage:voltage||null,cycles,notes});
+  if(!saveState())return;
+  event.currentTarget.reset();renderBatteries();showToast('Événement batterie enregistré.');
 }
 function formValues(form, names) {
   const data = new FormData(form);
@@ -6648,8 +6698,8 @@ function importJson(file) {
       const parsed = JSON.parse(String(event.target?.result || ''));
       if (!parsed || !Array.isArray(parsed.cars) || !Array.isArray(parsed.tracks) || !Array.isArray(parsed.setups)) throw new Error('Format invalide');
       if (!confirm('L’import remplacera les voitures, pistes, setups et, si présents, les articles personnels de la bibliothèque. Continuer ?')) return;
-      const previous={cars:state.cars,tracks:state.tracks,setups:state.setups,maintenance:state.maintenance};
-      state.cars=parsed.cars;state.tracks=parsed.tracks;state.maintenance=Array.isArray(parsed.maintenance)?parsed.maintenance:[];state.setups=parsed.setups.map(setup=>({...setup,photos:Array.isArray(setup.photos)?setup.photos:[],history:Array.isArray(setup.history)?setup.history:[]}));
+      const previous={cars:state.cars,tracks:state.tracks,setups:state.setups,maintenance:state.maintenance,batteries:state.batteries};
+      state.cars=parsed.cars;state.tracks=parsed.tracks;state.maintenance=Array.isArray(parsed.maintenance)?parsed.maintenance:[];if(Array.isArray(parsed.batteries))state.batteries=parsed.batteries;state.setups=parsed.setups.map(setup=>({...setup,photos:Array.isArray(setup.photos)?setup.photos:[],history:Array.isArray(setup.history)?setup.history:[]}));
       if(!saveState()){Object.assign(state,previous);return;}
       if(Array.isArray(parsed.materials)&&window.RCSetupMaterials&&!window.RCSetupMaterials.importData(parsed.materials)){Object.assign(state,previous);saveState();showToast('Import matériel impossible : les données précédentes ont été conservées.');return;}
       renderAll();populateMaintenanceCars();showToast(Array.isArray(parsed.materials)?'Sauvegarde complète importée.':'Sauvegarde importée. La bibliothèque personnelle actuelle a été conservée.');
@@ -6660,7 +6710,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v198';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v200';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6668,7 +6718,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=95', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=96', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
@@ -6782,12 +6832,14 @@ document.getElementById('compareSetupsButton')?.addEventListener('click',compare
 document.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);
 document.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
 document.getElementById('maintenanceCar')?.addEventListener('change',renderMaintenanceList);
+document.getElementById('batteryForm')?.addEventListener('submit',handleBatterySubmit);
+document.getElementById('batteryLogForm')?.addEventListener('submit',handleBatteryLog);
 document.getElementById('maintenanceForm')?.addEventListener('submit',event=>{
  event.preventDefault();
  const carId=document.getElementById('maintenanceCar').value,part=document.getElementById('maintenancePart').value;
  if(!carId||!part)return;
  state.maintenance=Array.isArray(state.maintenance)?state.maintenance:[];
- state.maintenance.unshift({id:uid('maintenance'),carId,part,date:document.getElementById('maintenanceDate').value,sessions:Number(document.getElementById('maintenanceSessions').value||0),next:Number(document.getElementById('maintenanceNext').value||0),notes:document.getElementById('maintenanceNotes').value.trim()});
+ state.maintenance.unshift({id:uid('maintenance'),carId,part,workType:document.getElementById('maintenanceWorkType').value,date:document.getElementById('maintenanceDate').value,sessions:Number(document.getElementById('maintenanceSessions').value||0),next:Number(document.getElementById('maintenanceNext').value||0),replacedParts:document.getElementById('maintenanceReplacedParts').value.trim(),notes:document.getElementById('maintenanceNotes').value.trim()});
  if(!saveState())return;
  event.target.reset();document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);renderMaintenanceList();showToast('Révision enregistrée.');
 });
@@ -6805,6 +6857,7 @@ document.getElementById('assistantSeverity')?.addEventListener('change',renderAs
 document.getElementById('assistantSaveProposal')?.addEventListener('click',saveAssistantProposal);
 renderAll();
 populateMaintenanceCars();
+renderBatteries();
 document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);
 updateCarBrandPicker();
 updateVehicleSpecificFields();
