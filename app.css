@@ -247,3 +247,17 @@ select { color-scheme: dark; } textarea { min-height: 90px; resize: vertical; li
 .suspension-geometry-grid{margin-top:16px}
 .field-help{display:block;margin-top:5px;color:var(--muted);font-size:10px;font-weight:450;line-height:1.5}
 @media(max-width:700px){.suspension-shock-groups{grid-template-columns:1fr;gap:12px}.shock-side{padding:14px}.shock-fields{gap:12px}}
+
+
+/* Clarification des fixations d'amortisseurs : champs distincts par train et par point d'ancrage */
+.shock-mount-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:14px 0 18px}
+.shock-mount-side{min-width:0;padding:16px;border:1px solid rgba(165,180,203,.2);border-radius:15px;background:rgba(255,255,255,.025)}
+.shock-mount-front{border-left:3px solid rgba(116,217,232,.8)}
+.shock-mount-rear{border-left:3px solid rgba(197,243,107,.8)}
+.shock-mount-side h3{margin:0 0 13px;font-size:13px}
+.shock-mount-front h3{color:var(--cyan)}
+.shock-mount-rear h3{color:var(--accent)}
+.shock-mount-side label{display:block;margin-top:12px;padding-top:11px;border-top:1px solid rgba(165,180,203,.1)}
+.shock-side{padding:18px}
+.shock-fields{gap:17px}
+@media(max-width:700px){.shock-mount-groups{grid-template-columns:1fr;gap:12px}.shock-mount-side{padding:14px}}
