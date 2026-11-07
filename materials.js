@@ -229,8 +229,8 @@
       url:'https://www.associatedelectrics.com/teamassociated/'
     })),
     ...[
-      ['Avant','91830','Vert','3.10'],['Avant','91831','Blanc','3.40'],['Avant','91832','Gris','3.61'],['Avant','91833','Bleu','3.91'],['Avant','91834','Jaune','4.30'],['Avant','91835','Rouge','4.60'],['Avant','91836','Orange','5.10'],
-      ['Arrière','91837','Vert','1.81'],['Arrière','91838','Blanc','1.91'],['Arrière','91839','Gris','2.00'],['Arrière','91840','Bleu','2.20'],['Arrière','91841','Jaune','2.30']
+      ['Avant','91830','Vert','3.1'],['Avant','91831','Blanc','3.4'],['Avant','91832','Gris','3.6'],['Avant','91833','Bleu','3.9'],['Avant','91834','Jaune','4.3'],['Avant','91835','Rouge','4.6'],['Avant','91836','Orange','5.1'],
+      ['Arrière','91837','Vert','1.8'],['Arrière','91838','Blanc','1.9'],['Arrière','91839','Gris','2.0'],['Arrière','91840','Bleu','2.2'],['Arrière','91841','Jaune','2.3']
     ].map(([position,reference,color,rate]) => ({
       brand:'Team Associated', category:'Ressort',
       name:`RC10B6.2 — ${position} — ${color} (${rate} lb/in)`,
@@ -239,8 +239,8 @@
       url:'https://www.sodialed.com/rc-setup-tips/team-associated-rc10b6-2-manual'
     })),
     ...[
-      ['Avant','91940','Blanc','3.3'],['Avant','91941','Gris','3.4'],['Avant','91942','Bleu','3.6'],['Avant','91943','Jaune','3.8'],['Avant','91944','Rouge','4.0'],['Avant','91945','Orange','4.3'],['Avant','91946','Violet','4.6'],
-      ['Arrière','91947','Vert','1.8'],['Arrière','91948','Blanc','1.9'],['Arrière','91949','Gris','2.0'],['Arrière','91950','Bleu','2.2'],['Arrière','91951','Jaune','2.3']
+      ['Avant','91939','Vert','3.1'],['Avant','91940','Blanc','3.3'],['Avant','91941','Gris','3.4'],['Avant','91942','Bleu','3.6'],['Avant','91943','Jaune','3.8'],['Avant','91944','Rouge','4.0'],['Avant','91945','Orange','4.3'],['Avant','91946','Violet','4.6'],
+      ['Arrière','91961','Noir','1.7'],['Arrière','91947','Vert','1.8'],['Arrière','91948','Blanc','1.9'],['Arrière','91949','Gris','2.0'],['Arrière','91950','Bleu','2.2'],['Arrière','91951','Jaune','2.3'],['Arrière','91957','Rouge','2.4']
     ].map(([position,reference,color,rate]) => ({
       brand:'Team Associated', category:'Ressort',
       name:`RC10B7 — ${position} — ${color} (${rate} lb/in)`,
@@ -293,9 +293,9 @@
       ['Avant','A750','Orange'],['Avant','A775','Green'],['Avant','A800','Pink'],['Avant','A850','Red'],['Avant','A875','Yellow'],['Avant','A900','Gold'],
       ['Arrière','YOKYS-A1200','Green'],['Arrière','YOKYS-A1175','Orange']
     ].map(([position,reference,colour]) => ({
-      brand:'Yokomo', category:'Ressort', name:'Ressort '+position+' TT 1/10 — '+colour,
+      brand:'Yokomo', category:'Ressort', name:'Ressort '+position+' TT 1/10 — '+colour+' — taux non communiqué',
       reference, compatibility:'Buggy 1/10 Yokomo — vérifier longueur et diamètre',
-      detail:'Référence de ressort Yokomo issue des tableaux de ressorts TT 1/10 ; vérifier la famille de châssis avant montage.',
+      detail:'Couleur : '+colour+'. Dureté : taux lb/in non communiqué dans la documentation consultée. Référence de ressort Yokomo issue des tableaux TT 1/10 ; vérifier la famille de châssis avant montage.',
       url:'https://www.sodialed.com/rc-setup-tips/yokomo-1-10-off-road-car-shock-spring-list'
     })),
     // Graisses HUDY, Team Associated et Tamiya.
