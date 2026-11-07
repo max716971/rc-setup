@@ -165,7 +165,7 @@ function updateSetupFilterOptions(){
 function updateComparisonOptions(){
   ['compareSetupA','compareSetupB'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const current=el.value;el.innerHTML='<option value="">Choisir un setup…</option>'+state.setups.map(s=>{const car=getCarById(s.carId),track=getTrackById(s.trackId);return `<option value="${escapeHtml(s.id)}">${escapeHtml(s.setupName||car?.name||'Voiture')} — ${escapeHtml(track?.name||'Piste')} — ${escapeHtml(s.sessionDate||formatDate(s.createdAt))}</option>`;}).join('');if(state.setups.some(s=>s.id===current))el.value=current;});
 }
-function toggleSetupFavorite(id){const setup=state.setups.find(s=>s.id===id);if(!setup)return;setup.favorite=!setup.favorite;setup.updatedAt=new Date().toISOString();if(saveState()){renderAll();showToast(setup.favorite?'Ajouté aux favoris.':'Retiré des favoris.');}}
+function toggleSetupFavorite(id){const setup=state.setups.find(s=>s.id===id);if(!setup)return;const previous={...setup};setup.favorite=!setup.favorite;setup.updatedAt=new Date().toISOString();if(saveState()){renderAll();showToast(setup.favorite?'Ajouté aux favoris.':'Retiré des favoris.');}else Object.assign(setup,previous);}
 function restoreSetupVersion(setupId,historyIndex){
   const index=state.setups.findIndex(s=>s.id===setupId);if(index<0)return;
   const current=state.setups[index],history=[...(current.history||[])],entry=history[historyIndex];
@@ -173,7 +173,7 @@ function restoreSetupVersion(setupId,historyIndex){
   const now=new Date().toISOString();
   history.push({savedAt:now,data:{...current,photos:[...(current.photos||[])],history:[]}});
   state.setups[index]={...entry.data,id:current.id,createdAt:current.createdAt,updatedAt:now,history:history.slice(-20)};
-  if(saveState()){const dialog=document.getElementById('setupDialog');if(dialog.open)dialog.close();renderAll();showSetup(setupId);showToast('Ancienne version restaurée.');}
+  if(saveState()){const dialog=document.getElementById('setupDialog');if(dialog.open)dialog.close();renderAll();showSetup(setupId);showToast('Ancienne version restaurée.');}else state.setups[index]=current;
 }
 
 function openSetupEditor(id,duplicate=false){
@@ -203,7 +203,7 @@ function updateVehicleSpecificFields(){
   const hint=document.getElementById('vehicleSetupHint');
   if(hint)hint.textContent=car?[car.brand||'',car.name,car.drive||'architecture non précisée'].filter(Boolean).join(' · ')+' · '+count+' différentiel'+(count>1?'s':'')+' configuré'+(count>1?'s':'')+'. Modifiable dans le Garage.':'Sélectionne une voiture pour afficher ses différentiels.';
 }
-function parseLapTime(value){const text=String(value||'').trim().replace(',','.');if(!text)return null;if(text.includes(':')){const p=text.split(':').map(Number);if(p.length===2&&p.every(Number.isFinite))return p[0]*60+p[1];}const n=Number(text);return Number.isFinite(n)&&n>0?n:null;}
+function parseLapTime(value){const text=String(value||'').trim().replace(',','.');if(!text)return null;if(text.includes(':')){const p=text.split(':');if(p.length!==2)return null;const minutes=Number(p[0]),seconds=Number(p[1]);if(!Number.isInteger(minutes)||minutes<0||!Number.isFinite(seconds)||seconds<0||seconds>=60)return null;const total=minutes*60+seconds;return total>0?total:null;}const n=Number(text);return Number.isFinite(n)&&n>0?n:null;}
 function renderPerformanceTrend(){
   const root=document.getElementById('performanceTrend');if(!root)return;
   const samples=state.setups.filter(s=>parseLapTime(s.lapTime)!==null).sort((a,b)=>new Date(a.sessionDate||a.createdAt)-new Date(b.sessionDate||b.createdAt)).slice(-10);
@@ -428,7 +428,7 @@ function handleTrackSubmit(event) {
     showToast('Piste mise à jour.');
   } else {
     state.tracks.unshift({ id: uid('track'), ...data, createdAt: new Date().toISOString() });
-    if (!saveState()) return;
+    if (!saveState()) { state.tracks.shift(); return; }
     showToast('Piste ajoutée à ton carnet.');
   }
   editingTrackId = null;
@@ -537,21 +537,27 @@ function showCarSetups(id) {
 function removeCar(id) {
   const car = getCarById(id);
   if (!car || !confirm(`Supprimer « ${car.name} » et les setups associés ?`)) return;
+  const previousCars=state.cars,previousSetups=state.setups;
   state.cars = state.cars.filter((entry) => entry.id !== id);
   state.setups = state.setups.filter((setup) => setup.carId !== id);
-  saveState(); renderAll(); showToast('Voiture et setups associés supprimés.');
+  if(!saveState()){state.cars=previousCars;state.setups=previousSetups;return;}
+  renderAll(); showToast('Voiture et setups associés supprimés.');
 }
 function removeTrack(id) {
   const track = getTrackById(id);
   if (!track || !confirm(`Supprimer « ${track.name} » et les setups associés ?`)) return;
+  const previousTracks=state.tracks,previousSetups=state.setups;
   state.tracks = state.tracks.filter((entry) => entry.id !== id);
   state.setups = state.setups.filter((setup) => setup.trackId !== id);
-  saveState(); renderAll(); showToast('Piste et setups associés supprimés.');
+  if(!saveState()){state.tracks=previousTracks;state.setups=previousSetups;return;}
+  renderAll(); showToast('Piste et setups associés supprimés.');
 }
 function removeSetup(id) {
   if (!confirm('Supprimer ce setup ?')) return;
+  const previousSetups=state.setups;
   state.setups = state.setups.filter((setup) => setup.id !== id);
-  saveState(); renderAll(); showToast('Setup supprimé.');
+  if(!saveState()){state.setups=previousSetups;return;}
+  renderAll(); showToast('Setup supprimé.');
 }
 
 function showSetup(id) {
@@ -652,7 +658,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=89').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=90').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
