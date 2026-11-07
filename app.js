@@ -5777,6 +5777,7 @@ let deferredPrompt = null;
 let toastTimer;
 let pendingPhotos = [];
 let editingSetupId = null;
+let editingTrackId = null;
 let setupDraftSource = null;
 let skipSetupReset = false;
 const emptyStateTemplate = document.getElementById('emptyStateTemplate');
@@ -5865,9 +5866,10 @@ function renderTracks() {
   state.tracks.forEach((track) => {
     const item = document.createElement('article');
     item.className = 'list-item entity-card';
-    item.innerHTML = `<div class="item-avatar track-avatar">🏁</div><div class="item-main"><h3>${escapeHtml(track.name)}</h3><p class="item-sub">${escapeHtml(track.surface || 'Surface non renseignée')} ${track.grip ? `· Adhérence ${escapeHtml(track.grip)}` : ''} ${track.type ? `· ${escapeHtml(track.type)}` : ''} ${track.location ? `· ${escapeHtml(track.location)}` : ''}</p>${track.details ? `<p class="item-detail">${escapeHtml(track.details)}</p>` : ''}</div><button class="icon-button danger-action delete-track" data-id="${escapeHtml(track.id)}" aria-label="Supprimer ${escapeHtml(track.name)}" type="button">×</button>`;
+    item.innerHTML = `<div class="item-avatar track-avatar">🏁</div><div class="item-main"><h3>${escapeHtml(track.name)}</h3><p class="item-sub">${escapeHtml(track.surface || 'Surface non renseignée')} ${track.grip ? `· Adhérence ${escapeHtml(track.grip)}` : ''} ${track.type ? `· ${escapeHtml(track.type)}` : ''} ${track.location ? `· ${escapeHtml(track.location)}` : ''}</p>${track.details ? `<p class="item-detail">${escapeHtml(track.details)}</p>` : ''}</div><div class="item-actions"><button class="button button-soft edit-track" data-id="${escapeHtml(track.id)}" type="button">Modifier</button><button class="icon-button danger-action delete-track" data-id="${escapeHtml(track.id)}" aria-label="Supprimer ${escapeHtml(track.name)}" type="button">×</button></div>`;
     container.append(item);
   });
+  container.querySelectorAll('.edit-track').forEach((button) => button.addEventListener('click', () => openTrackEditor(button.dataset.id)));
   container.querySelectorAll('.delete-track').forEach((button) => button.addEventListener('click', () => removeTrack(button.dataset.id)));
 }
 
@@ -6054,12 +6056,40 @@ function handleCarSubmit(event) {
   state.cars.unshift({ id: uid('car'), ...data, createdAt: new Date().toISOString() });
   saveState(); renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Voiture personnalisée ajoutée au garage.');
 }
+function openTrackEditor(id) {
+  const track = getTrackById(id);
+  if (!track) return;
+  const form = document.getElementById('trackForm');
+  editingTrackId = id;
+  for (const name of ['name', 'surface', 'grip', 'type', 'location', 'details']) {
+    const field = form.elements.namedItem(name);
+    if (field) field.value = track[name] || '';
+  }
+  form.querySelector('button[type="submit"]').textContent = 'Enregistrer les modifications';
+  form.classList.remove('hidden');
+  form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 function handleTrackSubmit(event) {
   event.preventDefault();
   const data = formValues(event.target, ['name', 'surface', 'grip', 'type', 'location', 'details']);
   if (!data.name) return;
-  state.tracks.unshift({ id: uid('track'), ...data, createdAt: new Date().toISOString() });
-  saveState(); renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Piste ajoutée à ton carnet.');
+  if (editingTrackId) {
+    const index = state.tracks.findIndex(track => track.id === editingTrackId);
+    if (index < 0) { showToast('Piste introuvable.'); return; }
+    const previous = state.tracks[index];
+    state.tracks[index] = { ...previous, ...data, updatedAt: new Date().toISOString() };
+    if (!saveState()) { state.tracks[index] = previous; return; }
+    showToast('Piste mise à jour.');
+  } else {
+    state.tracks.unshift({ id: uid('track'), ...data, createdAt: new Date().toISOString() });
+    if (!saveState()) return;
+    showToast('Piste ajoutée à ton carnet.');
+  }
+  editingTrackId = null;
+  renderAll();
+  event.target.reset();
+  event.target.classList.add('hidden');
+  event.target.querySelector('button[type="submit"]').textContent = 'Enregistrer';
 }
 
 function readFileAsDataURL(file) {
@@ -6274,7 +6304,7 @@ document.getElementById('carCatalogEra').addEventListener('change', updateCarCat
 document.getElementById('carCatalogSearch').addEventListener('input', updateCarCatalogOptions);
 document.getElementById('addCatalogCar').addEventListener('click', handleCarCatalogAdd);
 updateCarCatalogOptions();
-document.getElementById('trackForm').addEventListener('submit', handleTrackSubmit);
+document.getElementById('trackForm').addEventListener('submit', handleTrackSubmit);\ndocument.getElementById('trackForm').addEventListener('reset', () => { editingTrackId = null; const submit=document.querySelector('#trackForm button[type=\"submit\"]'); if(submit) submit.textContent='Enregistrer'; });
 document.getElementById('setupForm').addEventListener('submit', handleSetupSubmit);
 document.getElementById('setupForm').elements.namedItem('carId').addEventListener('change',updateVehicleSpecificFields);
 ['frontDiffType','centerDiffType','rearDiffType','slipperPresence'].forEach(name=>document.getElementById('setupForm').elements.namedItem(name).addEventListener('change',updateVehicleSpecificFields));
