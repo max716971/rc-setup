@@ -1344,6 +1344,1382 @@ const CAR_CATALOG = [
     "scale": "1/10",
     "drive": "4WD",
     "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 (rear motor)",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 Mid-Motor",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 2.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 3.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 4.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 4.0 SR",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 5.0 AC",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 5.0 DC",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22 5.0 DC Elite",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "TLR 22X AC",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "TLR 22X DC",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "TLR 22X DC Elite",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22-4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "TLR 22X-4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "TLR 22X-4 2.0 AC",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "TLR 22X-4 2.0 DC",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22T",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22T 2.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22T 3.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22T 4.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22T Mid-Motor",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22SCT",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22SCT 2.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "TLR 22SCT 3.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "JRX2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XX",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XX CR",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XXX",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XXX BK2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XXX-NT",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XX-4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XX-4 Worlds Edition",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XXX-SCB",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XXX-SCT",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Vintage",
+    "name": "XXX-T",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-X",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-X 2.0",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-XE",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-XE 2.0",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-XE 2.0 Elite",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-E 3.0",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-E 4.0",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-XT",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-XTE",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "8IGHT-T 4.0",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "22S",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "Mini-B",
+    "scale": "1/16",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "Mini-T 2.0",
+    "scale": "1/16",
+    "drive": "4WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "TENACITY DB Pro",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Desert Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "Baja Rey",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Desert Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "LMT",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Team Losi",
+    "era": "Moderne",
+    "name": "Lasernut U4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Desert Truck"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 CA",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 CAL2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 CAL3",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 CAL3.1",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 DT",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 DTM",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 DTM2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 DTM3",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 DTM3.1",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2 DTMW",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-2T",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-4SF",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-4SF2",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "B-MAX2 MR2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "B-MAX2 MR3",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "B-MAX2 RS",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "B-MAX4 III",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "RO1.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "RO2.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "SO1.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "SO2.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "SO2.0 Dirt Edition",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "SO3.0",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "MO1.0",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "MO2.0",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "MO3.0",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "BD7",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "BD8",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "BD9",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "BD10",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "BD11",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "BD12",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "BDR",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "MR-4BC",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "YZ-10",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "Dog Fighter 870C",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "Wonder Dog Fighter",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "Super Dog Fighter Works 91",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "Works 92",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Vintage",
+    "name": "Works 93 WCS",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "YD-2",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "YD-2E",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "YD-2S",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "YD-2Z",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "RD1.0",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "RD2.0",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "SD1.0",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "SD2.0",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Yokomo",
+    "era": "Moderne",
+    "name": "SD3.0",
+    "scale": "1/10",
+    "drive": "RWD",
+    "type": "Drift"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Moderne",
+    "name": "MSB1",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Moderne",
+    "name": "MSX1",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-5",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-6",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-7",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-7R",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-8",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Moderne",
+    "name": "MBX-8R",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-8 Eco",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Moderne",
+    "name": "MBX-8R Eco",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Moderne",
+    "name": "MBX-9",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-6T",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-7T",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-8T",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Moderne",
+    "name": "MBX-8TR",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MBX-8T Eco",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MRX-5",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Piste"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MRX-6",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Piste"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MRX-7",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Piste"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MTX-5",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MTX-6",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MTX-7",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Moderne",
+    "name": "MTX-7R",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MTC1",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Vintage",
+    "name": "MTC2",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Mugen Seiki",
+    "era": "Moderne",
+    "name": "MTC3",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Vintage",
+    "name": "X-5",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Vintage",
+    "name": "X-5 Squared",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Vintage",
+    "name": "X-6",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Vintage",
+    "name": "X-6 Squared",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Moderne",
+    "name": "X-6 Cubed",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Vintage",
+    "name": "X-60",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Moderne",
+    "name": "X-60 CF",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Vintage",
+    "name": "SCX-60",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "X-Factory",
+    "era": "Moderne",
+    "name": "SCX-60 CF",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Bandit",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Bandit VXL",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Rustler",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Rustler VXL",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Rustler 4X4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Rustler 4X4 VXL",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Stampede",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Stampede VXL",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Stampede 4X4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Stampede 4X4 VXL",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Slash 2WD",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Slash 2WD VXL",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Slash 4X4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Slash 4X4 VXL",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Slash 4X4 Ultimate",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Mudboss Slash",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Bigfoot",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Bigfoot No. 1",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Ford F-150 Raptor",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Drag Slash",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Drag"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Jato 4X4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Stadium Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Maxx",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "X-Maxx",
+    "scale": "1/7",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "XRT",
+    "scale": "1/7",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Summit",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "E-Revo 2.0",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Revo 3.3",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Sledge",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "TRX-4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Crawler"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "TRX-4 Sport",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Crawler"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "TRX-6",
+    "scale": "1/10",
+    "drive": "6WD",
+    "type": "Crawler"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "TRX-4M",
+    "scale": "1/18",
+    "drive": "4WD",
+    "type": "Crawler"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Mini Maxx",
+    "scale": "1/18",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Traxxas",
+    "era": "Moderne",
+    "name": "Mini XRT",
+    "scale": "1/18",
+    "drive": "4WD",
+    "type": "Monster Truck"
   }
 ];
 const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
