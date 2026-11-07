@@ -805,8 +805,9 @@
     if (!input || input.dataset.libraryEnhanced) continue;
     input.dataset.libraryEnhanced = 'true';
     const picker = document.createElement('div'); picker.className = 'setup-library-picker';
-    const label = document.createElement('span'); label.textContent = 'Rechercher dans la bibliothèque';
-    const search = document.createElement('input'); search.type = 'search'; search.placeholder = 'Marque, nom ou référence…'; search.setAttribute('aria-label', label.textContent); search.dataset.librarySearch = 'true';
+    const insertSide = fieldName === 'frontInserts' ? 'avant' : fieldName === 'rearInserts' ? 'arrière' : '';
+    const label = document.createElement('span'); label.textContent = insertSide ? `Bibliothèque · inserts ${insertSide}` : 'Rechercher dans la bibliothèque';
+    const search = document.createElement('input'); search.type = 'search'; search.placeholder = insertSide ? `Rechercher un insert ${insertSide}…` : 'Marque, nom ou référence…'; search.setAttribute('aria-label', label.textContent); search.dataset.librarySearch = 'true';
     const select = document.createElement('select'); select.dataset.libraryCategory = categories; select.setAttribute('aria-label', 'Choisir un matériel de la bibliothèque');
     search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
     select.addEventListener('change', () => { if (select.value) input.value = select.value; });
