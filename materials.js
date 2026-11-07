@@ -202,7 +202,7 @@
   if (!setupForm) return;
   const pickerMap = [
     ['frontTires','Pneus / roues'], ['rearTires','Pneus / roues'], ['inserts','Insert pneu'], ['wheels','Pneus / roues'],
-    ['frontShocks','Huile amortisseur'], ['rearShocks','Huile amortisseur'], ['springs','Ressort'],
+    ['frontShocks','Huile amortisseur'], ['frontSpring','Ressort'], ['rearShocks','Huile amortisseur'], ['rearSpring','Ressort'],
     ['differentials','Huile différentiel|Graisse'], ['centerDiff','Huile différentiel|Graisse'],
     ['motor','Moteur'], ['escModel','Variateur (ESC)'], ['servoSteering','Servo'],
     ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur'],
