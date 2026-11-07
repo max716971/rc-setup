@@ -835,7 +835,7 @@
     'OPTIMA': 'https://6mik-racing.com/wp-content/uploads/2020/04/logo-OPTIMA-2016-1200.jpg',
     '6MIK': 'https://www.rcteam.com/cdn/shop/files/6mik-planche-de-stickers-logo-pg01_large.jpg?v=1705739978',
     'Cayote': 'https://www.hearnshobbies.com/cdn/shop/files/banner_1.png?v=1731377454&width=2169',
-    'Corsatec': 'https://static.wixstatic.com/media/ffd67b_a3ca8f4034384219bbc7b9a3d1545674~mv2.png',
+    'Corsatec': 'https://www.corsatec.net/img/cms/Logo%20%281%29.png',
     'Hot Race Tires': 'https://www.hotrace-asia.com/media/12/45/d9/1746796312/hotrace.png?ts=1746796313',
     'Jetko': 'https://techtonichobbies.com.au/cdn/shop/products/logo.jpg?v=1697259873&width=901',
     'Power HD': 'https://chd.hk/images/logo.jpg',
@@ -852,9 +852,9 @@
     'HUDY': 'https://one7rc.co.nz/cdn/shop/files/Hudyproductimage_3a316267-126f-4592-b00a-2f1c3a8af14e_1200x1200.jpg?v=1765234176',
     'JConcepts': 'https://rcvisions.com/cdn/shop/collections/JConcepts.jpg?v=1646700975&width=1081',
     'LRP': 'https://wp.logos-download.com/wp-content/uploads/2024/01/LRP_Logo-3000x899.png',
-    'Pro-Line': brandWordmark('PRO-LINE', '#dc2b30', '#171717'),
+    'Pro-Line': 'https://images.seeklogo.com/logo-png/22/1/pro-line-logo-png_seeklogo-226869.png',
     'Reedy': brandWordmark('REEDY', '#dc2b30', '#171717'),
-    'Tamiya': brandWordmark('TAMIYA', '#dc2b30', '#171717'),
+    'Tamiya': 'https://ih1.redbubble.net/image.1788008974.4653/raf,360x360,075,t,fafafa:ca443f4786.webp',
     'TLR': brandWordmark('TLR', '#dc2b30', '#171717')
   };
   const root = document.getElementById('materialsApp');
