@@ -820,19 +820,14 @@
       url:'https://www.sodialed.com/rc-setup-tips/team-associated-rc10-b7-1-manual-pdf'
     })),
   ];
-  const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA', 'Hobbywing', 'XRT Racing', 'XTR Racing', '6MIK', 'Team Associated', '1UP Racing', 'SRT', 'Power HD', 'Savöx', 'Schumacher'];
+  const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA', 'Hobbywing', 'XTR Racing', '6MIK', 'Team Associated', '1UP Racing', 'SRT', 'Power HD', 'Savöx', 'Schumacher'];
   const root = document.getElementById('materialsApp');
   if (!root) return;
   let activeTab = 'catalog';
   function loadSaved() { try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); return Array.isArray(data) ? data : []; } catch { return []; } }
   // Move automatically seeded catalogue entries out of the personal inventory.
   const legacyPrefixes = ['seed-hobbywing-esc-v1-', 'seed-hobbywing-motors-v3-', 'seed-rsrc-xrt-oils-v3-', 'seed-associated-spring-v1-'];
-  const RESET_INVENTORY_KEY = 'rc-setup-materials-reset-20261107';
   let savedItems = loadSaved();
-  if (localStorage.getItem(RESET_INVENTORY_KEY) !== 'done') {
-    savedItems = [];
-    try { localStorage.setItem(STORAGE_KEY, '[]'); localStorage.setItem(RESET_INVENTORY_KEY, 'done'); } catch {}
-  }
   const legacyCatalogItems = savedItems.filter(item => legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
   for (const item of legacyCatalogItems) {
     if (!catalog.some(existing => existing.brand === item.brand && existing.name === item.name && existing.reference === item.reference)) catalog.push({ ...item, id: undefined });
@@ -895,6 +890,13 @@
     event.preventDefault(); const d = Object.fromEntries(new FormData(event.currentTarget).entries());
     savedItems.unshift({ id: `custom-${Date.now()}-${Math.random().toString(16).slice(2,7)}`, brand: d.brand.trim(), category: d.category, name: d.name.trim(), reference: d.reference.trim(), quantity: Math.max(0, Math.floor(Number(d.quantity)||0)), compatibility: d.compatibility.trim(), detail: d.detail.trim(), url: d.url.trim() });
     if (persist()) { activeTab = 'mine'; render(); window.dispatchEvent(new Event('rc-materials-updated')); }
+  }
+  // Une référence Team Associated identifie une seule pièce : fusionne les doublons B7/B7.1.
+  const b7SpringRefs = new Set(['91940','91941','91942','91943','91944','91945','91946','91947','91948','91949','91950','91951']);
+  const preferredB7Springs = new Map(catalog.filter(item => item.brand === 'Team Associated' && b7SpringRefs.has(item.reference) && item.name.includes('RC10B7 / B7.1') && !item.name.includes('Team Kit')).map(item => [item.reference,item]));
+  for (let i = catalog.length - 1; i >= 0; i--) {
+    const item = catalog[i];
+    if (item.brand === 'Team Associated' && b7SpringRefs.has(item.reference) && preferredB7Springs.get(item.reference) !== item) catalog.splice(i,1);
   }
   catalog.forEach((item) => { item.id = `${item.brand}|${item.reference}|${item.name}`; });
   render();
