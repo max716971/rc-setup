@@ -5980,81 +5980,89 @@ function printSetupDetails(){
   printable.querySelectorAll('.item-actions,.restore-version,.button,.toast,.pdf-action-banner').forEach(node=>node.remove());
   const heading=printable.querySelector('h2')?.textContent?.trim()||'Fiche RC SETUP';
   const subtitle=printable.querySelector('.dialog-subtitle')?.textContent?.trim()||'Fiche de réglages et de suivi';
-  const readValue=(...labels)=>{const nodes=[...printable.querySelectorAll('.detail-group dl>div')];const found=nodes.find(node=>labels.some(label=>node.querySelector('dt')?.textContent?.toLowerCase().includes(label.toLowerCase())));return found?.querySelector('dd')?.textContent?.trim()||'Non renseigné';};
-  const isSetup=printable.querySelector('.kicker')?.textContent?.includes('FICHE DE RÉGLAGES');
-  const setupDiagram=isSetup ? '<section class="print-car-layout"><div class="print-car-heading"><span class="kicker">PLAN DE RÉGLAGES · VUE DE DESSUS</span><strong>Repérage des principaux éléments</strong><small>Schéma indicatif d’un buggy TT 1/10 — les valeurs proviennent de cette fiche.</small></div><div class="print-car-grid"><div class="print-callout"><b>01 · TRAIN AVANT</b><strong>Pneus : '+escapeHtml(readValue('Pneus avant'))+'</strong><span>Inserts : '+escapeHtml(readValue('Inserts avant'))+'</span><span>Ressort : '+escapeHtml(readValue('Ressort avant'))+'</span><span>Amortisseurs : '+escapeHtml(readValue('Huile amortisseur avant'))+'</span><span>Fixation tour / triangle : '+escapeHtml(readValue('Tour d’amortisseur avant'))+' / '+escapeHtml(readValue('Position amortisseur avant'))+'</span><span>Hauteur : '+escapeHtml(readValue('Hauteur de caisse avant'))+'</span><span>Géométrie : '+escapeHtml(readValue('Carrossage avant'))+' · '+escapeHtml(readValue('Pincement / ouverture avant'))+'</span></div><div class="print-car-drawing"><svg viewBox="0 0 360 500" role="img" aria-label="Buggy TT 1/10 vu du dessus"><g stroke="#24364d" stroke-width="5" stroke-linejoin="round"><path d="M112 76 Q180 42 248 76 L264 132 L250 202 L247 322 L264 384 L248 432 Q180 463 112 432 L96 384 L113 322 L110 202 L96 132 Z" fill="#e9eef3"/><path d="M122 104 Q180 78 238 104 L226 180 L134 180 Z" fill="#b8d68a"/><path d="M134 188 L226 188 L239 310 L121 310 Z" fill="#d9e2eb"/><path d="M146 184 L214 184 L225 315 L135 315 Z" fill="#aebdce"/><path d="M151 211 L209 211 L209 287 L151 287 Z" fill="#354a63"/><path d="M130 145 L230 145 M130 345 L230 345 M93 133 L267 133 M93 382 L267 382" fill="none" stroke="#587b28" stroke-width="8"/><path d="M90 105 L72 105 L60 160 L80 172 L101 157 Z M270 105 L288 105 L300 160 L280 172 L259 157 Z M90 405 L72 405 L60 350 L80 338 L101 353 Z M270 405 L288 405 L300 350 L280 338 L259 353 Z" fill="#26384e"/><path d="M157 165 L203 165 M157 330 L203 330" fill="none" stroke="#587b28" stroke-width="5"/></g><g fill="#d7e1ed" stroke="#24364d" stroke-width="3"><circle cx="180" cy="235" r="18"/><circle cx="180" cy="270" r="18"/></g><g fill="#24364d" font-family="Arial" font-size="11" font-weight="700"><text x="180" y="28" text-anchor="middle">AVANT</text><text x="180" y="484" text-anchor="middle">ARRIÈRE</text></g></svg></div><div class="print-callout"><b>02 · TRAIN ARRIÈRE</b><strong>Pneus : '+escapeHtml(readValue('Pneus arrière'))+'</strong><span>Inserts : '+escapeHtml(readValue('Inserts arrière'))+'</span><span>Ressort : '+escapeHtml(readValue('Ressort arrière'))+'</span><span>Amortisseurs : '+escapeHtml(readValue('Huile amortisseur arrière'))+'</span><span>Fixation tour / triangle : '+escapeHtml(readValue('Tour d’amortisseur arrière'))+' / '+escapeHtml(readValue('Position amortisseur arrière'))+'</span><span>Hauteur : '+escapeHtml(readValue('Hauteur de caisse arrière'))+'</span><span>Géométrie : '+escapeHtml(readValue('Carrossage arrière'))+' · '+escapeHtml(readValue('Pincement / ouverture arrière'))+'</span></div></div><div class="print-layout-foot"><span><b>03 · TRANSMISSION</b> Différentiels et slipper : voir la rubrique transmission.</span><span><b>04 · ÉLECTRONIQUE</b> Moteur, ESC et radio : voir les rubriques détaillées.</span></div></section>' : '';
-  const setupReferenceLayout=isSetup ? '<section class="print-reference-sheet"><div class="print-section-head"><span class="kicker">RÉFÉRENCE TECHNIQUE · STYLE FICHE COMPÉTITION</span><h2>Vue d’ensemble du réglage</h2><p>Les champs non renseignés restent volontairement visibles comme points à compléter.</p></div><div class="print-reference-grid"><article><b>PISTE & CONDITIONS</b><span>Surface : '+escapeHtml(readValue('Surface'))+'</span><span>Adhérence : '+escapeHtml(readValue('Adhérence'))+'</span><span>Température : '+escapeHtml(readValue('Température'))+'</span><span>Météo : '+escapeHtml(readValue('Météo'))+'</span></article><article><b>PNEUS & INSERTS</b><span>Avant : '+escapeHtml(readValue('Pneus avant'))+'</span><span>Insert avant : '+escapeHtml(readValue('Inserts avant'))+'</span><span>Arrière : '+escapeHtml(readValue('Pneus arrière'))+'</span><span>Insert arrière : '+escapeHtml(readValue('Inserts arrière'))+'</span></article><article><b>SUSPENSION AVANT</b><span>Ressort : '+escapeHtml(readValue('Ressort avant'))+'</span><span>Huile / piston : '+escapeHtml(readValue('Huile amortisseur avant'))+' / '+escapeHtml(readValue('Piston amortisseur avant'))+'</span><span>Tour / triangle : '+escapeHtml(readValue('Tour d’amortisseur avant'))+' / '+escapeHtml(readValue('Position amortisseur avant'))+'</span><span>Droop : '+escapeHtml(readValue('Débattement avant'))+'</span></article><article><b>SUSPENSION ARRIÈRE</b><span>Ressort : '+escapeHtml(readValue('Ressort arrière'))+'</span><span>Huile / piston : '+escapeHtml(readValue('Huile amortisseur arrière'))+' / '+escapeHtml(readValue('Piston amortisseur arrière'))+'</span><span>Tour / triangle : '+escapeHtml(readValue('Tour d’amortisseur arrière'))+' / '+escapeHtml(readValue('Position amortisseur arrière'))+'</span><span>Droop : '+escapeHtml(readValue('Débattement arrière'))+'</span></article></div><div class="print-geometry-grid"><article><b>GÉOMÉTRIE AVANT</b><span>Hauteur : '+escapeHtml(readValue('Hauteur de caisse avant'))+'</span><span>Carrossage : '+escapeHtml(readValue('Carrossage avant'))+'</span><span>Pincement : '+escapeHtml(readValue('Pincement / ouverture avant'))+'</span><span>Chasse : '+escapeHtml(readValue('Chasse avant'))+'</span><span>Ackermann : '+escapeHtml(readValue('Ackermann'))+'</span></article><article><b>GÉOMÉTRIE ARRIÈRE</b><span>Hauteur : '+escapeHtml(readValue('Hauteur de caisse arrière'))+'</span><span>Carrossage : '+escapeHtml(readValue('Carrossage arrière'))+'</span><span>Pincement : '+escapeHtml(readValue('Pincement / ouverture arrière'))+'</span><span>Barre antiroulis : '+escapeHtml(readValue('Barre antiroulis arrière'))+'</span><span>Lest : '+escapeHtml(readValue('Lest arrière'))+'</span></article></div><div class="print-axle-diagrams"><article><b>TRAIN AVANT · POINTS DE RÉGLAGE</b><svg viewBox="0 0 360 150" role="img" aria-label="Schéma indicatif du train avant"><g fill="none" stroke="#263750" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 30 H290 M70 120 H290" stroke-width="8"/><path d="M105 32 L145 70 L105 118 M255 32 L215 70 L255 118"/><path d="M145 70 L105 32 M215 70 L255 32 M145 70 L105 118 M215 70 L255 118"/><path d="M145 70 L215 70" stroke="#587b28" stroke-width="9"/><path d="M145 70 L125 28 M215 70 L235 28" stroke="#587b28" stroke-width="7"/><path d="M105 30 L65 30 M255 30 L295 30" stroke-width="10"/></g><g fill="#587b28" stroke="#fff" stroke-width="2"><circle cx="145" cy="70" r="8"/><circle cx="215" cy="70" r="8"/><circle cx="125" cy="28" r="6"/><circle cx="235" cy="28" r="6"/></g><g fill="#263750" font-family="Arial" font-size="10" font-weight="700"><text x="180" y="14" text-anchor="middle">TOUR / ANCRAGES</text><text x="180" y="145" text-anchor="middle">TRIANGLES · ROTULES · LARGEUR</text></g></svg><span>Repères : ancrages d’amortisseurs, triangles, rotules, direction et géométrie.</span></article><article><b>TRAIN ARRIÈRE · POINTS DE RÉGLAGE</b><svg viewBox="0 0 360 150" role="img" aria-label="Schéma indicatif du train arrière"><g fill="none" stroke="#263750" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 30 H290 M70 120 H290" stroke-width="8"/><path d="M105 32 L150 75 L105 118 M255 32 L210 75 L255 118"/><path d="M150 75 L210 75" stroke="#587b28" stroke-width="9"/><path d="M150 75 L125 28 M210 75 L235 28" stroke="#587b28" stroke-width="7"/><path d="M105 30 L65 30 M255 30 L295 30" stroke-width="10"/><path d="M150 75 L150 105 M210 75 L210 105" stroke-dasharray="4 4"/></g><g fill="#587b28" stroke="#fff" stroke-width="2"><circle cx="150" cy="75" r="8"/><circle cx="210" cy="75" r="8"/><circle cx="125" cy="28" r="6"/><circle cx="235" cy="28" r="6"/></g><g fill="#263750" font-family="Arial" font-size="10" font-weight="700"><text x="180" y="14" text-anchor="middle">TOUR / ANCRAGES</text><text x="180" y="145" text-anchor="middle">TRIANGLES · TRANSMISSION · PINCEMENT</text></g></svg><span>Repères : ancrages, triangles, points de fixation, transmission et pincement.</span></article></div><div class="print-checkline"><b>CONTRÔLE AVANT RUN</b><span>□ Hauteur vérifiée</span><span>□ Droop vérifié</span><span>□ Visserie contrôlée</span><span>□ Pneus préparés</span><span>□ Batterie chargée</span></div></section>' : '';
-  const now=new Date();
-  const dateLabel=now.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
-  const styles=`
-    :root{color-scheme:light;--ink:#17243a;--muted:#63718a;--line:#dce3ec;--accent:#587b28;--pale:#f2f6eb}
+  const isComparison=printable.querySelector('.kicker')?.textContent?.includes('COMPARAISON');
+  const sections=[...printable.querySelectorAll('.detail-group')];
+  const sectionCount=sections.length;
+  const filledCount=sections.reduce((sum,section)=>sum+section.querySelectorAll('dl>div,.compare-row:not(.compare-head)').length,0);
+  const dateLabel=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  const meta=subtitle.split('·').map(value=>value.trim()).filter(Boolean);
+  const sectionMarkup=sections.map((section,index)=>{
+    const clone=section.cloneNode(true);
+    clone.classList.add('print-section');
+    clone.dataset.section=String(index+1).padStart(2,'0');
+    if(clone.querySelector('.setup-gallery'))clone.classList.add('print-photo-section');
+    return clone.outerHTML;
+  }).join('');
+  const intro=printable.querySelector('.kicker')?.textContent?.trim()||'FICHE DE RÉGLAGES';
+  const compareHint=isComparison?'<span class="print-chip">COMPARATIF A / B</span>':'<span class="print-chip">CARNET DE RÉGLAGES · TT 1/10</span>';
+  const styles=String.raw\`
+    :root{color-scheme:light;--ink:#18212b;--muted:#66717d;--line:#d9dee3;--soft:#f2f4f5;--accent:#c8202f;--accent-dark:#8f1722}
     *{box-sizing:border-box}
-    html{background:#e9edf2}
-    body{max-width:980px;margin:24px auto;padding:0 30px 35px;color:var(--ink);background:#fff;font:10.5pt/1.52 Arial,Helvetica,sans-serif}
-    .print-masthead{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 0 17px;border-bottom:3px solid var(--accent)}
-    .print-brand{display:flex;align-items:center;gap:12px}
-    .print-mark{display:grid;place-items:center;width:43px;height:43px;border-radius:12px;background:#17243a;color:#d6f0a8;font-size:17px;font-weight:900;letter-spacing:-1px}
-    .print-brand small{display:block;color:var(--muted);font-size:8pt;font-weight:700;letter-spacing:2px}
-    .print-brand strong{display:block;font-size:19pt;letter-spacing:-.8px}
-    .print-meta{text-align:right;color:var(--muted);font-size:8.5pt}
-    .print-title{margin:23px 0 5px;font-size:22pt;line-height:1.15;letter-spacing:-.6px}
-    .print-subtitle{margin:0 0 21px;color:var(--muted);font-size:10pt}
-    .kicker{display:inline-block;margin:0 0 7px;padding:4px 8px;border-radius:5px;background:var(--pale);color:var(--accent);font-size:8pt;letter-spacing:1.5px;font-weight:800}
-    h1{font-size:22pt}h2{margin:10px 0;font-size:16pt;line-height:1.25}h3{margin:0 0 12px;padding:0 0 8px;border-bottom:1px solid var(--line);font-size:11.5pt;color:#263750}
-    p{margin:7px 0}
-    .detail-group{margin:15px 0;padding:15px 17px;border:1px solid var(--line);border-radius:10px;background:#fff;break-inside:avoid;page-break-inside:avoid}
-    dl{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin:0}
-    dl>div{display:grid;grid-template-columns:minmax(105px,.85fr) 1.15fr;gap:9px;align-items:start;padding:7px 0;border-bottom:1px solid #edf0f4;break-inside:avoid}
-    dt{color:var(--muted);font-size:9pt}dd{margin:0;color:var(--ink);font-weight:700;overflow-wrap:anywhere}
-    .setup-gallery,.car-photo-gallery,.car-detail-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
-    .setup-gallery img,.car-photo-gallery img,.car-detail-photos img{display:block;width:100%;max-width:100%;max-height:190px;aspect-ratio:4/3;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#f7f8fa}
-    .history-entry{padding:8px 0;border-bottom:1px solid var(--line)}
-    .compare-table{display:block;width:100%}
-    .compare-row{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:12px;padding:9px 10px;border-bottom:1px solid var(--line);break-inside:avoid}
-    .compare-row:nth-child(odd):not(.compare-head){background:#f7f9fb}
-    .compare-head{background:#edf2e6;color:#263750;font-weight:800;border-radius:6px}
+    html{background:#e9ecef}
+    body{max-width:980px;margin:24px auto;padding:0 34px 38px;background:#fff;color:var(--ink);font:9.2pt/1.42 Arial,Helvetica,sans-serif}
+    .print-topline{height:7px;margin:0 -34px;background:var(--accent)}
+    .print-masthead{display:flex;justify-content:space-between;align-items:center;padding:18px 0 13px;border-bottom:1px solid var(--line)}
+    .print-brand{display:flex;align-items:center;gap:10px}
+    .print-mark{display:grid;place-items:center;width:42px;height:42px;background:#202832;color:#fff;font-size:15pt;font-weight:900;letter-spacing:-1.5px}
+    .print-brand small{display:block;color:var(--muted);font-size:7pt;font-weight:700;letter-spacing:2.3px}
+    .print-brand strong{display:block;font-size:17pt;line-height:1;letter-spacing:-.7px}
+    .print-edition{text-align:right;color:var(--muted);font-size:7.5pt;line-height:1.6}
+    .print-edition b{color:var(--ink);letter-spacing:1.1px}
+    .print-hero{margin:21px 0 15px;padding:0 0 15px;border-bottom:3px solid var(--ink)}
+    .print-kicker{display:flex;align-items:center;gap:9px;margin-bottom:8px;color:var(--accent);font-size:7.5pt;font-weight:800;letter-spacing:1.4px}
+    .print-chip{display:inline-block;padding:4px 7px;background:#f8e9eb;color:var(--accent-dark);font-size:7pt;letter-spacing:.8px}
+    .print-title{margin:0 0 6px;font-size:23pt;line-height:1.08;letter-spacing:-.8px;font-weight:800}
+    .print-subtitle{margin:0;color:var(--muted);font-size:9pt}
+    .print-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:13px 0 18px}
+    .print-overview-item{min-height:48px;padding:8px 10px;background:var(--soft);border-left:3px solid var(--accent)}
+    .print-overview-item small{display:block;margin-bottom:3px;color:var(--muted);font-size:6.5pt;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+    .print-overview-item strong{display:block;font-size:8.5pt;overflow-wrap:anywhere}
+    .print-section{margin:12px 0;padding:12px 14px;border:1px solid var(--line);border-top:2px solid #333b44;background:#fff;break-inside:avoid;page-break-inside:avoid}
+    .print-section h3{margin:0 0 9px;padding:0 0 8px;border-bottom:1px solid var(--line);font-size:10.5pt;line-height:1.2;color:#202832}
+    .print-section dl{display:grid;grid-template-columns:1fr 1fr;column-gap:22px;margin:0}
+    .print-section dl>div{display:grid;grid-template-columns:minmax(112px,.9fr) minmax(0,1.1fr);gap:8px;align-items:start;padding:5px 0;border-bottom:1px solid #edf0f2;break-inside:avoid}
+    .print-section dt{color:var(--muted);font-size:7.7pt}
+    .print-section dd{margin:0;color:var(--ink);font-size:8pt;font-weight:700;overflow-wrap:anywhere}
+    .print-photo-section{break-inside:auto}
+    .setup-gallery,.car-photo-gallery,.car-detail-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:8px 0}
+    .setup-gallery a{display:block;break-inside:avoid}
+    .setup-gallery img,.car-photo-gallery img,.car-detail-photos img{display:block;width:100%;max-height:190px;aspect-ratio:4/3;object-fit:contain;border:1px solid var(--line);background:#f7f8f9}
+    .compare-table{width:100%}
+    .compare-row{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:10px;padding:7px 8px;border-bottom:1px solid var(--line);break-inside:avoid;font-size:8pt}
+    .compare-row:nth-child(odd):not(.compare-head){background:#f6f7f8}
+    .compare-head{background:#252d36;color:#fff;font-weight:800}
+    .history-entry{padding:6px 0;border-bottom:1px solid var(--line);font-size:8pt}
     .dialog-subtitle{color:var(--muted)}
-    .print-car-layout{margin:18px 0 22px;padding:16px;border:1px solid var(--line);border-radius:12px;background:#f8fafc;break-inside:avoid;page-break-inside:avoid}
-    .print-car-heading{display:grid;gap:4px;margin-bottom:12px}.print-car-heading strong{font-size:12pt}.print-car-heading small{color:var(--muted);font-size:8pt}
-    .print-car-grid{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:12px;align-items:center}
-    .print-car-drawing svg{display:block;width:100%;max-height:390px}
-    .print-callout{display:grid;gap:7px;padding:11px;border:1px solid #dce3ec;border-radius:9px;background:#fff;font-size:8pt;overflow-wrap:anywhere}
-    .print-callout b{color:#587b28;font-size:8pt;letter-spacing:.4px}.print-callout strong{font-size:8.5pt}.print-callout span{color:#63718a}
-    .print-layout-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:8pt;color:var(--muted)}
-    .print-layout-foot b{display:block;margin-bottom:3px;color:#263750}
-    .print-footer{display:flex;justify-content:space-between;gap:15px;margin-top:25px;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:8pt}
-    .print-reference-sheet{margin:18px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:#fff;break-inside:avoid;page-break-inside:avoid}
-    .print-section-head{margin-bottom:13px}.print-section-head h2{margin:3px 0;font-size:16pt}.print-section-head p{margin:3px 0;color:var(--muted);font-size:8pt}
-    .print-reference-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-    .print-reference-grid article,.print-geometry-grid article{display:grid;gap:5px;padding:11px;border:1px solid var(--line);border-radius:8px;background:#f8fafc;font-size:8pt}
-    .print-reference-grid b,.print-geometry-grid b{padding-bottom:5px;border-bottom:1px solid var(--line);color:#587b28;font-size:8pt;letter-spacing:.5px}
-    .print-reference-grid span,.print-geometry-grid span{color:#263750;overflow-wrap:anywhere}
-    .print-geometry-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
-    .print-checkline{display:flex;flex-wrap:wrap;gap:8px 15px;align-items:center;margin-top:12px;padding:10px;border-top:2px solid #587b28;background:#f2f6eb;font-size:8pt}
-    .print-axle-diagrams{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.print-axle-diagrams article{display:grid;gap:6px;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:8pt}.print-axle-diagrams b{color:#587b28;font-size:8pt;letter-spacing:.4px}.print-axle-diagrams svg{width:100%;height:auto;max-height:125px}.print-axle-diagrams span{color:var(--muted)}
-    .print-checkline b{width:100%;color:#587b28;letter-spacing:.5px}
-
+    .print-footer{display:flex;justify-content:space-between;gap:15px;margin-top:22px;padding-top:9px;border-top:1px solid var(--line);color:var(--muted);font-size:7pt}
+    .print-footer strong{color:var(--ink);letter-spacing:.6px}
     .item-sub,.muted{color:var(--muted)}
     button,a.button{display:none!important}
-    @page{size:A4;margin:13mm}
+    @page{size:A4;margin:12mm 13mm 14mm}
     @media print{
-      html{background:#fff}body{max-width:none;margin:0;padding:0}
-      .detail-group{break-inside:avoid;page-break-inside:avoid}
-      h3{break-after:avoid}
-      .print-footer{position:fixed;bottom:0;left:0;right:0}
+      html{background:#fff}
+      body{max-width:none;margin:0;padding:0}
+      .print-topline{margin:0 -13mm}
+      .print-section{break-inside:auto;page-break-inside:auto}
+      .print-section h3{break-after:avoid;page-break-after:avoid}
+      .print-section dl>div{break-inside:avoid}
+      .print-photo-section{break-inside:avoid}
+      .print-footer{position:fixed;bottom:-8mm;left:0;right:0}
       *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     }
-    @media(max-width:650px){body{padding:0 16px}.print-meta{font-size:7pt}dl{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr 1fr 1fr}}
-  `;
+    @media(max-width:650px){body{padding:0 16px}.print-overview{grid-template-columns:1fr 1fr}.print-section dl{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr 1fr 1fr}}
+  \`;
+  const overview=meta.slice(0,4).map((value,index)=>{
+    const labels=['PISTE / SESSION','SURFACE','ADHÉRENCE','CONDITIONS'];
+    return '<div class="print-overview-item"><small>'+labels[index]+'</small><strong>'+escapeHtml(value)+'</strong></div>';
+  }).join('');
   const printWindow=window.open('','_blank');
   if(!printWindow){showToast('Autorise les fenêtres pop-up pour imprimer la fiche.');return;}
   printWindow.document.open();
-  printWindow.document.write('<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(heading)+' — RC SETUP</title><style>'+styles+'</style></head><body><header class="print-masthead"><div class="print-brand"><span class="print-mark">RC</span><span><small>GARAGE NUMÉRIQUE</small><strong>SETUP.</strong></span></div><div class="print-meta">FICHE TECHNIQUE<br>Éditée le '+escapeHtml(dateLabel)+'</div></header><main><h1 class="print-title">'+escapeHtml(heading)+'</h1><p class="print-subtitle">'+escapeHtml(subtitle)+'</p>'+setupDiagram+setupReferenceLayout+printable.innerHTML+'</main><footer class="print-footer"><span>RC SETUP · Carnet de réglages radio-commandés</span><span>Document personnel · '+escapeHtml(dateLabel)+'</span></footer></body></html>');
+  printWindow.document.write('<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(heading)+' — RC SETUP</title><style>'+styles+'</style></head><body><div class="print-topline"></div><header class="print-masthead"><div class="print-brand"><span class="print-mark">RC</span><span><small>GARAGE NUMÉRIQUE</small><strong>SETUP.</strong></span></div><div class="print-edition"><b>'+escapeHtml(intro)+'</b><br>ÉDITION DU '+escapeHtml(dateLabel.toUpperCase())+'<br>'+sectionCount+' RUBRIQUES · '+filledCount+' LIGNES DE DONNÉES</div></header><main><section class="print-hero"><div class="print-kicker">'+compareHint+'</div><h1 class="print-title">'+escapeHtml(heading)+'</h1><p class="print-subtitle">'+escapeHtml(subtitle)+'</p></section><div class="print-overview">'+overview+'</div>'+sectionMarkup+'</main><footer class="print-footer"><span><strong>RC SETUP</strong> · FICHE TECHNIQUE PERSONNELLE</span><span>Document édité le '+escapeHtml(dateLabel)+'</span></footer></body></html>');
   printWindow.document.close();
   printWindow.focus();
-  setTimeout(()=>{printWindow.print();},500);
+  setTimeout(()=>{printWindow.print();},650);
 }
-
 function compareSetups(){
   const a=state.setups.find(s=>s.id===document.getElementById('compareSetupA')?.value),b=state.setups.find(s=>s.id===document.getElementById('compareSetupB')?.value);
   if(!a||!b){showToast('Sélectionne deux setups à comparer.');return;}if(a.id===b.id){showToast('Choisis deux setups différents.');return;}
