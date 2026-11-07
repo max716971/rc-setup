@@ -6136,7 +6136,7 @@ function populateSelects() {
   const trackSelect = document.querySelector('select[name="trackId"]');
   const selectedCar = carSelect.value;
   const selectedTrack = trackSelect.value;
-  carSelect.innerHTML = '<option value="">Choisir une voiture</option>' + state.cars.map((car) => `<option value="${escapeHtml(car.id)}">${escapeHtml(car.name)}</option>`).join('');
+  carSelect.innerHTML = '<option value="">Choisir une voiture</option>' + state.cars.map((car) => `<option value="${escapeHtml(car.id)}" data-drive="${escapeHtml(car.drive||'')}">${escapeHtml(car.name)}</option>`).join('');
   trackSelect.innerHTML = '<option value="">Choisir une piste</option>' + state.tracks.map((track) => `<option value="${escapeHtml(track.id)}">${escapeHtml(track.name)}</option>`).join('');
   if (state.cars.some((car) => car.id === selectedCar)) carSelect.value = selectedCar;
   if (state.tracks.some((track) => track.id === selectedTrack)) trackSelect.value = selectedTrack;
