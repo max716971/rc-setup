@@ -909,18 +909,18 @@
       const search = select.parentElement.querySelector('[data-library-search]');
       const query = (search?.value || '').trim().toLocaleLowerCase('fr');
       const current = select.value;
-      const fieldName = select.closest('label')?.querySelector('input[name]')?.name || '';
+      const fieldName = select.dataset.libraryField || '';
       const carSelect = document.querySelector('#setupForm select[name="carId"]');
       const drive = carSelect?.selectedOptions?.[0]?.dataset?.drive || '';
       const items = allMaterials().filter((item) => {
         if (!categories.includes(item.category)) return false;
         if (fieldName === 'frontTires') {
           const compatibility = String(item.compatibility || '').trim();
-          if (drive === '2WD' && !/^Avant\\s+2WD$/i.test(compatibility)) return false;
-          if (drive === '4WD' && !/^Avant\\s+4WD$/i.test(compatibility)) return false;
-          if (!drive && !/^Avant\\s+(?:2WD|4WD)$/i.test(compatibility)) return false;
+          if (drive === '2WD' && compatibility && !/^Avant\\s+2WD(?:\\b|\\/)/i.test(compatibility)) return false;
+          if (drive === '4WD' && compatibility && !/^Avant\\s+4WD(?:\\b|\\/)/i.test(compatibility)) return false;
+          if (!drive && compatibility && !/^Avant\\b/i.test(compatibility)) return false;
         }
-        if (fieldName === 'rearTires' && !/^Arrière\\b/i.test(String(item.compatibility || '').trim())) return false;
+        if (fieldName === 'rearTires' && /^Avant\\b/i.test(String(item.compatibility || '').trim())) return false;
         return !query || [item.brand,item.name,item.reference,item.detail,item.compatibility].join(' ').toLocaleLowerCase('fr').includes(query);
       });
       select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(item.category)} · ${esc(materialLabel(item))}</option>`).join('');
@@ -1024,7 +1024,7 @@
       ? `Bibliothèque · ${categoryLabel} ${side}`
       : `Bibliothèque · ${categoryLabel}`;
     const search = document.createElement('input'); search.type = 'search'; search.placeholder = `Rechercher ${categoryLabel}${side ? ' ' + side : ''} (marque, nom, référence)…`; search.setAttribute('aria-label', label.textContent); search.dataset.librarySearch = 'true';
-    const select = document.createElement('select'); select.dataset.libraryCategory = categories; select.setAttribute('aria-label', 'Choisir un matériel de la bibliothèque');
+    const select = document.createElement('select'); select.dataset.libraryCategory = categories; select.dataset.libraryField = fieldName; select.setAttribute('aria-label', 'Choisir un matériel de la bibliothèque');
     search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
     select.addEventListener('change', () => { if (select.value) input.value = select.value; });
     picker.append(label, search, select);
