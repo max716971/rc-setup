@@ -41,3 +41,8 @@ Bibliothèque enrichie avec les variantes Mini Spike 2 (avant 2WD Slim, avant 4W
 
 ## Distinction des surfaces indoor
 - Séparation du tartan et de la moquette EOS dans les choix de surface des pistes et des sessions.
+
+
+## Gestion manuelle des voitures et modification des pistes
+- Le formulaire d'ajout de voiture est explicitement identifié comme ajout manuel, en complément du catalogue de modèles prédéfinis.
+- Ajout de l'édition des pistes existantes : modification du nom, de la surface, de l'adhérence, du type, du lieu et des détails sans supprimer les setups associés.
