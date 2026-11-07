@@ -6147,18 +6147,21 @@ function renderCarCatalogBrandPicker() {
   const picker=document.getElementById('carCatalogBrandPicker');
   if(!picker || picker.dataset.ready==='true')return;
   const brands=[...new Set(CAR_CATALOG.map(model=>model.brand).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'));
+  const rcBrandWordmark=(label,sub='')=>'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120"><rect width="420" height="120" rx="12" fill="#fff"/><path d="M24 88 70 25h36L60 88z" fill="#111"/><text x="125" y="73" font-family="Arial,Helvetica,sans-serif" font-size="52" font-weight="900" font-style="italic" fill="#111">'+label+'</text><text x="128" y="98" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" letter-spacing="4" fill="#555">'+sub+'</text></svg>');
   const logos={
-    'Fan RC':'https://www.gofasthobbies.com/cdn/shop/collections/Fan_RC.jpg?v=1706054433&width=1500',
-    'Kyosho':'https://cdn.brandfetch.io/idXDBNlT9W/w/568/h/133/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1792896373403',
+    'Fan RC':rcBrandWordmark('FAN RC','R/C PERFORMANCE'),
+    'Kyosho':'https://www.kyosho.com/eng/support/instructionmanual/images/kyosho_logo.gif',
     'Mugen Seiki':'https://www.autocollant-tuning.com/3061-product_main/sticker-et-autocollant-mugen-seiki.jpg',
-    'PR Racing':'https://i0.wp.com/circusrc.com/CRC/wp-content/uploads/2019/09/PR-Racing.jpg?fit=1024%2C512&ssl=1',
-    'Team Losi':'https://www.losi.com/on/demandware.static/-/Sites-losi-us-Library/default/dw70d1384a/logos/Losi-Logo-Side-Tagline-Stacked-Color-for-White-Background.png',
+    'PR Racing':'https://www.pr-rc.com/images/aa_03.jpg',
+    'Team Losi':'https://images.seeklogo.com/logo-png/32/1/team-losi-racing-logo-png_seeklogo-324214.png',
     'Traxxas':'https://www.kindpng.com/picc/m/72-728397_traxxas-logo-png-transparent-png.png',
     'Team Associated':'https://apps.associatedelectrics.com/downloads/thumbs/TeamAssociated-color-lightBG-300.png',
     'Schumacher':'https://schumacher-racing.com/wp-content/uploads/2024/01/Schumacher_racing_pink-gelb-1.png',
     'Kyosho':'https://www.kyosho.com/eng/support/instructionmanual/images/kyosho_logo.gif',
     'Tamiya':'https://www.most-models.com/files/tamiya-modelbouw.png',
-    'Yokomo':'https://cdn.ecommercedns.uk/files/7/229017/4/49342684/yokomo-logo-retro.png'
+    'Yokomo':'https://cdn.ecommercedns.uk/files/7/229017/4/49342684/yokomo-logo-retro.png',
+    'X-Factory':rcBrandWordmark('X-FACTORY','R/C RACING'),
+    'XRAY':'https://www.xraystore.cz/user/categories/orig/xray-1.png'
   };
   picker.innerHTML=brands.map(brand=>{
     const initials=brand.split(/[\s-]+/).map(word=>word[0]).slice(0,2).join('').toUpperCase();
