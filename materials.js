@@ -821,38 +821,41 @@
     })),
   ];
   const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA', 'Hobbywing', 'XTR Racing', '6MIK', 'Team Associated', '1UP Racing', 'SRT', 'Power HD', 'Savöx', 'Schumacher'];
-  // Logos de marques identifiés depuis les pages officielles ou leurs ressources de marque.
-  // Les marques sans fichier image vérifié gardent une vignette texte plutôt qu'un faux logo.
+  // Wordmarks SVG intégrés : ils ne dépendent d'aucun hébergeur externe et restent visibles hors ligne.
+  function brandWordmark(label, color, secondary = '#222222') {
+    const fontSize = label.length > 12 ? 23 : label.length > 8 ? 27 : 34;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 72"><rect width="240" height="72" rx="9" fill="#fff"/><path d="M12 57H228" stroke="${color}" stroke-width="5" stroke-linecap="round"/><text x="120" y="43" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="${fontSize}" font-weight="900" letter-spacing="-.8" fill="${secondary}">${label}</text></svg>`;
+    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+  }
   const MATERIAL_BRAND_LOGOS = {
     'Hobbywing': 'https://www.hobbywingdirect.com/cdn/shop/files/HW3x6-Viewing-only_3c0904dc-0c98-46e5-8dd3-f2d44df564c8_1600x.jpg?v=1697845198',
     'Team Associated': 'https://apps.associatedelectrics.com/downloads/thumbs/TeamAssociated-color-lightBG-300.png',
     'Schumacher': 'https://schumacher-racing.com/wp-content/uploads/2024/01/Schumacher_racing_pink-gelb-1.png',
     'Savöx': 'https://atomfire.com/cdn/shop/collections/savox-logo-square.png?v=1701816872',
     'OPTIMA': 'https://6mik-racing.com/wp-content/uploads/2020/04/logo-OPTIMA-2016-1200.jpg',
-    // Pour les marques sans logo direct vérifié, afficher le favicon du site officiel comme repère visuel.
-    '1UP Racing': 'https://www.google.com/s2/favicons?domain=1upracing.com&sz=128',
-    '6MIK': 'https://www.google.com/s2/favicons?domain=6mik-racing.com&sz=128',
-    'Futaba': 'https://www.google.com/s2/favicons?domain=futabausa.com&sz=128',
-    'Sanwa': 'https://www.google.com/s2/favicons?domain=sanwa-denshi.com&sz=128',
-    'HUDY': 'https://www.google.com/s2/favicons?domain=hudy.net&sz=128',
-    'JConcepts': 'https://www.google.com/s2/favicons?domain=jconcepts.net&sz=128',
-    'Jetko': 'https://www.google.com/s2/favicons?domain=jetkorc.com&sz=128',
-    'Hot Race Tires': 'https://www.google.com/s2/favicons?domain=hotrace-tires.com&sz=128',
-    'LRP': 'https://www.google.com/s2/favicons?domain=lrp.cc&sz=128',
-    'Pro-Line': 'https://www.google.com/s2/favicons?domain=prolineracing.com&sz=128',
-    'REDS': 'https://www.google.com/s2/favicons?domain=redsracing.com&sz=128',
-    'Reedy': 'https://www.google.com/s2/favicons?domain=associatedelectrics.com&sz=128',
-    'SRT': 'https://www.google.com/s2/favicons?domain=srt-rc.com&sz=128',
-    'Tamiya': 'https://www.google.com/s2/favicons?domain=tamiya.com&sz=128',
-    'Tekin': 'https://www.google.com/s2/favicons?domain=tekinracing.com&sz=128',
-    'TLR': 'https://www.google.com/s2/favicons?domain=tlracing.com&sz=128',
-    'VP-Pro': 'https://www.google.com/s2/favicons?domain=vp-pro.com&sz=128',
-    'Yokomo': 'https://www.google.com/s2/favicons?domain=yokomoracing.com&sz=128',
-    'Power HD': 'https://www.google.com/s2/favicons?domain=powerhd.com.tw&sz=128',
-    'Corsatec': 'https://www.google.com/s2/favicons?domain=corsatec.de&sz=128',
-    'WS Line': 'https://www.google.com/s2/favicons?domain=wsline.com&sz=128',
-    'Cayote': 'https://www.google.com/s2/favicons?domain=cayote-rc.com&sz=128',
-    'XTR Racing': 'https://www.google.com/s2/favicons?domain=xtr-racing.com&sz=128'
+    '6MIK': brandWordmark('6MIK', '#e32636', '#111111'),
+    'Cayote': brandWordmark('CAYOTE', '#e32636', '#171717'),
+    'Corsatec': brandWordmark('CORSATEC', '#d9272e', '#151515'),
+    'Hot Race Tires': brandWordmark('HOT RACE', '#e12b2b', '#151515'),
+    'Jetko': brandWordmark('JETKO', '#e6a21a', '#171717'),
+    'Power HD': brandWordmark('POWER HD', '#df2929', '#171717'),
+    'REDS': brandWordmark('REDS', '#d8272f', '#151515'),
+    'Sanwa': brandWordmark('SANWA', '#1f5da8', '#171717'),
+    'SRT': brandWordmark('SRT', '#d82d32', '#171717'),
+    'Tekin': brandWordmark('TEKIN', '#e0a21b', '#171717'),
+    'VP-Pro': brandWordmark('VP-PRO', '#e22c31', '#171717'),
+    'WS Line': brandWordmark('WS LINE', '#2782bb', '#171717'),
+    'XTR Racing': brandWordmark('XTR RACING', '#d82c32', '#171717'),
+    'Yokomo': brandWordmark('YOKOMO', '#2464a5', '#171717'),
+    '1UP Racing': brandWordmark('1UP RACING', '#e2a21b', '#171717'),
+    'Futaba': brandWordmark('FUTABA', '#dc2b30', '#171717'),
+    'HUDY': brandWordmark('HUDY', '#e0a21b', '#171717'),
+    'JConcepts': brandWordmark('JCONCEPTS', '#252525', '#171717'),
+    'LRP': brandWordmark('LRP', '#1764a5', '#171717'),
+    'Pro-Line': brandWordmark('PRO-LINE', '#dc2b30', '#171717'),
+    'Reedy': brandWordmark('REEDY', '#dc2b30', '#171717'),
+    'Tamiya': brandWordmark('TAMIYA', '#dc2b30', '#171717'),
+    'TLR': brandWordmark('TLR', '#dc2b30', '#171717')
   };
   const root = document.getElementById('materialsApp');
   if (!root) return;
