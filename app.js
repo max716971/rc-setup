@@ -6245,6 +6245,7 @@ function openCarEditor(id) {
   pendingCarPhotos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
   renderCarPhotoPreviews();
   renderCarEditorHistory(car);
+  setCarHistoryTabVisibility(true);
   setCarEditorTab('equipment');
   updateCarBrandPicker();
   form.querySelector('h2').textContent='Modifier la voiture';
@@ -6258,6 +6259,7 @@ function resetCarEditor() {
   const submit=form.querySelector('button[type="submit"]');if(submit)submit.textContent='Enregistrer';
   renderCarPhotoPreviews();
   renderCarEditorHistory(null);
+  setCarHistoryTabVisibility(false);
   setCarEditorTab('equipment');
   updateCarBrandPicker();
 }
@@ -6267,6 +6269,12 @@ function renderCarEditorHistory(car) {
   if(!list)return;
   const entries=Array.isArray(car&&car.partsHistory)?car.partsHistory.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))):[];
   list.innerHTML=entries.length?'<strong>Événements déjà enregistrés</strong><ol class="car-parts-history">'+entries.map(entry=>'<li><strong>'+escapeHtml(entry.action||'Événement')+'</strong><span>'+escapeHtml(entry.date||'Date inconnue')+'</span>'+(entry.notes||entry.part?'<p>'+escapeHtml(entry.notes||entry.part)+'</p>':'')+'</li>').join('')+'</ol>':'<p class="item-sub">Aucun événement supplémentaire pour le moment.</p>';
+}
+function setCarHistoryTabVisibility(visible) {
+  const button=document.querySelector('[data-car-tab="history"]');
+  const panel=document.querySelector('[data-car-tab-panel="history"]');
+  if(button)button.hidden=!visible;
+  if(panel)panel.hidden=!visible;
 }
 function setCarEditorTab(tab) {
   document.querySelectorAll('[data-car-tab]').forEach(button=>{const active=button.dataset.carTab===tab;button.classList.toggle('active',active);button.setAttribute('aria-selected',String(active));});
