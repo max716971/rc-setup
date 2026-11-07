@@ -6133,6 +6133,15 @@ function getCatalogFilters() {
     query: (document.getElementById('carCatalogSearch')?.value || '').trim().toLocaleLowerCase('fr')
   };
 }
+function addCatalogCarByIndex(index) {
+  const model = CAR_CATALOG[Number(index)];
+  if (!model) return;
+  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: normalizeDriveType(model.drive), type: model.type, era: model.era, diffCount: inferDifferentialCount(model), photos: [], createdAt: new Date().toISOString() });
+  saveState(); renderAll();
+  const select = document.getElementById('carCatalogModel');
+  if (select) select.value = '';
+  showToast(model.name + ' ajouté au garage.');
+}
 function updateCarCatalogOptions() {
   const { brand, era, query } = getCatalogFilters();
   const select = document.getElementById('carCatalogModel');
@@ -6142,20 +6151,25 @@ function updateCarCatalogOptions() {
     (!query || (model.name + ' ' + model.brand + ' ' + model.type + ' ' + model.scale).toLocaleLowerCase('fr').includes(query))
   );
   select.innerHTML = '<option value="">Choisir un modèle…</option>' + filtered.map(({model,index}) =>
-    '<option value="' + index + '">' + escapeHtml(model.name + ' · ' + model.scale + ' · ' + model.drive + ' · ' + model.type) + '</option>'
+    '<option value="' + index + '">' + escapeHtml(model.name + ' · ' + model.brand + ' · ' + model.scale + ' · ' + model.drive) + '</option>'
   ).join('');
   const count = document.getElementById('carCatalogCount');
-  if (count) count.textContent = filtered.length + ' modèles disponibles';
+  if (count) count.textContent = filtered.length + ' modèles disponibles — clique sur « Ajouter au garage » ou sur un résultat ci-dessous.';
+  const results = document.getElementById('carCatalogResults');
+  if (results) {
+    const shown = filtered.slice(0, 30);
+    results.innerHTML = shown.length ? shown.map(({model,index}) =>
+      '<button type="button" class="car-catalog-result" data-catalog-index="' + index + '"><strong>' + escapeHtml(model.name) + '</strong><span>' + escapeHtml(model.brand + ' · ' + model.scale + ' · ' + model.drive + ' · ' + model.type) + '</span><em>＋ Ajouter</em></button>'
+    ).join('') : '<p class="item-sub car-catalog-empty">Aucun modèle ne correspond à ces filtres.</p>';
+    if (filtered.length > shown.length) {
+      results.insertAdjacentHTML('beforeend', '<p class="item-sub car-catalog-more">30 premiers résultats affichés. Affine la recherche pour retrouver un modèle précis.</p>');
+    }
+  }
 }
 function handleCarCatalogAdd() {
   const selected = document.getElementById('carCatalogModel')?.value;
-  if (selected === '' || selected == null) { showToast('Choisis d’abord un modèle.'); return; }
-  const model = CAR_CATALOG[Number(selected)];
-  if (!model) return;
-  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: normalizeDriveType(model.drive), type: model.type, era: model.era, diffCount: inferDifferentialCount(model), photos: [], createdAt: new Date().toISOString() });
-  saveState(); renderAll();
-  document.getElementById('carCatalogModel').value = '';
-  showToast(model.name + ' ajouté au garage.');
+  if (selected === '' || selected == null) { showToast('Sélectionne un modèle dans la liste ou dans les résultats affichés.'); return; }
+  addCatalogCarByIndex(selected);
 }
 function normalizeDriveType(value) {
   const drive=String(value||'').toLocaleLowerCase('fr').trim();
@@ -6515,6 +6529,7 @@ document.getElementById('carCatalogBrand').addEventListener('change', updateCarC
 document.getElementById('carCatalogEra').addEventListener('change', updateCarCatalogOptions);
 document.getElementById('carCatalogSearch').addEventListener('input', updateCarCatalogOptions);
 document.getElementById('addCatalogCar').addEventListener('click', handleCarCatalogAdd);
+document.getElementById('carCatalogResults')?.addEventListener('click', event => { const result = event.target.closest('[data-catalog-index]'); if (result) addCatalogCarByIndex(result.dataset.catalogIndex); });
 updateCarCatalogOptions();
 document.getElementById('carForm').addEventListener('submit', handleCarSubmit);
 document.getElementById('carPhotosInput')?.addEventListener('change',handleCarPhotoSelection);
