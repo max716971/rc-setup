@@ -1,20 +1,38 @@
 (() => {
   const STORAGE_KEY = 'rc-setup-materials-v1';
   const catalog = [
-    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro Legacy', reference: '30112800', detail: 'Vérifier révision et compatibilité constructeur.', url: 'https://www.hobbywing.com/en/rc-systems' },
+    // Hobbywing RC car ESCs and motors. Variants/bobinages are separated where a manufacturer SKU is known.
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro Legacy', reference: '30112800', detail: 'ESC brushless sensored. Vérifier révision et compatibilité constructeur.', url: 'https://www.hobbywing.com/en/rc-systems' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro G2S', reference: '30112609', detail: 'ESC compétition 1/10. Vérifier révision et compatibilité moteur.', url: 'https://www.hobbywing.com/goods.php?id=716&pid=1' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XR10 Justock G3', reference: '30112003', detail: 'ESC stock 1/10 ; vérifier version et règlement de course.', url: 'https://www.hobbywing.com/goods.php?id=726&pid=1' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR8 Plus G2S', reference: '30113305', detail: 'ESC compétition 1/8 ; vérifier génération et connecteurs.', url: 'https://www.hobbywing.com/goods.php?id=750&pid=0' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'EzRun MAX10 G2S 80A', reference: '30102700', detail: 'Confirmer la version du modèle au catalogue.', url: 'https://www.hobbywing.com/en/rc-systems' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'EzRun MAX10 G2S 140A', reference: '30102500', detail: 'Confirmer la version du modèle au catalogue.', url: 'https://www.hobbywing.com/en/rc-systems' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'QuicRun WP 10BL80 Crawler', reference: '30108002', detail: 'Gamme QuicRun crawler ; vérifier compatibilité.', url: 'https://www.hobbywing.com/en/rc-systems' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'QuicRun 10BL60 Sensored G2', reference: '30108001', detail: 'Vérifier la révision exacte.', url: 'https://www.hobbywing.com/en/rc-systems' },
-    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XR10 Justock G3', reference: '30112014', detail: 'Référence indicative ; confirmer au catalogue constructeur.', url: 'https://www.hobbywing.com/en/rc-systems' },
-    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR8 Plus', reference: '30113309', detail: 'Famille ESC 1/8 ; vérifier génération et connecteurs.', url: 'https://www.hobbywing.com/en/rc-systems' },
-    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4R', reference: 'Bobinage à préciser', detail: 'La référence dépend du bobinage ; vérifier la fiche constructeur.', url: 'https://www.hobbywing.com/en/rc-systems' },
-    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4', reference: 'Bobinage à préciser', detail: 'La référence dépend du bobinage ; vérifier la fiche constructeur.', url: 'https://www.hobbywing.com/en/rc-systems' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'QuicRun WP 10BL60', reference: '30109000', detail: 'Famille QuicRun ; confirmer la référence de la version au catalogue.', url: 'https://www.hobbywing.com/en/rc-systems' },
+    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4 4.5T', reference: '30401159', detail: 'Moteur compétition 1/10 ; vérifier variante et compatibilité ESC.', url: 'https://www.hobbywing.com/goods.php?id=718&pid=1' },
+    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4 5.5T', reference: '30401161', detail: 'Moteur compétition 1/10 ; vérifier variante et compatibilité ESC.', url: 'https://www.hobbywing.com/goods.php?id=718&pid=1' },
+    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun 4268SD G3 1900KV', reference: '30402653', detail: 'Moteur brushless 1/8 ; contrôler KV et compatibilité véhicule.', url: 'https://www.hobbywing.com/goods.php?id=699&pid=1' },
+    { brand: 'Hobbywing', category: 'Moteur', name: 'Justock G2.1 10.5T', reference: '30408010', detail: 'Moteur stock 1/10 ; vérifier la combinaison ESC/moteur.', url: 'https://www.hobbywing.com/goods.php?id=719&pid=1' },
+    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4R', reference: 'Bobinage à préciser', detail: 'La référence varie selon le bobinage ; vérifier la fiche constructeur.', url: 'https://www.hobbywing.com/en/rc-systems' },
     { brand: 'Hobbywing', category: 'Moteur', name: 'EzRun 3660 / 3665 G3', reference: 'KV à préciser', detail: 'Choisir taille et KV selon le véhicule.', url: 'https://www.hobbywing.com/en/rc-systems' },
+    { brand: 'Hobbywing', category: 'Programmation', name: 'LCD Program Box Pro', reference: '30502002', detail: 'Boîtier de programmation pour matériels compatibles Hobbywing.', url: 'https://www.hobbywing.com/en/rc-systems' },
+
+    // Schumacher 1/10 buggy tire families. SKU depends on position, compound and mounted/unmounted version.
     { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mini Dart — avant 4x2', reference: 'U6830', detail: 'Exemple buggy 1/10 ; confirmer gomme et variante.', url: 'https://www.racing-cars.com/wheels-tyres' },
     { brand: 'Schumacher', category: 'Pneus / roues', name: 'Cactus Fusion 2 — avant 4x4', reference: 'U6895 / U6898', detail: 'Références exemple ; vérifier version montée/collée.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mezzo — arrière', reference: 'U6885', detail: 'Référence exemple ; vérifier gomme et compatibilité.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    ...['Mini Pin', 'Cactus', 'Cactus Fusion', 'Azami', 'Splinter', 'Fusion Slim', 'Cut Stagger', 'Shard', 'Spiral', 'Ridge Pin', 'Mini Dart', 'Mezzo'].map((name) => ({ brand: 'Schumacher', category: 'Pneus / roues', name, reference: 'Varie par position, gomme et génération', detail: 'Famille de pneus. Choisir la référence exacte selon voiture et piste.', url: 'https://www.racing-cars.com/wheels-tyres' })),
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mezzo — arrière', reference: 'U6885 / U6886', detail: 'Exemples de variantes de gomme ; confirmer la position et le composé.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mezzo — avant 4x4', reference: 'U6888', detail: 'Buggy 1/10 ; confirmer gomme et compatibilité.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mini Spike 2 — avant 4WD', reference: 'U6517', detail: 'Buggy 1/10 ; vérifier profil et gomme exacte.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Mini Spike 2 — arrière', reference: 'U6518', detail: 'Buggy 1/10 ; vérifier profil et gomme exacte.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Cut Stagger Low Profile — avant 2WD', reference: 'U6770 / U6775', detail: 'Références selon composé ; vérifier la variante au catalogue.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Fusion Slim — avant 2WD', reference: 'U6901 / U6902', detail: 'Références selon composé ; vérifier génération et montage.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Cactus — arrière 2WD', reference: 'U6838', detail: 'Référence exemple buggy 1/10 ; vérifier gomme et compatibilité.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Splinter Slim — avant 2WD', reference: 'U6906Y / U6908S', detail: 'Références selon gomme ; vérifier code de composé et châssis.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    { brand: 'Schumacher', category: 'Pneus / roues', name: 'Azami — arrière', reference: 'U6905 / U6912', detail: 'Références selon variante ; vérifier gomme et compatibilité.', url: 'https://www.racing-cars.com/wheels-tyres' },
+    ...['Mini Pin', 'Cactus Fusion', 'Azami', 'Splinter', 'Fusion Slim', 'Cut Stagger', 'Shard', 'Spiral', 'Ridge Pin', 'Mini Dart', 'Mezzo'].map((name) => ({ brand: 'Schumacher', category: 'Pneus / roues', name, reference: 'Varie par position, gomme et génération', detail: 'Famille de pneus ; choisir la référence exacte selon voiture, piste et composé.', url: 'https://www.racing-cars.com/wheels-tyres' })),
+
     { brand: 'XRAY', category: 'Huile amortisseur', name: 'Premium Silicone Oil 400 cSt, 50 ml', reference: '359248', detail: 'Exemple ; vérifier disponibilité et viscosité.', url: 'https://www.teamxray.com/eshop/' },
     { brand: 'HUDY', category: 'Huile amortisseur', name: 'Premium Silicone Oil 50 000 cSt', reference: '106350', detail: 'Exemple de viscosité/référence ; choisir selon le véhicule.', url: 'https://www.hudy.net/' },
     { brand: 'Team Associated', category: 'Huile amortisseur', name: 'Factory Team Shock Oil 35 wt', reference: '5435', detail: 'Exemple ; confirmer compatibilité et catalogue actuel.', url: 'https://www.associatedelectrics.com/teamassociated/parts/fluids/' },
@@ -90,9 +108,6 @@
     picker.append(label, select);
     input.closest('label').before(picker);
   }
-
-  // Store the detailed fields inside the existing setup fields before app.js handles submit.
-  // Capture on the form so values are ready before the existing submit handler saves state.
   setupForm.addEventListener('submit', () => {
     const value = (name) => String(setupForm.elements.namedItem(name)?.value || '').trim();
     const radio = [['Émetteur',value('txModel')],['Récepteur / gyro',value('rxModel')],['Dual rate / expo',value('radioExpo')],['EPA',value('radioEPA')],['Trim / failsafe',value('radioTrim')],['Autres',value('radio')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
