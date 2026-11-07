@@ -37,3 +37,7 @@ Bibliothèque enrichie avec les variantes Mini Spike 2 (avant 2WD Slim, avant 4W
 - Ajout d'un niveau d'adhérence distinct : très faible, faible, moyenne, forte et très forte.
 - Les pistes conservent leur surface et leur adhérence habituelles ; chaque setup peut préciser les conditions réellement rencontrées lors de la session.
 - Filtres de setups par surface et par niveau d'adhérence, avec affichage des conditions dans les fiches et les listes. Les anciennes fiches restent compatibles.
+
+
+## Distinction des surfaces indoor
+- Séparation du tartan et de la moquette EOS dans les choix de surface des pistes et des sessions.
