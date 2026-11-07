@@ -38,3 +38,15 @@
 
 .material-filter-row{grid-template-columns:2fr 1fr 1fr 1fr}
 @media(max-width:760px){.material-filter-row{grid-template-columns:1fr 1fr}.material-filter-row input{grid-column:1/-1}}
+
+/* Filtre marques sous forme de vignettes */
+.material-brand-filter{grid-column:1/-1;min-width:0}
+.brand-filter-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+.brand-filter-heading strong{font-size:12px;color:var(--text)}
+.brand-clear-button{border:1px solid var(--line);border-radius:999px;padding:6px 11px;background:transparent;color:var(--muted);font-size:10px;font-weight:750;cursor:pointer}
+.brand-clear-button.active{border-color:var(--accent);background:rgba(197,243,107,.1);color:var(--accent)}
+.material-brand-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+.material-brand-tile{min-height:72px;overflow-wrap:anywhere}
+.brand-filter-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+@media(max-width:900px){.material-brand-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:620px){.material-brand-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
