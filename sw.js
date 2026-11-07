@@ -1,5 +1,5 @@
-const CACHE_NAME = 'rc-setup-v126';
-const APP_SHELL = ['./', './index.html', './app.css?v=34', './materials.css?v=27', './app.js?v=77', './materials.js?v=70', './backup.js?v=1', './manifest.webmanifest', './icon.svg'];
+const CACHE_NAME = 'rc-setup-v127';
+const APP_SHELL = ['./', './index.html', './app.css?v=34', './materials.css?v=27', './app.js?v=77', './materials.js?v=71', './backup.js?v=1', './manifest.webmanifest', './icon.svg'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('rc-setup-') && key !== CACHE_NAME).map(key => caches.delete(key))))); self.clients.claim(); });
 const LOGO_HOSTS = new Set(['www.hobbywingdirect.com','apps.associatedelectrics.com','schumacher-racing.com','atomfire.com','6mik-racing.com']);
