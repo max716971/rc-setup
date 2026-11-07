@@ -803,7 +803,8 @@
     root.querySelector('#materialForm').addEventListener('submit', addItem);
     root.querySelector('#materialSearch').addEventListener('input', renderCards);
     root.querySelector('#brandFilter').addEventListener('change', renderCards);
-    root.querySelector('#categoryFilter').addEventListener('change', renderCards);\n    root.querySelector('#positionFilter').addEventListener('change', renderCards);
+    root.querySelector('#categoryFilter').addEventListener('change', renderCards);
+    root.querySelector('#positionFilter').addEventListener('change', renderCards);
     renderCards(); refreshPickers();
   }
   function renderCards() {
