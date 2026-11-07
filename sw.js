@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rc-setup-v5';
+const CACHE_NAME = 'rc-setup-v6';
 const APP_SHELL = ['./', './index.html', './app.css', './app.js', './materials.css', './materials.js', './manifest.webmanifest', './icon.svg'];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
