@@ -5964,7 +5964,8 @@ function setTracksideMode(enabled){
   if(button){button.setAttribute('aria-pressed',String(enabled));button.textContent=enabled?'Quitter mode piste':'Mode piste';}
   try{localStorage.setItem('rc-setup-trackside-mode',enabled?'1':'0');}catch{}
 }
-\nfunction parsePositiveNumber(value){const n=Number(String(value||'').replace(',','.'));return Number.isFinite(n)&&n>0?n:null;}
+
+function parsePositiveNumber(value){const n=Number(String(value||'').replace(',','.'));return Number.isFinite(n)&&n>0?n:null;}
 function calculateGearing(){
   const pinion=parsePositiveNumber(document.getElementById('calcPinion')?.value),spur=parsePositiveNumber(document.getElementById('calcSpur')?.value),internal=parsePositiveNumber(document.getElementById('calcInternal')?.value),diameter=parsePositiveNumber(document.getElementById('calcDiameter')?.value);
   const result=document.getElementById('gearingResult');if(!result)return;
@@ -6242,7 +6243,9 @@ document.getElementById('setupForm').elements.namedItem('carId').addEventListene
 ['frontDiffType','centerDiffType','rearDiffType','slipperPresence'].forEach(name=>document.getElementById('setupForm').elements.namedItem(name).addEventListener('change',updateVehicleSpecificFields));
 document.getElementById('setupSearch')?.addEventListener('input',renderSetups);
 ['setupCarFilter','setupTrackFilter','setupSurfaceFilter','setupGripFilter','setupDateFrom','setupDateTo'].forEach(id=>document.getElementById(id)?.addEventListener('change',renderSetups));
-document.getElementById('tracksideModeButton')?.addEventListener('click',()=>{const enabled=!document.body.classList.contains('trackside-mode');setTracksideMode(enabled);if(enabled)setView('setups');});\ntry{setTracksideMode(localStorage.getItem('rc-setup-trackside-mode')==='1');}catch{}\ndocument.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
+document.getElementById('tracksideModeButton')?.addEventListener('click',()=>{const enabled=!document.body.classList.contains('trackside-mode');setTracksideMode(enabled);if(enabled)setView('setups');});
+try{setTracksideMode(localStorage.getItem('rc-setup-trackside-mode')==='1');}catch{}
+document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
 document.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);
 document.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
