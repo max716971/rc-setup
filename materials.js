@@ -839,7 +839,7 @@
     'Reedy': 'https://apps.associatedelectrics.com/downloads/thumbs/ReedyPower-color-300.png',
     'Tamiya': null,
     'Tekin': 'https://www.teamtekin.com/assets/tkn-pub-badge-2048x2048.png',
-    'TLR': 'https://upload.wikimedia.org/wikipedia/commons/7/7a/TLR-logo.png',
+    'TLR': null,
     'WS Line': null,
     'XTR Racing': null,
   };
