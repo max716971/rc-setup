@@ -115,9 +115,12 @@
   transform:scale(1.22);
 }
 @media(max-width:620px){
-  .material-brand-tile{height:116px;min-height:116px}
-  .material-brand-tile .material-brand-logo{height:62px;min-height:62px;flex-basis:62px}
-  .material-brand-tile[data-brand="Hot Race Tires"] .material-brand-logo{height:62px;min-height:62px;flex-basis:62px}
+  /* Sur mobile : grille plus dense et vignettes compactes pour limiter le défilement. */
+  .material-brand-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+  .material-brand-tile{height:88px;min-height:88px;padding:5px 3px;gap:3px;border-radius:9px}
+  .material-brand-tile .material-brand-logo{height:46px;min-height:46px;flex-basis:46px;max-width:100%}
+  .material-brand-tile[data-brand="Hot Race Tires"] .material-brand-logo{height:46px;min-height:46px;flex-basis:46px}
+  .material-brand-tile .material-brand-name{height:22px;min-height:22px;font-size:9px;line-height:11px}
 }
 
 /* Pro-Line : logo davantage agrandi dans la vignette, sans modifier sa taille */
