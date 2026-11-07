@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="38" fill="#fff"/><path d="M104 126L207 126 260 194 326 126 430 126 318 256 429 386 324 386 258 315 194 386 87 386 202 256Z" fill="#080808" stroke="#e51b23" stroke-width="17" stroke-linejoin="miter"/><path d="M90 241L424 241 394 317 60 317Z" fill="#fff" stroke="#111" stroke-width="8"/><text x="256" y="300" font-family="Arial,Helvetica,sans-serif" font-size="73" font-style="italic" font-weight="900" text-anchor="middle" fill="#fff" stroke="#111" stroke-width="2" paint-order="stroke fill" letter-spacing="-4">FACTORY</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="42" fill="#f7f7f5"/>
+<path d="M76 88h360" stroke="#d71920" stroke-width="12"/>
+<path d="M104 126h94l58 72 58-72h94L307 256l99 130h-94l-56-73-58 73h-94l100-130z" fill="#17191d"/>
+<path d="M218 223l38 49 39-49" fill="none" stroke="#d71920" stroke-width="13" stroke-linecap="square"/>
+<text x="256" y="456" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="54" font-weight="900" letter-spacing="5" fill="#17191d">X-FACTORY</text>
+</svg>
