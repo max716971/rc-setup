@@ -5911,7 +5911,7 @@ function restoreSetupVersion(setupId,historyIndex){
   const current=state.setups[index],history=[...(current.history||[])],entry=history[historyIndex];
   if(!entry?.data||!confirm('Restaurer cette ancienne version ? La configuration actuelle sera conservée dans l’historique.'))return;
   const now=new Date().toISOString();
-  history.push({savedAt:now,data:{...current,photos:[...(current.photos||[])]}});
+  history.push({savedAt:now,data:{...current,photos:[...(current.photos||[])],history:[]}});
   state.setups[index]={...entry.data,id:current.id,createdAt:current.createdAt,updatedAt:now,history:history.slice(-20)};
   if(saveState()){renderAll();showSetup(setupId);showToast('Ancienne version restaurée.');}
 }
@@ -6083,7 +6083,7 @@ async function handlePhotoSelection(event) {
 function handleSetupSubmit(event){
   event.preventDefault();const data=formValues(event.target,['carId','trackId',...SETUP_FIELDS]);data.setupName=String(event.target.elements.namedItem('setupName')?.value||'').trim();
   if(!data.carId||!data.trackId){showToast('Choisis une voiture et une piste.');return;}const now=new Date().toISOString();
-  if(editingSetupId){const index=state.setups.findIndex(s=>s.id===editingSetupId);if(index<0){showToast('Setup introuvable.');return;}const previous=state.setups[index];const history=[...(previous.history||[]),{savedAt:now,data:{...previous,photos:[...(previous.photos||[])]}}].slice(-20);state.setups[index]={...previous,...data,photos:[...pendingPhotos],history,updatedAt:now};if(!saveState()){state.setups[index]=previous;return;}showToast('Setup mis à jour. Ancienne version conservée dans l’historique.');}
+  if(editingSetupId){const index=state.setups.findIndex(s=>s.id===editingSetupId);if(index<0){showToast('Setup introuvable.');return;}const previous=state.setups[index];const history=[...(previous.history||[]),{savedAt:now,data:{...previous,photos:[...(previous.photos||[])],history:[]}}].slice(-20);state.setups[index]={...previous,...data,photos:[...pendingPhotos],history,updatedAt:now};if(!saveState()){state.setups[index]=previous;return;}showToast('Setup mis à jour. Ancienne version conservée dans l’historique.');}
   else{const source=setupDraftSource;const created={...(source||{}),id:uid('setup'),...data,photos:[...pendingPhotos],favorite:false,history:[],createdAt:now,updatedAt:now};state.setups.unshift(created);if(!saveState()){state.setups.shift();return;}showToast(source?'Copie du setup enregistrée.':'Setup enregistré. Bon run !');}
   editingSetupId=null;setupDraftSource=null;pendingPhotos=[];renderPhotoPreviews();renderAll();event.target.reset();event.target.classList.add('hidden');event.target.querySelector('button[type="submit"]').textContent='Enregistrer le setup';
 }
