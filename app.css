@@ -231,3 +231,19 @@ select { color-scheme: dark; } textarea { min-height: 90px; resize: vertical; li
 @media(max-width:700px){.setup-filter-grid{grid-template-columns:1fr 1fr}.setup-filter-grid input[type=search]{grid-column:1/-1}.compare-controls{grid-template-columns:1fr}.compare-row{grid-template-columns:95px minmax(105px,1fr) minmax(105px,1fr);font-size:10px}}
 
 .history-entry{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:11px}.history-entry .button{min-height:32px;padding:0 9px;font-size:10px}
+
+
+/* Présentation distincte des amortisseurs avant et arrière */
+.suspension-shock-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.shock-side{min-width:0;padding:17px;border:1px solid rgba(165,180,203,.2);border-radius:17px;background:rgba(255,255,255,.025)}
+.shock-side-front{border-top:3px solid rgba(116,217,232,.8)}
+.shock-side-rear{border-top:3px solid rgba(197,243,107,.8)}
+.shock-side h3{margin:0 0 14px;font-size:15px;letter-spacing:-.02em}
+.shock-side-front h3{color:var(--cyan)}
+.shock-side-rear h3{color:var(--accent)}
+.shock-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.shock-side label{padding-bottom:12px;border-bottom:1px solid rgba(165,180,203,.1)}
+.shock-side label:last-child{padding-bottom:0;border-bottom:0}
+.suspension-geometry-grid{margin-top:16px}
+.field-help{display:block;margin-top:5px;color:var(--muted);font-size:10px;font-weight:450;line-height:1.5}
+@media(max-width:700px){.suspension-shock-groups{grid-template-columns:1fr;gap:12px}.shock-side{padding:14px}.shock-fields{gap:12px}}
