@@ -1,5 +1,839 @@
 const STORAGE_KEY = 'rc-setup-v1';
 const MAX_SETUP_PHOTOS = 4;
+const CAR_CATALOG = [
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 Original",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 Graphite",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 Worlds Car",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B3",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B4 / B4.1 / B4.2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B44 / B44.1 / B44.2 / B44.3",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 T4",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B5 / B5M",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6 / B6.1 / B6.2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B64 / B64D",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B6.3 / B6.4",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B74 / B74.1 / B74.2",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B7 / B7D",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B7.1 / B7.1D",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 T6 / T6.1",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC8B / RC8B4",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC8T",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10SC / SC10",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10T4 / T5 / T6",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Vintage",
+    "name": "CAT XLS",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Vintage",
+    "name": "CAT 2000 / CAT 3000",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Vintage",
+    "name": "Cougar 2000 / 2001",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Vintage",
+    "name": "Cougar 2 / Cougar 2 Works",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Vintage",
+    "name": "Mission / Mission FT",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Vintage",
+    "name": "Mi2 / Mi2 EC",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Vintage",
+    "name": "Mi3 / Mi3.5 / Mi4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Vintage",
+    "name": "Fireblade",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "Cougar LD2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "Cougar Laydown",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "Cougar SVR / SV2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "CAT L1 / L1R",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "CAT L1 EVO",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "Mi6 / Mi6evo / Mi7 / Mi8",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "Eclipse 4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "Icon 2",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Schumacher",
+    "era": "Moderne",
+    "name": "STORM ST",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Optima",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Optima Mid",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Turbo Optima",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Ultima",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Ultima Pro / Pro XL",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Scorpion",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Tomahawk",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Javelin",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Turbo Scorpion",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Vintage",
+    "name": "Lazer ZX / ZX-R",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "MP10",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "MP10e",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "MP10T",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "Inferno Neo",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "RB7",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "ZX7",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "Ultima RB7.5",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "Fazer Mk2",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Kyosho",
+    "era": "Moderne",
+    "name": "TF7",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "F.A.N. RC",
+    "era": "Vintage",
+    "name": "Modèles vintage F.A.N. RC (à préciser)",
+    "scale": "Autre",
+    "drive": "À préciser",
+    "type": "Autre"
+  },
+  {
+    "brand": "F.A.N. RC",
+    "era": "Moderne",
+    "name": "Modèles modernes F.A.N. RC (à préciser)",
+    "scale": "Autre",
+    "drive": "À préciser",
+    "type": "Autre"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Rough Rider",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Sand Scorcher",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "The Frog",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Hotshot",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Avante",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Astute",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Egress",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Top Force",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Dyna Storm",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Manta Ray",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Wild One",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Vintage",
+    "name": "Clod Buster",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "TRF201 / TRF201X",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "TRF211XM",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "TRF501X / TRF511",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "TD2 / TD4",
+    "scale": "1/10",
+    "drive": "2WD / 4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "TT-01 / TT-02",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "TA05 / TA06 / TA07 / TA08",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "TB-04 / TB-05 / TB-07",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "XV-01 / XV-02",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Rally"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "M-05 / M-06 / M-07 / M-08",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "M-Chassis"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "CC-02 / CC-01",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Crawler"
+  },
+  {
+    "brand": "Tamiya",
+    "era": "Moderne",
+    "name": "GF-01 / G6-01",
+    "scale": "1/12",
+    "drive": "4WD",
+    "type": "Monster Truck"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Vintage",
+    "name": "XB8 (premières générations)",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Vintage",
+    "name": "XB808 / XB9",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Vintage",
+    "name": "XB4 (premières générations)",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Vintage",
+    "name": "XB2 (premières générations)",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Vintage",
+    "name": "T4 (premières générations)",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "XB8",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "XB8E",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "XB8T",
+    "scale": "1/8",
+    "drive": "4WD",
+    "type": "Truggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "XB4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "XB2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "XT4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "XT2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "X4",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Touring"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "X1",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Formula"
+  },
+  {
+    "brand": "XRAY",
+    "era": "Moderne",
+    "name": "XB4C",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy Carpet"
+  },
+  {
+    "brand": "PR Racing",
+    "era": "Vintage",
+    "name": "PR S1 / S1 V2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "PR Racing",
+    "era": "Vintage",
+    "name": "PR SB401 / SB401-LW",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "PR Racing",
+    "era": "Vintage",
+    "name": "PR SB401-R",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "PR Racing",
+    "era": "Moderne",
+    "name": "PR S1 V3",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "PR Racing",
+    "era": "Moderne",
+    "name": "PR S1 V3 Type R EVO",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "PR Racing",
+    "era": "Moderne",
+    "name": "PR S1 V4",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "PR Racing",
+    "era": "Moderne",
+    "name": "PR B10R",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "PR Racing",
+    "era": "Moderne",
+    "name": "PR SB401-R Sport",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  }
+];
 const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
 const SETUP_FIELDS = [
   'sessionDate', 'temperature', 'weather', 'goal', 'lubricants',
@@ -144,12 +978,42 @@ function formValues(form, names) {
   return Object.fromEntries(names.map((name) => [name, String(data.get(name) || '').trim()]));
 }
 
+function getCatalogFilters() {
+  return {
+    brand: document.getElementById('carCatalogBrand')?.value || '',
+    era: document.getElementById('carCatalogEra')?.value || '',
+    query: (document.getElementById('carCatalogSearch')?.value || '').trim().toLocaleLowerCase('fr')
+  };
+}
+function updateCarCatalogOptions() {
+  const brand = document.getElementById('carCatalogBrand')?.value || '';
+  const era = document.getElementById('carCatalogEra')?.value || '';
+  const select = document.getElementById('carCatalogModel');
+  if (!select) return;
+  const filtered = CAR_CATALOG.filter(model => (!brand || model.brand === brand) && (!era || model.era === era));
+  select.innerHTML = '<option value="">Choisir un modèle…</option>' + filtered.map((model, index) => {
+    const originalIndex = CAR_CATALOG.indexOf(model);
+    return '<option value="' + originalIndex + '">' + escapeHtml(model.name + ' · ' + model.scale + ' · ' + model.drive + ' · ' + model.type) + '</option>';
+  }).join('');
+  const count = document.getElementById('carCatalogCount');
+  if (count) count.textContent = filtered.length + ' modèles disponibles';
+}
+function handleCarCatalogAdd() {
+  const selected = document.getElementById('carCatalogModel')?.value;
+  if (selected === '' || selected == null) { showToast('Choisis d’abord un modèle.'); return; }
+  const model = CAR_CATALOG[Number(selected)];
+  if (!model) return;
+  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: model.drive, type: model.type, era: model.era, createdAt: new Date().toISOString() });
+  saveState(); renderAll();
+  document.getElementById('carCatalogModel').value = '';
+  showToast(model.name + ' ajouté au garage.');
+}
 function handleCarSubmit(event) {
   event.preventDefault();
   const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'notes']);
   if (!data.name) return;
   state.cars.unshift({ id: uid('car'), ...data, createdAt: new Date().toISOString() });
-  saveState(); renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Voiture ajoutée au garage.');
+  saveState(); renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Voiture personnalisée ajoutée au garage.');
 }
 function handleTrackSubmit(event) {
   event.preventDefault();
@@ -324,6 +1188,17 @@ document.querySelectorAll('[data-open-form]').forEach((button) => button.addEven
 }));
 document.querySelectorAll('[data-go-view]').forEach((button) => button.addEventListener('click', (event) => { event.preventDefault(); setView(button.dataset.goView); }));
 document.getElementById('carForm').addEventListener('submit', handleCarSubmit);
+document.getElementById('carCatalogBrand').addEventListener('change', updateCarCatalogOptions);
+document.getElementById('carCatalogEra').addEventListener('change', updateCarCatalogOptions);
+document.getElementById('carCatalogSearch').addEventListener('input', () => {
+  const filters = getCatalogFilters();
+  const select = document.getElementById('carCatalogModel');
+  const filtered = CAR_CATALOG.map((model,index)=>({model,index})).filter(({model}) => (!filters.brand || model.brand === filters.brand) && (!filters.era || model.era === filters.era) && (!filters.query || (model.name + ' ' + model.brand + ' ' + model.type + ' ' + model.scale).toLocaleLowerCase('fr').includes(filters.query)));
+  select.innerHTML = '<option value="">Choisir un modèle…</option>' + filtered.map(({model,index}) => '<option value="' + index + '">' + escapeHtml(model.brand + ' · ' + model.name + ' · ' + model.scale + ' · ' + model.drive) + '</option>').join('');
+  document.getElementById('carCatalogCount').textContent = filtered.length + ' modèles disponibles';
+});
+document.getElementById('addCatalogCar').addEventListener('click', handleCarCatalogAdd);
+updateCarCatalogOptions();
 document.getElementById('trackForm').addEventListener('submit', handleTrackSubmit);
 document.getElementById('setupForm').addEventListener('submit', handleSetupSubmit);
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
