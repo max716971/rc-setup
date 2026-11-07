@@ -156,9 +156,12 @@
   function refreshPickers() {
     document.querySelectorAll('[data-library-category]').forEach((select) => {
       const category = select.dataset.libraryCategory;
+      const search = select.parentElement.querySelector('[data-library-search]');
+      const query = (search?.value || '').trim().toLocaleLowerCase('fr');
       const current = select.value;
-      const items = allMaterials().filter((item) => item.category === category);
-      select.innerHTML = '<option value="">Choisir dans la bibliothèque…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(materialLabel(item))}</option>`).join('');
+      const items = allMaterials().filter((item) => item.category === category &&
+        (!query || [item.brand,item.name,item.reference,item.detail].join(' ').toLocaleLowerCase('fr').includes(query)));
+      select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(materialLabel(item))}</option>`).join('');
       if (items.some((item) => materialLabel(item) === current)) select.value = current;
     });
   }
@@ -198,18 +201,23 @@
   const setupForm = document.getElementById('setupForm');
   if (!setupForm) return;
   const pickerMap = [
-    ['frontTires','Pneus / roues'], ['rearTires','Pneus / roues'], ['frontShocks','Huile amortisseur'], ['rearShocks','Huile amortisseur'],
-    ['springs','Ressort'], ['motor','Moteur'], ['esc','Variateur (ESC)'], ['servoSteering','Servo'], ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur'], ['escModel','Variateur (ESC)']
+    ['frontTires','Pneus / roues'], ['rearTires','Pneus / roues'], ['inserts','Insert pneu'],
+    ['frontShocks','Huile amortisseur'], ['rearShocks','Huile amortisseur'], ['springs','Ressort'],
+    ['differentials','Huile différentiel'], ['centerDiff','Huile différentiel'],
+    ['motor','Moteur'], ['escModel','Variateur (ESC)'], ['servoSteering','Servo'],
+    ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur']
   ];
   for (const [fieldName, category] of pickerMap) {
     const input = setupForm.elements.namedItem(fieldName);
     if (!input || input.dataset.libraryEnhanced) continue;
     input.dataset.libraryEnhanced = 'true';
     const picker = document.createElement('div'); picker.className = 'setup-library-picker';
-    const label = document.createElement('span'); label.textContent = 'Bibliothèque';
-    const select = document.createElement('select'); select.dataset.libraryCategory = category;
+    const label = document.createElement('span'); label.textContent = 'Rechercher dans la bibliothèque';
+    const search = document.createElement('input'); search.type = 'search'; search.placeholder = 'Marque, nom ou référence…'; search.setAttribute('aria-label', label.textContent); search.dataset.librarySearch = 'true';
+    const select = document.createElement('select'); select.dataset.libraryCategory = category; select.setAttribute('aria-label', 'Choisir un matériel de la bibliothèque');
+    search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
     select.addEventListener('change', () => { if (select.value) input.value = select.value; });
-    picker.append(label, select);
+    picker.append(label, search, select);
     input.closest('label').before(picker);
   }
   setupForm.addEventListener('submit', () => {
