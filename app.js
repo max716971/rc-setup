@@ -6304,7 +6304,8 @@ document.getElementById('carCatalogEra').addEventListener('change', updateCarCat
 document.getElementById('carCatalogSearch').addEventListener('input', updateCarCatalogOptions);
 document.getElementById('addCatalogCar').addEventListener('click', handleCarCatalogAdd);
 updateCarCatalogOptions();
-document.getElementById('trackForm').addEventListener('submit', handleTrackSubmit);\ndocument.getElementById('trackForm').addEventListener('reset', () => { editingTrackId = null; const submit=document.querySelector('#trackForm button[type=\"submit\"]'); if(submit) submit.textContent='Enregistrer'; });
+document.getElementById('trackForm').addEventListener('submit', handleTrackSubmit);
+document.getElementById('trackForm').addEventListener('reset', () => { editingTrackId = null; const submit=document.querySelector('#trackForm button[type=\"submit\"]'); if(submit) submit.textContent='Enregistrer'; });
 document.getElementById('setupForm').addEventListener('submit', handleSetupSubmit);
 document.getElementById('setupForm').elements.namedItem('carId').addEventListener('change',updateVehicleSpecificFields);
 ['frontDiffType','centerDiffType','rearDiffType','slipperPresence'].forEach(name=>document.getElementById('setupForm').elements.namedItem(name).addEventListener('change',updateVehicleSpecificFields));
