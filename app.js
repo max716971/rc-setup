@@ -5934,7 +5934,7 @@ function updateVehicleSpecificFields(){
   });
   const slipperPresence=String(form.elements.namedItem('slipperPresence')?.value||'').toLowerCase();
   form.querySelectorAll('.slipper-setting-field').forEach(label=>label.classList.toggle('vehicle-field-hidden',slipperPresence!=='présent'));
-  const hint=document.getElementById('vehicleSetupHint');if(hint)hint.textContent=car?'${car.brand||''} ${car.name} · ${car.drive||'architecture non précisée'} · Choisis uniquement les différentiels et équipements présents sur cette voiture.':'Sélectionne une voiture pour adapter les réglages à son architecture.';
+  const hint=document.getElementById('vehicleSetupHint');if(hint)hint.textContent=car?[car.brand||'',car.name,car.drive||'architecture non précisée'].filter(Boolean).join(' · ')+' · Choisis uniquement les différentiels et équipements présents sur cette voiture.':'Sélectionne une voiture pour adapter les réglages à son architecture.';
 }
 function parseLapTime(value){const text=String(value||'').trim().replace(',','.');if(!text)return null;if(text.includes(':')){const p=text.split(':').map(Number);if(p.length===2&&p.every(Number.isFinite))return p[0]*60+p[1];}const n=Number(text);return Number.isFinite(n)&&n>0?n:null;}
 function renderPerformanceTrend(){
