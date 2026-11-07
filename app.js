@@ -6033,7 +6033,7 @@ function printSetupDetails(){
     .print-buggy-caption{display:flex;justify-content:space-around;gap:10px;padding:9px 0;border-top:1px solid #e1e5e8;color:#34414c;font-size:7.2pt}
     .print-buggy-caption b{color:#c8202f;margin-right:5px}
     .print-buggy-note{margin:0;padding-top:7px;border-top:1px solid #edf0f2;color:#7a858e;font-size:6.5pt;text-align:center}
-    .print-page-two{break-before:page;page-break-before:always}
+    .print-page-two{display:block;clear:both;break-before:page!important;page-break-before:always!important;break-inside:auto!important;page-break-inside:auto!important}
     .print-page-heading{display:flex;justify-content:space-between;margin:0 0 12px;padding:0 0 8px;border-bottom:2px solid #26313b;color:#78838d;font-size:7pt;letter-spacing:1px}
     .print-page-heading strong{color:#26313b}
     .setup-gallery,.car-photo-gallery,.car-detail-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:8px 0}
@@ -6054,7 +6054,7 @@ function printSetupDetails(){
       html{background:#fff}
       body{max-width:none;margin:0;padding:0}
       .print-topline{margin:0 -13mm}
-      .print-page-two{break-before:page;page-break-before:always}
+      .print-page-two{display:block;clear:both;break-before:page!important;page-break-before:always!important;break-inside:auto!important;page-break-inside:auto!important}
       .print-section{break-inside:auto;page-break-inside:auto}
       .print-section h3{break-after:avoid;page-break-after:avoid}
       .print-section dl>div{break-inside:avoid}
