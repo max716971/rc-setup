@@ -678,9 +678,3 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
 .maintenance-entry{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02)}
 .maintenance-entry strong{display:block}.maintenance-entry p{margin:5px 0;color:var(--muted);font-size:12px}
 .geometry-car-label{display:block;max-width:360px;margin-bottom:14px}
-.geometry-layout{display:grid;grid-template-columns:minmax(180px,.75fr) minmax(0,1.4fr);gap:20px;align-items:start}
-.geometry-drawing{padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);text-align:center}
-.geometry-drawing svg{display:block;width:100%;max-height:360px}
-.geometry-drawing p{margin:4px 0 0}
-.geometry-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media(max-width:650px){.geometry-layout{grid-template-columns:1fr}.geometry-drawing svg{max-height:280px}.geometry-drawing{max-width:340px;margin:auto;width:100%}.geometry-fields{grid-template-columns:1fr}.maintenance-panel .form-grid{grid-template-columns:1fr}}
