@@ -4,7 +4,7 @@ const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
 const SETUP_FIELDS = [
   'sessionDate', 'temperature', 'weather', 'goal', 'lubricants',
   'frontTires', 'rearTires', 'inserts', 'tireTreatment', 'wheels', 'tireCondition',
-  'frontShocks', 'frontPiston', 'frontSpring', 'rearShocks', 'rearPiston', 'rearSpring', 'springs', 'rideHeight', 'camber', 'toe', 'casterAckermann', 'antiRollBars', 'droop', 'stopsDiaphragms',
+  'frontShocks', 'frontPiston', 'frontSpring', 'rearShocks', 'rearPiston', 'rearSpring', 'springs', 'frontRideHeight', 'rearRideHeight', 'rideHeight', 'camber', 'toe', 'casterAckermann', 'antiRollBars', 'droop', 'stopsDiaphragms',
   'gearing', 'differentials', 'centerDiff', 'motor', 'esc', 'servoSteering', 'brakes', 'battery', 'radio',
   'lapTime', 'rating', 'notes'
 ];
@@ -261,7 +261,7 @@ function showSetup(id) {
   const groups = [
     ['Session', [['Date', setup.sessionDate || formatDate(setup.createdAt)], ['Température', setup.temperature], ['Météo / adhérence', setup.weather], ['Objectif / ressenti', setup.goal]]],
     ['Pneus & roues', [['Pneus avant', setup.frontTires], ['Pneus arrière', setup.rearTires], ['Inserts', setup.inserts], ['Traitement pneus', setup.tireTreatment], ['Jantes / largeur', setup.wheels], ['État des pneus', setup.tireCondition]]],
-    ['Suspension & géométrie', [['Huile amortisseur avant', setup.frontShocks], ['Piston amortisseur avant', setup.frontPiston], ['Ressort avant', setup.frontSpring], ['Huile amortisseur arrière', setup.rearShocks], ['Piston amortisseur arrière', setup.rearPiston], ['Ressort arrière', setup.rearSpring], ['Anciens ressorts (setup existant)', setup.springs], ['Hauteur de caisse', setup.rideHeight], ['Carrossage', setup.camber], ['Pincement / ouverture', setup.toe], ['Chasse / Ackermann', setup.casterAckermann], ['Barres antiroulis', setup.antiRollBars], ['Débattement / droop', setup.droop], ['Butées / membranes', setup.stopsDiaphragms]]],
+    ['Suspension & géométrie', [['Huile amortisseur avant', setup.frontShocks], ['Piston amortisseur avant', setup.frontPiston], ['Ressort avant', setup.frontSpring], ['Huile amortisseur arrière', setup.rearShocks], ['Piston amortisseur arrière', setup.rearPiston], ['Ressort arrière', setup.rearSpring], ['Anciens ressorts (setup existant)', setup.springs], ['Hauteur de caisse avant', setup.frontRideHeight], ['Hauteur de caisse arrière', setup.rearRideHeight], ['Hauteur de caisse (ancienne fiche)', setup.rideHeight], ['Carrossage', setup.camber], ['Pincement / ouverture', setup.toe], ['Chasse / Ackermann', setup.casterAckermann], ['Barres antiroulis', setup.antiRollBars], ['Débattement / droop', setup.droop], ['Butées / membranes', setup.stopsDiaphragms]]],
     ['Transmission & électronique', [['Rapport / pignon-couronne', setup.gearing], ['Différentiels AV / AR', setup.differentials], ['Différentiel central', setup.centerDiff], ['Moteur / timing', setup.motor], ['ESC / réglages', setup.esc], ['Servo / direction', setup.servoSteering], ['Frein', setup.brakes], ['Batterie', setup.battery], ['Réglages radio / autres', setup.radio]]],
     ['Entretien & lubrification', [['Graisses et huiles d’entretien', setup.lubricants]]],
     ['Bilan de session', [['Meilleur temps au tour', setup.lapTime], ['Ressenti général', setup.rating], ['Notes & prochaines modifications', setup.notes]]]
@@ -301,7 +301,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=34').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=35').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
