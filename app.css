@@ -667,3 +667,20 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
  #dashboardView .capability-card p{font-size:9px}
  #dashboardView .capability-card button{font-size:8.5px}
 }
+
+/* Outils avancés : entretien, géométrie et diagnostic priorisé */
+.diagnosis-proposals{display:grid;gap:9px;margin:14px 0}
+.diagnosis-proposal{display:grid;grid-template-columns:32px minmax(0,1fr);gap:11px;padding:13px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.025)}
+.diagnosis-rank{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:rgba(197,43,50,.14);color:#ff8b91;font-weight:850}
+.diagnosis-proposal p{margin:6px 0;color:var(--muted);font-size:12px;line-height:1.55}
+.diagnosis-proposal small{color:var(--dim);font-size:11px;line-height:1.5}
+.maintenance-list{display:grid;gap:8px;margin-top:18px}
+.maintenance-entry{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02)}
+.maintenance-entry strong{display:block}.maintenance-entry p{margin:5px 0;color:var(--muted);font-size:12px}
+.geometry-car-label{display:block;max-width:360px;margin-bottom:14px}
+.geometry-layout{display:grid;grid-template-columns:minmax(180px,.75fr) minmax(0,1.4fr);gap:20px;align-items:start}
+.geometry-drawing{padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);text-align:center}
+.geometry-drawing svg{display:block;width:100%;max-height:360px}
+.geometry-drawing p{margin:4px 0 0}
+.geometry-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:650px){.geometry-layout{grid-template-columns:1fr}.geometry-drawing svg{max-height:280px}.geometry-drawing{max-width:340px;margin:auto;width:100%}.geometry-fields{grid-template-columns:1fr}.maintenance-panel .form-grid{grid-template-columns:1fr}}
