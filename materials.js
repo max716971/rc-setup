@@ -843,12 +843,13 @@
     </svg>`;
     return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
   }
+  const rcBrandWordmark=(label,sub='')=>'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120"><rect width="420" height="120" rx="12" fill="#fff"/><path d="M24 88 70 25h36L60 88z" fill="#111"/><text x="125" y="73" font-family="Arial,Helvetica,sans-serif" font-size="52" font-weight="900" font-style="italic" fill="#111">'+label+'</text><text x="128" y="98" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" letter-spacing="4" fill="#555">'+sub+'</text></svg>');
   const MATERIAL_BRAND_LOGOS = {
-    'Fan RC': 'https://www.gofasthobbies.com/cdn/shop/collections/Fan_RC.jpg?v=1706054433&width=1500',
-    'Kyosho': 'https://cdn.brandfetch.io/idXDBNlT9W/w/568/h/133/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1792896373403',
+    'Fan RC': rcBrandWordmark('FAN RC','R/C PERFORMANCE'),
+    'Kyosho': 'https://www.kyosho.com/eng/support/instructionmanual/images/kyosho_logo.gif',
     'Mugen Seiki': 'https://www.autocollant-tuning.com/3061-product_main/sticker-et-autocollant-mugen-seiki.jpg',
-    'PR Racing': 'https://i0.wp.com/circusrc.com/CRC/wp-content/uploads/2019/09/PR-Racing.jpg?fit=1024%2C512&ssl=1',
-    'Team Losi': 'https://www.losi.com/on/demandware.static/-/Sites-losi-us-Library/default/dw70d1384a/logos/Losi-Logo-Side-Tagline-Stacked-Color-for-White-Background.png',
+    'PR Racing': 'https://www.pr-rc.com/images/aa_03.jpg',
+    'Team Losi': 'https://images.seeklogo.com/logo-png/32/1/team-losi-racing-logo-png_seeklogo-324214.png',
     'Traxxas': 'https://www.kindpng.com/picc/m/72-728397_traxxas-logo-png-transparent-png.png',
     'Hobbywing': 'https://www.hobbywingdirect.com/cdn/shop/files/HW3x6-Viewing-only_3c0904dc-0c98-46e5-8dd3-f2d44df564c8_1600x.jpg?v=1697845198',
     'Team Associated': 'https://apps.associatedelectrics.com/downloads/thumbs/TeamAssociated-color-lightBG-300.png',
@@ -863,6 +864,8 @@
     'Power HD': 'https://chd.hk/images/logo.jpg',
     'REDS': 'https://rsrc.biz/img/m/26.jpg',
     'Sanwa': 'https://thepihut.com/cdn/shop/files/sanwa-logo_500x.jpg?v=1663172495',
+    'X-Factory': rcBrandWordmark('X-FACTORY','R/C RACING'),
+    'XRAY': 'https://www.xraystore.cz/user/categories/orig/xray-1.png',
     'SRT': 'https://www.srt-rc.com/data/upload/image/201805/112c8f371d4d46d72955761ae81ced0d.jpg',
     'Tekin': 'https://www.teamtekin.com/images/tekin_logo_hires_2015.png?crc=4065896322',
     'VP-Pro': 'https://cdn.hardwickrctrack.co.uk/static/logos/vpracing.webp',
