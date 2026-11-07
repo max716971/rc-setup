@@ -5977,6 +5977,7 @@ function printSetupDetails(){
   const source=document.getElementById('setupDetails');
   if(!source)return;
   const printable=source.cloneNode(true);
+  printable.querySelectorAll('img').forEach(image=>image.loading='eager');
   printable.querySelectorAll('.item-actions,.restore-version,.button,.toast,.pdf-action-banner').forEach(node=>node.remove());
   const heading=printable.querySelector('h2')?.textContent?.trim()||'Fiche RC SETUP';
   const subtitle=printable.querySelector('.dialog-subtitle')?.textContent?.trim()||'Fiche de réglages et de suivi';
@@ -6052,7 +6053,7 @@ function printSetupDetails(){
     @media(max-width:650px){body{padding:0 16px}.print-overview{grid-template-columns:1fr 1fr}.print-section dl{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr 1fr 1fr}}
   `;
   const overview=meta.slice(0,4).map((value,index)=>{
-    const labels=['PISTE / SESSION','SURFACE','ADHÉRENCE','CONDITIONS'];
+    const labels=['SURFACE','ADHÉRENCE','MÉTÉO','TEMPÉRATURE'];
     return '<div class="print-overview-item"><small>'+labels[index]+'</small><strong>'+escapeHtml(value)+'</strong></div>';
   }).join('');
   const printWindow=window.open('','_blank');
