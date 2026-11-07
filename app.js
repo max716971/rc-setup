@@ -5827,6 +5827,7 @@ function getTrackById(id) { return state.tracks.find((track) => track.id === id)
 function setView(viewName) {
   document.querySelectorAll('.nav-item').forEach((button) => button.classList.toggle('active', button.dataset.view === viewName));
   document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view.id === `${viewName}View`));
+  if(viewName==='tools'){populateMaintenanceCars();populateGeometryCars();}
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function emptyState() { return emptyStateTemplate.content.cloneNode(true); }
