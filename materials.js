@@ -850,7 +850,7 @@
     '1UP Racing': 'https://i.ytimg.com/vi/ndTXtEMba2c/maxresdefault.jpg',
     'Futaba': 'https://images.seeklogo.com/logo-png/40/1/futaba-logo-png_seeklogo-409265.png',
     'HUDY': 'https://one7rc.co.nz/cdn/shop/files/Hudyproductimage_3a316267-126f-4592-b00a-2f1c3a8af14e_1200x1200.jpg?v=1765234176',
-    'JConcepts': 'https://images.seeklogo.com/logo-png/7/1/jconcepts-logo-png_seeklogo-75193.png',
+    'JConcepts': 'https://jconcepts.net/_e/spx/v1/img/logo.png',
     'LRP': brandWordmark('LRP', '#1764a5', '#171717'),
     'Pro-Line': brandWordmark('PRO-LINE', '#dc2b30', '#171717'),
     'Reedy': brandWordmark('REEDY', '#dc2b30', '#171717'),
