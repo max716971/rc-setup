@@ -5995,7 +5995,7 @@ function printSetupDetails(){
   }).join('');
   const intro=printable.querySelector('.kicker')?.textContent?.trim()||'FICHE DE RÉGLAGES';
   const compareHint=isComparison?'<span class="print-chip">COMPARATIF A / B</span>':'<span class="print-chip">CARNET DE RÉGLAGES · TT 1/10</span>';
-  const styles=String.raw\`
+  const styles=String.raw`
     :root{color-scheme:light;--ink:#18212b;--muted:#66717d;--line:#d9dee3;--soft:#f2f4f5;--accent:#c8202f;--accent-dark:#8f1722}
     *{box-sizing:border-box}
     html{background:#e9ecef}
@@ -6050,7 +6050,7 @@ function printSetupDetails(){
       *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     }
     @media(max-width:650px){body{padding:0 16px}.print-overview{grid-template-columns:1fr 1fr}.print-section dl{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr 1fr 1fr}}
-  \`;
+  `;
   const overview=meta.slice(0,4).map((value,index)=>{
     const labels=['PISTE / SESSION','SURFACE','ADHÉRENCE','CONDITIONS'];
     return '<div class="print-overview-item"><small>'+labels[index]+'</small><strong>'+escapeHtml(value)+'</strong></div>';
