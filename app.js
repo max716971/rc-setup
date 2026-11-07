@@ -5983,7 +5983,8 @@ function runSetupDiagnosis(){
   const gripText=grip==='low'?'Contexte faible grip : recherche une voiture progressive et évite les changements extrêmes.':grip==='high'?'Contexte fort grip : vérifie que la voiture ne roule pas excessivement sur ses suspensions.':'Adapte les essais à l’adhérence réelle de la piste.';
   output.innerHTML='<strong>Pistes à tester — '+(drive==='2wd'?'2WD':drive==='4wd'?'4WD':'architecture non précisée')+'</strong><ol>'+lines.map(x=>'<li>'+x+'</li>').join('')+'</ol><p class="item-sub">'+gripText+'</p><p class="item-sub">Ce sont des pistes de diagnostic, pas une recette universelle : note le réglage de départ et ne change qu’un paramètre à la fois.</p>';
 }
-\nfunction formatDate(value) {
+
+function formatDate(value) {
   if (!value) return 'Date non précisée';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return 'Date non précisée';
