@@ -5906,6 +5906,16 @@ function updateComparisonOptions(){
   ['compareSetupA','compareSetupB'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const current=el.value;el.innerHTML='<option value="">Choisir un setup…</option>'+state.setups.map(s=>{const car=getCarById(s.carId),track=getTrackById(s.trackId);return `<option value="${escapeHtml(s.id)}">${escapeHtml(s.setupName||car?.name||'Voiture')} — ${escapeHtml(track?.name||'Piste')} — ${escapeHtml(s.sessionDate||formatDate(s.createdAt))}</option>`;}).join('');if(state.setups.some(s=>s.id===current))el.value=current;});
 }
 function toggleSetupFavorite(id){const setup=state.setups.find(s=>s.id===id);if(!setup)return;setup.favorite=!setup.favorite;setup.updatedAt=new Date().toISOString();if(saveState()){renderAll();showToast(setup.favorite?'Ajouté aux favoris.':'Retiré des favoris.');}}
+function restoreSetupVersion(setupId,historyIndex){
+  const index=state.setups.findIndex(s=>s.id===setupId);if(index<0)return;
+  const current=state.setups[index],history=[...(current.history||[])],entry=history[historyIndex];
+  if(!entry?.data||!confirm('Restaurer cette ancienne version ? La configuration actuelle sera conservée dans l’historique.'))return;
+  const now=new Date().toISOString();
+  history.push({savedAt:now,data:{...current,photos:[...(current.photos||[])]}});
+  state.setups[index]={...entry.data,id:current.id,createdAt:current.createdAt,updatedAt:now,history:history.slice(-20)};
+  if(saveState()){renderAll();showSetup(setupId);showToast('Ancienne version restaurée.');}
+}
+
 function openSetupEditor(id,duplicate=false){
   const source=state.setups.find(s=>s.id===id);if(!source)return;const form=document.getElementById('setupForm');skipSetupReset=true;form.dataset.preserveOnReset='true';form.reset();
   editingSetupId=duplicate?null:id;setupDraftSource=duplicate?source:null;
@@ -6122,7 +6132,8 @@ function showSetup(id) {
     return `<section class="detail-group"><h3>${escapeHtml(title)}</h3><dl>${filled.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></section>`;
   }).join('');
   const history=Array.isArray(setup.history)?setup.history:[];
-  content.insertAdjacentHTML('beforeend',`<section class="detail-group"><h3>Historique des modifications</h3><p class="item-sub">${history.length?history.slice().reverse().map(h=>escapeHtml(new Date(h.savedAt).toLocaleString('fr-FR'))).join(' · '):'Aucune modification enregistrée pour le moment.'}</p></section><div class="item-actions detail-actions"><button class="button button-primary" id="detailEditSetup" type="button">Modifier ce setup</button><button class="button button-soft" id="detailDuplicateSetup" type="button">Dupliquer</button><button class="button button-soft" id="detailFavoriteSetup" type="button">${setup.favorite?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</button></div>`);
+  content.insertAdjacentHTML('beforeend',`<section class="detail-group"><h3>Historique des modifications</h3>${history.length?history.map((h,index)=>`<div class="history-entry"><span>${escapeHtml(new Date(h.savedAt).toLocaleString('fr-FR'))}</span><button class="button button-quiet restore-version" data-index="${index}" type="button">Restaurer cette version</button></div>`).join(''):'<p class="item-sub">Aucune modification enregistrée pour le moment.</p>'}</section><div class="item-actions detail-actions"><button class="button button-primary" id="detailEditSetup" type="button">Modifier ce setup</button><button class="button button-soft" id="detailDuplicateSetup" type="button">Dupliquer</button><button class="button button-soft" id="detailFavoriteSetup" type="button">${setup.favorite?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</button></div>`);
+  content.querySelectorAll('.restore-version').forEach(button=>button.addEventListener('click',()=>restoreSetupVersion(id,Number(button.dataset.index))));
   content.querySelector('#detailEditSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();openSetupEditor(id);});
   content.querySelector('#detailDuplicateSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();openSetupEditor(id,true);});
   content.querySelector('#detailFavoriteSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();toggleSetupFavorite(id);});
@@ -6158,7 +6169,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=59').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=62').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
