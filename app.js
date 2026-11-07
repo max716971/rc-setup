@@ -6148,6 +6148,12 @@ function renderCarCatalogBrandPicker() {
   if(!picker || picker.dataset.ready==='true')return;
   const brands=[...new Set(CAR_CATALOG.map(model=>model.brand).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'));
   const logos={
+    'Fan RC':'https://www.gofasthobbies.com/cdn/shop/collections/Fan_RC.jpg?v=1706054433&width=1500',
+    'Kyosho':'https://cdn.brandfetch.io/idXDBNlT9W/w/568/h/133/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1792896373403',
+    'Mugen Seiki':'https://www.autocollant-tuning.com/3061-product_main/sticker-et-autocollant-mugen-seiki.jpg',
+    'PR Racing':'https://i0.wp.com/circusrc.com/CRC/wp-content/uploads/2019/09/PR-Racing.jpg?fit=1024%2C512&ssl=1',
+    'Team Losi':'https://www.losi.com/on/demandware.static/-/Sites-losi-us-Library/default/dw70d1384a/logos/Losi-Logo-Side-Tagline-Stacked-Color-for-White-Background.png',
+    'Traxxas':'https://www.kindpng.com/picc/m/72-728397_traxxas-logo-png-transparent-png.png',
     'Team Associated':'https://apps.associatedelectrics.com/downloads/thumbs/TeamAssociated-color-lightBG-300.png',
     'Schumacher':'https://schumacher-racing.com/wp-content/uploads/2024/01/Schumacher_racing_pink-gelb-1.png',
     'Kyosho':'https://www.kyosho.com/eng/support/instructionmanual/images/kyosho_logo.gif',
