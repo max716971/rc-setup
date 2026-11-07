@@ -602,6 +602,73 @@
     { brand:'Pro-Line', category:'Insert pneu', name:'Open Cell Medium Rear Foam 1/10 Buggy', reference:'6365-00', compatibility:'Arrière 2WD/4WD', detail:'Insert arrière mousse ouverte medium pour buggy 1/10.', url:'https://teams.prolineracing.com/Images/pricelist.pdf' },
 
 
+    // Hobbywing — versions 1/10 stock officielles XeRun V10 G4 et G4R.
+    ...[
+      ['30401140','13.5T','3 950 kV'],['30401141','17.5T','3 020 kV'],['30401142','21.5T','2 500 kV']
+    ].map(([reference,turn,kv])=>({
+      brand:'Hobbywing',category:'Moteur',name:'XeRun V10 G4 '+turn,
+      reference,detail:'Moteur brushless sensored 1/10 stock, '+kv+'.',
+      url:'https://www.hobbywing.com/en/products/xerun-v10-g434.html'
+    })),
+    ...[
+      ['30401749','13.5T','standard'],['30401746','13.5T','ROAR'],
+      ['30401748','17.5T','standard'],['30401745','17.5T','ROAR'],
+      ['30401747','21.5T','standard'],['30401744','21.5T','ROAR']
+    ].map(([reference,turn,edition])=>({
+      brand:'Hobbywing',category:'Moteur',name:'XeRun V10 G4R '+turn+(edition==='ROAR'?' ROAR':''),
+      reference,detail:'Moteur brushless sensored 1/10 stock, version '+edition+'.',
+      url:'https://www.hobbywing.com/en/products/xerunv10g4r'
+    })),
+    // LRP — versions Dynamic10 et Dynamic10L documentées par le fabricant.
+    {brand:'LRP',category:'Moteur',name:'Dynamic10 BL 5800 kV',reference:'53450',detail:'Moteur brushless 540/550 1/10, version courte Dynamic10.',url:'https://www.lrp.cc/en/product/53450/'},
+    {brand:'LRP',category:'Moteur',name:'Dynamic10L BL 2400 kV',reference:'53530',detail:'Moteur brushless 1/10 long 550, 2400 kV.',url:'https://www.lrp.cc/en/product/53530/'},
+    // Tekin — bobinages SPEC-R GEN4 1/10 manquants.
+    {brand:'Tekin',category:'Moteur',name:'Redline SPEC-R GEN4 — 25.5T 540',reference:'TT2760',compatibility:'Touring 1/10 / Formula 1',detail:'Moteur brushless sensored GEN4, rotor 12.3 mm.',url:'https://www.teamtekin.com/specr.html'},
+    {brand:'Tekin',category:'Moteur',name:'Redline SPEC-R GEN4 — 21.5T 540',reference:'TT2761',compatibility:'Touring 1/10 / Pan Car',detail:'Moteur brushless sensored GEN4, rotor 12.5 mm.',url:'https://www.teamtekin.com/specr.html'},
+    // Reedy — gamme stock Sonic SP5, distincte des moteurs modified Sonic 540-M4.
+    ...[
+      ['27482','10.5T'],['27481','13.5T'],['27480','17.5T'],['27479','21.5T'],['27494','25.5T']
+    ].map(([reference,turn])=>({
+      brand:'Reedy',category:'Moteur',name:'Sonic SP5 540 — '+turn,
+      reference,detail:'Moteur brushless sensored stock 1/10 Reedy Sonic SP5.',
+      url:'https://roarracing.org/approved_brushless_motors.php?ordby=man'
+    })),
+    // Cayote — gamme Crest Modi 540 complète 3.5T à 9.5T et Crest Stocki.
+    ...[
+      ['CYEB11001','3.5T'],['CYEB11002','4.0T'],['CYEB11003','4.5T'],['CYEB11004','5.0T'],
+      ['CYEB11005','5.5T'],['CYEB11006','6.0T'],['CYEB11007','6.5T'],['CYEB11008','7.0T'],
+      ['CYEB11009','7.5T'],['CYEB11015','8.0T'],['CYEB11016','8.5T'],['CYEB11017','9.0T'],['CYEB11018','9.5T']
+    ].map(([reference,turn])=>({
+      brand:'Cayote',category:'Moteur',name:'Crest Modi 540 1/10 — '+turn,
+      reference,detail:'Moteur brushless sensored compétition 1/10.',
+      url:'https://www.senditrc.com/brand/cayote/brushless-motors'
+    })),
+    ...[
+      ['CYEB11010','10.5T'],['CYEB11011','13.5T'],['CYEB11012','17.5T'],['CYEB11013','21.5T']
+    ].map(([reference,turn])=>({
+      brand:'Cayote',category:'Moteur',name:'Crest Stocki 1/10 — '+turn,
+      reference,detail:'Moteur brushless sensored compétition stock 1/10.',
+      url:'https://www.senditrc.com/brand/cayote/brushless-motors'
+    })),
+    // REDS — versions standards non Factory Selected de la gamme VX3 540 Stock Pro.
+    ...[
+      ['MTTE0036P','13.5T High Torque'],['MTTE0037P','17.5T'],['MTTE0038P','21.5T']
+    ].map(([reference,turn])=>({
+      brand:'REDS',category:'Moteur',name:'VX3 540 Stock Pro — '+turn,
+      reference,detail:'Moteur brushless sensored 2 pôles, version standard (non Factory Selected).',
+      url:'https://www.reds-racing.com/1-10-vx3-stock-pro-motor'
+    })),
+    // Yokomo — gamme ZERO3 1/10 du catalogue constructeur Spring 2026.
+    ...[
+      ['YM-3BL85A','8.5T'],['YM-3BL105A','10.5T'],['YM-3BL135A','13.5T'],
+      ['YM-3BL175A','17.5T'],['YM-3BL215A','21.5T']
+    ].map(([reference,turn])=>({
+      brand:'Yokomo',category:'Moteur',name:'ZERO3 Brushless 1/10 — '+turn,
+      reference,detail:'Moteur brushless sensored Yokomo ZERO3, gamme catalogue 2026.',
+      url:'https://teamyokomo.com/downloadfiles/%2103%21CATALOG/2026_Spring_YOKOMO_CATALOG.pdf'
+    })),
+
+
   ];
   const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA'];
   const root = document.getElementById('materialsApp');
