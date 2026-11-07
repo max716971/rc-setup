@@ -5827,7 +5827,7 @@ function getTrackById(id) { return state.tracks.find((track) => track.id === id)
 function setView(viewName) {
   document.querySelectorAll('.nav-item').forEach((button) => button.classList.toggle('active', button.dataset.view === viewName));
   document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view.id === `${viewName}View`));
-  if(viewName==='tools'){populateMaintenanceCars();populateGeometryCars();}
+  if(viewName==='tools'){populateMaintenanceCars();}
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function emptyState() { return emptyStateTemplate.content.cloneNode(true); }
@@ -6185,16 +6185,6 @@ function renderMaintenanceList(){
  const id=select.value;const entries=(state.maintenance||[]).filter(item=>item.carId===id).sort((x,y)=>String(y.date).localeCompare(String(x.date)));
  list.innerHTML=!id?'<p class="item-sub">Sélectionne une voiture pour consulter son carnet.</p>':!entries.length?'<p class="item-sub">Aucune révision enregistrée pour cette voiture.</p>':entries.map(item=>'<article class="maintenance-entry"><strong>'+escapeHtml(item.part)+'</strong><p>'+escapeHtml(formatDate(item.date))+' · '+Number(item.sessions||0)+' session(s) depuis la révision</p><p>'+(item.next? 'Prochaine vérification dans '+Number(item.next)+' session(s).':'Prochaine vérification non programmée.')+'</p>'+(item.notes?'<p>'+escapeHtml(item.notes)+'</p>':'')+'</article>').join('');
 }
-function populateGeometryCars(){
- const select=document.getElementById('geometryCar');if(!select)return;
- select.innerHTML='<option value="">Choisir une voiture…</option>'+state.cars.map(car=>'<option value="'+escapeHtml(car.id)+'">'+escapeHtml(car.name)+'</option>').join('');
-}
-function loadGeometryForm(){
- const car=getCarById(document.getElementById('geometryCar')?.value),form=document.getElementById('geometryForm');if(!form)return;
- form.reset();const data=car?.techGeometry||{};
- Object.entries(data).forEach(([key,value])=>{const field=form.elements.namedItem(key);if(field)field.value=value||'';});
-}
-
 function formValues(form, names) {
   const data = new FormData(form);
   return Object.fromEntries(names.map((name) => [name, String(data.get(name) || '').trim()]));
@@ -6659,7 +6649,7 @@ function importJson(file) {
       state.cars=parsed.cars;state.tracks=parsed.tracks;state.maintenance=Array.isArray(parsed.maintenance)?parsed.maintenance:[];state.setups=parsed.setups.map(setup=>({...setup,photos:Array.isArray(setup.photos)?setup.photos:[],history:Array.isArray(setup.history)?setup.history:[]}));
       if(!saveState()){Object.assign(state,previous);return;}
       if(Array.isArray(parsed.materials)&&window.RCSetupMaterials&&!window.RCSetupMaterials.importData(parsed.materials)){Object.assign(state,previous);saveState();showToast('Import matériel impossible : les données précédentes ont été conservées.');return;}
-      renderAll();populateMaintenanceCars();populateGeometryCars();showToast(Array.isArray(parsed.materials)?'Sauvegarde complète importée.':'Sauvegarde importée. La bibliothèque personnelle actuelle a été conservée.');
+      renderAll();populateMaintenanceCars();showToast(Array.isArray(parsed.materials)?'Sauvegarde complète importée.':'Sauvegarde importée. La bibliothèque personnelle actuelle a été conservée.');
     } catch (error) {
       console.error(error); showToast('Fichier JSON invalide ou incompatible.');
     }
@@ -6811,13 +6801,6 @@ document.getElementById('maintenanceForm')?.addEventListener('submit',event=>{
  if(!saveState())return;
  event.target.reset();document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);renderMaintenanceList();showToast('Révision enregistrée.');
 });
-document.getElementById('geometryCar')?.addEventListener('change',loadGeometryForm);
-document.getElementById('geometryForm')?.addEventListener('submit',event=>{
- event.preventDefault();const car=getCarById(document.getElementById('geometryCar').value);if(!car){showToast('Choisis une voiture.');return;}
- car.techGeometry=Object.fromEntries(new FormData(event.target).entries());
- if(!saveState())return;showToast('Fiche technique enregistrée pour '+car.name+'.');
-});
-
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
 document.getElementById('exportButton').addEventListener('click', exportJson);
 document.getElementById('importInput').addEventListener('change', (event) => { importJson(event.target.files?.[0]); event.target.value = ''; });
@@ -6832,7 +6815,6 @@ document.getElementById('assistantSeverity')?.addEventListener('change',renderAs
 document.getElementById('assistantSaveProposal')?.addEventListener('click',saveAssistantProposal);
 renderAll();
 populateMaintenanceCars();
-populateGeometryCars();
 document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);
 updateCarBrandPicker();
 updateVehicleSpecificFields();
