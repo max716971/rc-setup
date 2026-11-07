@@ -827,6 +827,22 @@
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 72"><rect width="240" height="72" rx="9" fill="#fff"/><path d="M12 57H228" stroke="${color}" stroke-width="5" stroke-linecap="round"/><text x="120" y="43" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="${fontSize}" font-weight="900" letter-spacing="-.8" fill="${secondary}">${label}</text></svg>`;
     return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
   }
+  // Emblème XTR redessiné en SVG local à partir du logo de sponsor XTR Professional Products.
+  // Intégré au code : pas de dépendance à un hébergeur externe.
+  function xtrBrandLogo() {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 100">
+      <rect width="260" height="100" rx="8" fill="#fff"/>
+      <circle cx="130" cy="49" r="43" fill="none" stroke="#111" stroke-width="3"/>
+      <circle cx="130" cy="49" r="37" fill="none" stroke="#111" stroke-width="1.5"/>
+      <path d="M20 38 L238 38 L252 49 L238 61 L20 61 L7 49 Z" fill="#fff" stroke="#111" stroke-width="3"/>
+      <text x="130" y="60" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="48" font-style="italic" font-weight="900" letter-spacing="-4" fill="#111">XTR</text>
+      <text x="130" y="17" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="900" letter-spacing="1.1" fill="#111">PROFESSIONAL</text>
+      <text x="130" y="88" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="7.5" font-weight="900" letter-spacing="1.4" fill="#111">PRODUCTS</text>
+      <path d="M34 75h45M181 75h45" stroke="#111" stroke-width="2"/>
+      <path d="M20 49h13M227 49h13" stroke="#111" stroke-width="2"/>
+    </svg>`;
+    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+  }
   const MATERIAL_BRAND_LOGOS = {
     'Hobbywing': 'https://www.hobbywingdirect.com/cdn/shop/files/HW3x6-Viewing-only_3c0904dc-0c98-46e5-8dd3-f2d44df564c8_1600x.jpg?v=1697845198',
     'Team Associated': 'https://apps.associatedelectrics.com/downloads/thumbs/TeamAssociated-color-lightBG-300.png',
@@ -844,8 +860,8 @@
     'SRT': 'https://www.srt-rc.com/data/upload/image/201805/112c8f371d4d46d72955761ae81ced0d.jpg',
     'Tekin': 'https://www.teamtekin.com/images/tekin_logo_hires_2015.png?crc=4065896322',
     'VP-Pro': 'https://cdn.hardwickrctrack.co.uk/static/logos/vpracing.webp',
-    'WS Line': 'https://www.wartelle-shop.com/Files/132405/Img/07/IMG-0614-1-003-zoom.jpg',
-    'XTR Racing': brandWordmark('XTR RACING', '#e53935', '#171717'),
+    'WS Line': 'https://www.wartelle-shop.com/Files/132405/Img/10/logowsvi11.jpg',
+    'XTR Racing': xtrBrandLogo(),
     'Yokomo': 'https://cdn.ecommercedns.uk/files/7/229017/4/49342684/yokomo-logo-retro.png',
     '1UP Racing': 'https://i.ytimg.com/vi/ndTXtEMba2c/maxresdefault.jpg',
     'Futaba': 'https://images.seeklogo.com/logo-png/40/1/futaba-logo-png_seeklogo-409265.png',
