@@ -206,9 +206,6 @@
     ['differentials','Huile différentiel|Graisse'], ['centerDiff','Huile différentiel|Graisse'],
     ['motor','Moteur'], ['escModel','Variateur (ESC)'], ['servoSteering','Servo'],
     ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur'],
-    ['escMode','Programmation'], ['escTiming','Programmation'], ['escPunch','Programmation'],
-    ['escBrake','Programmation'], ['escCutoff','Programmation'], ['electronicsNotes','Programmation'],
-    ['radioExpo','Programmation'], ['radioEPA','Programmation'], ['radioTrim','Programmation'], ['radio','Programmation'],
     ['lubricants','Graisse|Huile moteur|Huile filtre à air|Huile roulements']
   ];
   for (const [fieldName, categories] of pickerMap) {
