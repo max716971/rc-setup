@@ -119,3 +119,6 @@
   .material-brand-tile .material-brand-logo{height:62px;min-height:62px;flex-basis:62px}
   .material-brand-tile[data-brand="Hot Race Tires"] .material-brand-logo{height:62px;min-height:62px;flex-basis:62px}
 }
+
+/* Pro-Line : logo davantage agrandi dans la vignette, sans modifier sa taille */
+.material-brand-tile[data-brand="Pro-Line"] .material-brand-logo{transform:scale(1.42);}
