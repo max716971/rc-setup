@@ -909,8 +909,20 @@
       const search = select.parentElement.querySelector('[data-library-search]');
       const query = (search?.value || '').trim().toLocaleLowerCase('fr');
       const current = select.value;
-      const items = allMaterials().filter((item) => categories.includes(item.category) &&
-        (!query || [item.brand,item.name,item.reference,item.detail].join(' ').toLocaleLowerCase('fr').includes(query)));
+      const fieldName = select.closest('label')?.querySelector('input[name]')?.name || '';
+      const carSelect = document.querySelector('#setupForm select[name="carId"]');
+      const drive = carSelect?.selectedOptions?.[0]?.dataset?.drive || '';
+      const items = allMaterials().filter((item) => {
+        if (!categories.includes(item.category)) return false;
+        if (fieldName === 'frontTires') {
+          const compatibility = String(item.compatibility || '').trim();
+          if (drive === '2WD' && !/^Avant\\s+2WD$/i.test(compatibility)) return false;
+          if (drive === '4WD' && !/^Avant\\s+4WD$/i.test(compatibility)) return false;
+          if (!drive && !/^Avant\\s+(?:2WD|4WD)$/i.test(compatibility)) return false;
+        }
+        if (fieldName === 'rearTires' && !/^Arrière\\b/i.test(String(item.compatibility || '').trim())) return false;
+        return !query || [item.brand,item.name,item.reference,item.detail,item.compatibility].join(' ').toLocaleLowerCase('fr').includes(query);
+      });
       select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(item.category)} · ${esc(materialLabel(item))}</option>`).join('');
       if (items.some((item) => materialLabel(item) === current)) select.value = current;
     });
@@ -998,6 +1010,8 @@
     ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur'],
     ['lubricants','Graisse']
   ];
+  const setupCarSelect = setupForm.elements.namedItem('carId');
+  if (setupCarSelect) setupCarSelect.addEventListener('change', refreshPickers);
   for (const [fieldName, categories] of pickerMap) {
     const input = setupForm.elements.namedItem(fieldName);
     if (!input || input.dataset.libraryEnhanced) continue;
