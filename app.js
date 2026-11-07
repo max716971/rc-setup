@@ -6590,7 +6590,72 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=91').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=92').catch((error) => console.error('Échec du service worker :', error)));
+}
+async function checkForAppUpdate() {
+  const button = document.getElementById('checkAppUpdate');
+  const status = document.getElementById('appUpdateStatus');
+  if (!button || !status) return;
+  if (!('serviceWorker' in navigator)) {
+    status.textContent = 'La mise à jour automatique n’est pas disponible dans ce navigateur.';
+    return;
+  }
+  button.disabled = true;
+  button.textContent = 'Vérification en cours…';
+  status.textContent = 'Recherche de la dernière version…';
+  let updateDetected = false;
+  let reloading = false;
+  const reloadOnce = () => {
+    if (reloading) return;
+    reloading = true;
+    status.textContent = 'Mise à jour installée. Rechargement…';
+    window.location.reload();
+  };
+  const onControllerChange = () => reloadOnce();
+  navigator.serviceWorker.addEventListener('controllerchange', onControllerChange, { once: true });
+  try {
+    const registration = await navigator.serviceWorker.getRegistration('./');
+    if (!registration) {
+      await navigator.serviceWorker.register('./sw.js?v=92');
+      status.textContent = 'Application initialisée. Recharge la page pour terminer.';
+      button.disabled = false;
+      button.textContent = '↻ Rechercher une mise à jour';
+      return;
+    }
+    const watchInstallingWorker = (worker) => {
+      if (!worker) return;
+      updateDetected = true;
+      worker.addEventListener('statechange', () => {
+        if (worker.state === 'installed') {
+          status.textContent = 'Nouvelle version installée. Rechargement…';
+          if (navigator.serviceWorker.controller) reloadOnce();
+          else {
+            button.disabled = false;
+            button.textContent = '↻ Rechercher une mise à jour';
+            status.textContent = 'Mise à jour prête. Ferme puis relance RC SETUP.';
+          }
+        }
+      });
+    };
+    registration.addEventListener('updatefound', () => watchInstallingWorker(registration.installing));
+    if (registration.installing) watchInstallingWorker(registration.installing);
+    await registration.update();
+    if (!updateDetected && !registration.installing && !registration.waiting) {
+      status.textContent = 'RC SETUP est déjà à jour.';
+      button.disabled = false;
+      button.textContent = '↻ Vérifier à nouveau';
+      navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+    } else if (registration.waiting) {
+      status.textContent = 'Nouvelle version prête. Rechargement…';
+      if (navigator.serviceWorker.controller) reloadOnce();
+    }
+  } catch (error) {
+    console.error('Vérification de mise à jour impossible :', error);
+    status.textContent = 'Impossible de vérifier la mise à jour. Vérifie ta connexion puis réessaie.';
+    button.disabled = false;
+    button.textContent = '↻ Réessayer';
+    navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+  }
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
@@ -6600,6 +6665,7 @@ function setupInstallPrompt() {
   });
 }
 
+document.getElementById('checkAppUpdate')?.addEventListener('click', checkForAppUpdate);
 document.querySelectorAll('.nav-item').forEach((button) => button.addEventListener('click', () => setView(button.dataset.view)));
 document.querySelectorAll('[data-view]:not(.nav-item)').forEach((button) => button.addEventListener('click', () => setView(button.dataset.view)));
 document.querySelectorAll('.add-entry').forEach((button) => button.addEventListener('click', () => document.getElementById(button.dataset.form).classList.toggle('hidden')));
