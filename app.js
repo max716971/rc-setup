@@ -1190,13 +1190,7 @@ document.querySelectorAll('[data-go-view]').forEach((button) => button.addEventL
 document.getElementById('carForm').addEventListener('submit', handleCarSubmit);
 document.getElementById('carCatalogBrand').addEventListener('change', updateCarCatalogOptions);
 document.getElementById('carCatalogEra').addEventListener('change', updateCarCatalogOptions);
-document.getElementById('carCatalogSearch').addEventListener('input', () => {
-  const filters = getCatalogFilters();
-  const select = document.getElementById('carCatalogModel');
-  const filtered = CAR_CATALOG.map((model,index)=>({model,index})).filter(({model}) => (!filters.brand || model.brand === filters.brand) && (!filters.era || model.era === filters.era) && (!filters.query || (model.name + ' ' + model.brand + ' ' + model.type + ' ' + model.scale).toLocaleLowerCase('fr').includes(filters.query)));
-  select.innerHTML = '<option value="">Choisir un modèle…</option>' + filtered.map(({model,index}) => '<option value="' + index + '">' + escapeHtml(model.brand + ' · ' + model.name + ' · ' + model.scale + ' · ' + model.drive) + '</option>').join('');
-  document.getElementById('carCatalogCount').textContent = filtered.length + ' modèles disponibles';
-});
+document.getElementById('carCatalogSearch').addEventListener('input', updateCarCatalogOptions);
 document.getElementById('addCatalogCar').addEventListener('click', handleCarCatalogAdd);
 updateCarCatalogOptions();
 document.getElementById('trackForm').addEventListener('submit', handleTrackSubmit);
