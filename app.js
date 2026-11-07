@@ -986,15 +986,16 @@ function getCatalogFilters() {
   };
 }
 function updateCarCatalogOptions() {
-  const brand = document.getElementById('carCatalogBrand')?.value || '';
-  const era = document.getElementById('carCatalogEra')?.value || '';
+  const { brand, era, query } = getCatalogFilters();
   const select = document.getElementById('carCatalogModel');
   if (!select) return;
-  const filtered = CAR_CATALOG.filter(model => (!brand || model.brand === brand) && (!era || model.era === era));
-  select.innerHTML = '<option value="">Choisir un modèle…</option>' + filtered.map((model, index) => {
-    const originalIndex = CAR_CATALOG.indexOf(model);
-    return '<option value="' + originalIndex + '">' + escapeHtml(model.name + ' · ' + model.scale + ' · ' + model.drive + ' · ' + model.type) + '</option>';
-  }).join('');
+  const filtered = CAR_CATALOG.map((model, index) => ({ model, index })).filter(({model}) =>
+    (!brand || model.brand === brand) && (!era || model.era === era) &&
+    (!query || (model.name + ' ' + model.brand + ' ' + model.type + ' ' + model.scale).toLocaleLowerCase('fr').includes(query))
+  );
+  select.innerHTML = '<option value="">Choisir un modèle…</option>' + filtered.map(({model,index}) =>
+    '<option value="' + index + '">' + escapeHtml(model.name + ' · ' + model.scale + ' · ' + model.drive + ' · ' + model.type) + '</option>'
+  ).join('');
   const count = document.getElementById('carCatalogCount');
   if (count) count.textContent = filtered.length + ' modèles disponibles';
 }
