@@ -6668,7 +6668,7 @@ function registerServiceWorker() {
     };
     if (hadController) navigator.serviceWorker.addEventListener('controllerchange', reloadAfterUpdate, { once: true });
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js?v=93');
+      const registration = await navigator.serviceWorker.register('./sw.js?v=94', { updateViaCache: 'none' });
       await registration.update();
     } catch (error) {
       console.error('Échec de la mise à jour du service worker :', error);
@@ -6680,64 +6680,31 @@ async function checkForAppUpdate() {
   const status = document.getElementById('appUpdateStatus');
   if (!button || !status) return;
   if (!('serviceWorker' in navigator)) {
-    status.textContent = 'La mise à jour automatique n’est pas disponible dans ce navigateur.';
+    status.textContent = 'Mise à jour automatique indisponible dans ce navigateur. Ouvre le lien web de RC SETUP.';
     return;
   }
   button.disabled = true;
-  button.textContent = 'Vérification en cours…';
-  status.textContent = 'Recherche de la dernière version…';
-  let updateDetected = false;
-  let reloading = false;
-  const reloadOnce = () => {
-    if (reloading) return;
-    reloading = true;
-    status.textContent = 'Mise à jour installée. Rechargement…';
-    window.location.reload();
-  };
-  const onControllerChange = () => reloadOnce();
-  navigator.serviceWorker.addEventListener('controllerchange', onControllerChange, { once: true });
+  button.textContent = 'Nettoyage et mise à jour…';
+  status.textContent = 'Suppression de l’ancienne version en cache. Tes données personnelles sont conservées.';
   try {
-    const registration = await navigator.serviceWorker.getRegistration('./');
-    if (!registration) {
-      await navigator.serviceWorker.register('./sw.js?v=92');
-      status.textContent = 'Application initialisée. Recharge la page pour terminer.';
-      button.disabled = false;
-      button.textContent = '↻ Rechercher une mise à jour';
-      return;
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    for (const registration of registrations) {
+      if (new URL(registration.scope).origin === location.origin) await registration.unregister();
     }
-    const watchInstallingWorker = (worker) => {
-      if (!worker) return;
-      updateDetected = true;
-      worker.addEventListener('statechange', () => {
-        if (worker.state === 'installed') {
-          status.textContent = 'Nouvelle version installée. Rechargement…';
-          if (navigator.serviceWorker.controller) reloadOnce();
-          else {
-            button.disabled = false;
-            button.textContent = '↻ Rechercher une mise à jour';
-            status.textContent = 'Mise à jour prête. Ferme puis relance RC SETUP.';
-          }
-        }
-      });
-    };
-    registration.addEventListener('updatefound', () => watchInstallingWorker(registration.installing));
-    if (registration.installing) watchInstallingWorker(registration.installing);
-    await registration.update();
-    if (!updateDetected && !registration.installing && !registration.waiting) {
-      status.textContent = 'RC SETUP est déjà à jour.';
-      button.disabled = false;
-      button.textContent = '↻ Vérifier à nouveau';
-      navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
-    } else if (registration.waiting) {
-      status.textContent = 'Nouvelle version prête. Rechargement…';
-      if (navigator.serviceWorker.controller) reloadOnce();
+    if ('caches' in window) {
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames.filter(name => name.startsWith('rc-setup-')).map(name => caches.delete(name)));
     }
+    status.textContent = 'Installation de la dernière version…';
+    await navigator.serviceWorker.register('./sw.js?v=94', { updateViaCache: 'none' });
+    await navigator.serviceWorker.ready;
+    status.textContent = 'Mise à jour terminée. Rechargement de RC SETUP…';
+    window.location.reload();
   } catch (error) {
-    console.error('Vérification de mise à jour impossible :', error);
-    status.textContent = 'Impossible de vérifier la mise à jour. Vérifie ta connexion puis réessaie.';
+    console.error('Mise à jour forcée impossible :', error);
+    status.textContent = 'La mise à jour automatique a échoué. Ouvre RC SETUP dans Safari puis réessaie.';
     button.disabled = false;
-    button.textContent = '↻ Réessayer';
-    navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+    button.textContent = '↻ Réessayer la mise à jour';
   }
 }
 function setupInstallPrompt() {
