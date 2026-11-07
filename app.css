@@ -471,3 +471,64 @@ select { color-scheme: dark; } textarea { min-height: 90px; resize: vertical; li
 .print-buggy-heading span{color:var(--muted);font-size:7pt}
 .print-buggy svg{display:block;width:100%;height:auto;max-height:190px}
 @media(max-width:650px){.assistant-controls{grid-template-columns:1fr}.assistant-content{padding:16px}.print-buggy-heading{flex-direction:column}}
+
+
+/* Accueil — direction artistique paddock / fiche de course */
+#dashboardView{gap:24px}
+#dashboardView>.hero{min-height:350px;padding:clamp(28px,5vw,58px);border:1px solid rgba(197,243,107,.24);border-radius:30px;background:radial-gradient(ellipse at 82% 52%,rgba(116,217,232,.13),transparent 32%),linear-gradient(118deg,#111a27 0%,#172638 54%,#101923 100%);box-shadow:0 24px 65px rgba(0,0,0,.28)}
+#dashboardView>.hero:before{content:"";position:absolute;inset:0;opacity:.18;background:repeating-linear-gradient(135deg,transparent 0 23px,rgba(255,255,255,.12) 24px 25px,transparent 26px 48px);mask-image:linear-gradient(90deg,transparent 10%,#000 100%)}
+#dashboardView>.hero:after{width:370px;height:370px;top:auto;bottom:-260px;left:48%;background:rgba(197,243,107,.16);filter:blur(48px)}
+#dashboardView .hero-copy{width:min(72%,650px)}
+#dashboardView .hero-copy .kicker{font-size:10px;letter-spacing:.2em}
+#dashboardView .hero h1{font-size:clamp(40px,6.8vw,68px);line-height:.96;max-width:620px}
+#dashboardView .hero p{max-width:490px;font-size:14px;line-height:1.75;color:#c0cad7}
+#dashboardView .hero-art{right:3%;width:300px;opacity:.92;filter:drop-shadow(0 18px 28px rgba(0,0,0,.22))}
+#dashboardView .hero-car{border-color:rgba(197,243,107,.9);background:linear-gradient(135deg,rgba(197,243,107,.1),rgba(116,217,232,.05));box-shadow:0 0 0 8px rgba(197,243,107,.035),0 20px 45px rgba(0,0,0,.28)}
+#dashboardView .welcome-features,#dashboardView .home-capabilities{position:relative;overflow:hidden;border-radius:25px;padding:clamp(18px,3vw,28px);background:linear-gradient(145deg,rgba(20,31,47,.96),rgba(11,18,29,.98));border:1px solid rgba(165,180,203,.17);box-shadow:0 16px 42px rgba(0,0,0,.13)}
+#dashboardView .welcome-heading h2,#dashboardView .home-capabilities-heading h2{font-size:clamp(23px,3vw,31px);letter-spacing:-.045em}
+#dashboardView .welcome-heading p,#dashboardView .home-capabilities-heading p{max-width:650px;font-size:12px;line-height:1.8}
+#dashboardView .feature-grid,#dashboardView .capability-grid{gap:12px}
+#dashboardView .feature-card,#dashboardView .capability-card{position:relative;overflow:hidden;min-height:174px;padding:18px;border-radius:17px;border:1px solid rgba(165,180,203,.14);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));transition:transform .2s,border-color .2s,background .2s}
+#dashboardView .feature-card:after,#dashboardView .capability-card:after{content:"";position:absolute;right:-24px;top:-28px;width:90px;height:90px;border:1px solid rgba(197,243,107,.11);border-radius:24px;transform:rotate(25deg);pointer-events:none}
+#dashboardView .feature-card:hover,#dashboardView .capability-card:hover{transform:translateY(-3px);border-color:rgba(197,243,107,.4);background:linear-gradient(145deg,rgba(197,243,107,.075),rgba(255,255,255,.015))}
+#dashboardView .feature-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:rgba(197,243,107,.1);font-size:21px}
+#dashboardView .feature-card strong,#dashboardView .capability-card strong{font-size:13px;letter-spacing:-.01em}
+#dashboardView .feature-card>span:not(.feature-icon),#dashboardView .capability-card p{font-size:10.5px;line-height:1.65}
+#dashboardView .feature-card em,#dashboardView .capability-card button{font-size:10px;letter-spacing:.02em}
+#dashboardView .capability-card>span{width:42px;height:42px;border-radius:13px;font-size:19px}
+#dashboardView .stats-grid{gap:12px}
+#dashboardView .stat-card{min-height:122px;border-radius:18px;background:linear-gradient(145deg,#182638,#111a28);border-color:rgba(197,243,107,.14)}
+#dashboardView .stat-card strong{font-size:34px}
+#dashboardView .home-quick-actions{gap:12px}
+#dashboardView .quick-action{min-height:82px;border-radius:17px;background:linear-gradient(145deg,#182638,#111a28)}
+#dashboardView .quick-action:hover{border-color:rgba(197,243,107,.42)}
+#dashboardView>.panel{border-radius:22px;background:linear-gradient(145deg,rgba(20,31,47,.97),rgba(11,18,29,.98))}
+@media(max-width:700px){
+ #dashboardView{gap:17px}
+ #dashboardView>.hero{min-height:300px;padding:24px 21px;border-radius:23px}
+ #dashboardView .hero-copy{width:100%;max-width:100%}
+ #dashboardView .hero-copy .kicker{max-width:230px;line-height:1.6}
+ #dashboardView .hero h1{font-size:clamp(37px,10vw,49px);max-width:360px}
+ #dashboardView .hero p{max-width:320px;font-size:12px;line-height:1.65}
+ #dashboardView .hero-art{right:-100px;top:90px;opacity:.23;transform:scale(.9)}
+ #dashboardView .hero-actions{max-width:290px}
+ #dashboardView .hero-actions .button{flex:1;font-size:10px;padding:0 10px}
+ #dashboardView .welcome-features,#dashboardView .home-capabilities{padding:17px;border-radius:20px}
+ #dashboardView .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #dashboardView .feature-card{min-height:180px;padding:12px;gap:8px}
+ #dashboardView .feature-icon{width:35px;height:35px;font-size:18px}
+ #dashboardView .feature-card strong{font-size:11px}
+ #dashboardView .feature-card>span:not(.feature-icon){font-size:9.5px}
+ #dashboardView .capability-grid{grid-template-columns:1fr 1fr;gap:8px}
+ #dashboardView .capability-card{min-height:180px;padding:12px;gap:8px}
+ #dashboardView .capability-card>span{width:35px;height:35px}
+ #dashboardView .capability-card strong{font-size:11px}
+ #dashboardView .capability-card p{font-size:9.5px;line-height:1.55}
+ #dashboardView .capability-card button{font-size:9px;text-align:left}
+ #dashboardView .stats-grid{gap:7px}
+ #dashboardView .stat-card{min-height:105px;padding:12px}
+ #dashboardView .stat-card strong{font-size:27px}
+ #dashboardView .stat-label{font-size:10px}
+ #dashboardView .home-quick-actions{grid-template-columns:1fr}
+ #dashboardView .quick-action{min-height:70px;padding:11px}
+}
