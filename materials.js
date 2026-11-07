@@ -249,7 +249,6 @@
       url:'https://hobbydex.com/rc/platforms/team-associated/rc10b7/parts/shock-spring/'
     })),
     
-    { brand: 'Team Associated', category: 'Huile amortisseur', name: 'Factory Team Shock Oil 35 wt', reference: '5435', detail: 'Exemple ; confirmer compatibilité et catalogue actuel.', url: 'https://www.associatedelectrics.com/teamassociated/parts/fluids/' },
 
     // Marques complémentaires — pneus, inserts, huiles, ressorts et électronique.
     ...[
@@ -297,14 +296,6 @@
       reference, compatibility:'Buggy 1/10 Yokomo — vérifier longueur et diamètre',
       detail:'Couleur : '+colour+'. Dureté : taux lb/in non communiqué dans la documentation consultée. Référence de ressort Yokomo issue des tableaux TT 1/10 ; vérifier la famille de châssis avant montage.',
       url:'https://www.sodialed.com/rc-setup-tips/yokomo-1-10-off-road-car-shock-spring-list'
-    })),
-    // Graisses HUDY, Team Associated et Tamiya.
-    ...[
-      ['106210','Graphite Grease'],['106211','Diff Grease'],['106212','Super Differential Grease'],['106213','Joint Grease']
-    ].map(([reference,name]) => ({
-      brand:'HUDY', category:'Graisse', name, reference,
-      detail:'Graisse HUDY. Vérifier l’application précise dans la fiche fabricant.',
-      url:'https://www.hudy.net/xhudy/products/prodpart.php?prod_id=333'
     })),
     { brand:'Tamiya', category:'Graisse', name:'RC Anti-Wear Grease', reference:'53439', detail:'Graisse anti-usure haute viscosité pour arbres, joints et engrenages de différentiel. Tube 3 g.', url:'https://www.tamiyausa.com/shop/maintenance-supplies/rc-anti-wear-grease/' },
     
@@ -519,7 +510,7 @@
       ['5426','27.5 wt'],['5422','30 wt'],['5432','32.5 wt'],['5429','35 wt'],['5433','37.5 wt'],
       ['5423','40 wt'],['5434','42.5 wt'],['5430','45 wt'],['5438','47.5 wt'],['5435','50 wt'],
       ['5431','55 wt'],['5436','60 wt'],['5437','70 wt'],['5425','80 wt']
-    ].filter(([reference]) => !['5435'].includes(reference)).map(([reference,grade]) => ({
+    ].map(([reference,grade]) => ({
       brand:'Team Associated', category:'Huile amortisseur', name:'Factory Team Silicone Shock Oil — '+grade,
       reference, detail:'Huile silicone d’amortisseur Team Associated, flacon 2 oz.', url:'https://www.associatedelectrics.com/teamassociated/parts/fluids/'
     })),
