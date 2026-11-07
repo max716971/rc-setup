@@ -6159,7 +6159,6 @@ function renderCarCatalogBrandPicker() {
     'Kyosho':'https://upload.wikimedia.org/wikipedia/commons/8/8c/Kyosho_corp_logo.png',
     'Tamiya':'https://www.most-models.com/files/tamiya-modelbouw.png',
     'Yokomo':'https://cdn.ecommercedns.uk/files/7/229017/4/49342684/yokomo-logo-retro.png',
-    'X-Factory':rcBrandWordmark('X-FACTORY','R/C RACING'),
     'XRAY':'https://www.xraystore.cz/user/categories/orig/xray-1.png'
   };
   picker.innerHTML=brands.map(brand=>{
