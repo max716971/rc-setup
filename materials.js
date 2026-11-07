@@ -915,12 +915,12 @@
       const items = allMaterials().filter((item) => {
         if (!categories.includes(item.category)) return false;
         if (fieldName === 'frontTires') {
-          const compatibility = String(item.compatibility || '').trim();
-          if (drive === '2WD' && compatibility && !/^Avant\\s+2WD(?:\\b|\\/)/i.test(compatibility)) return false;
-          if (drive === '4WD' && compatibility && !/^Avant\\s+4WD(?:\\b|\\/)/i.test(compatibility)) return false;
-          if (!drive && compatibility && !/^Avant\\b/i.test(compatibility)) return false;
+          const compatibility = String(item.compatibility || '').trim().toLocaleLowerCase('fr');
+          if (drive === '2WD' && compatibility && !compatibility.startsWith('avant 2wd')) return false;
+          if (drive === '4WD' && compatibility && !compatibility.startsWith('avant 4wd')) return false;
+          if (!drive && compatibility && !compatibility.startsWith('avant')) return false;
         }
-        if (fieldName === 'rearTires' && /^Avant\\b/i.test(String(item.compatibility || '').trim())) return false;
+        if (fieldName === 'rearTires' && String(item.compatibility || '').trim().toLocaleLowerCase('fr').startsWith('avant')) return false;
         return !query || [item.brand,item.name,item.reference,item.detail,item.compatibility].join(' ').toLocaleLowerCase('fr').includes(query);
       });
       select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(item.category)} · ${esc(materialLabel(item))}</option>`).join('');
