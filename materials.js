@@ -832,9 +832,13 @@
     if (!input || input.dataset.libraryEnhanced) continue;
     input.dataset.libraryEnhanced = 'true';
     const picker = document.createElement('div'); picker.className = 'setup-library-picker';
-    const insertSide = fieldName === 'frontInserts' ? 'avant' : fieldName === 'rearInserts' ? 'arrière' : '';
-    const label = document.createElement('span'); label.textContent = insertSide ? `Bibliothèque · inserts ${insertSide}` : 'Rechercher dans la bibliothèque';
-    const search = document.createElement('input'); search.type = 'search'; search.placeholder = insertSide ? `Rechercher un insert ${insertSide}…` : 'Marque, nom ou référence…'; search.setAttribute('aria-label', label.textContent); search.dataset.librarySearch = 'true';
+    const side = /^(front|rear)/.test(fieldName) ? (fieldName.startsWith('front') ? 'avant' : 'arrière') : '';
+    const categoryLabel = ({frontTires:'pneus',rearTires:'pneus',inserts:'inserts',frontInserts:'inserts',rearInserts:'inserts',frontShocks:'huile amortisseur',rearShocks:'huile amortisseur',frontSpring:'ressort',rearSpring:'ressort',frontDiffOil:'huile différentiel avant',centerDiffOil:'huile différentiel central',rearDiffOil:'huile différentiel arrière',frontDiffGrease:'graisse différentiel avant',centerDiffGrease:'graisse différentiel central',rearDiffGrease:'graisse différentiel arrière',ballDiff:'graisse différentiel à billes',motor:'moteur',escModel:'variateur',servoSteering:'servo',txModel:'radio',rxModel:'récepteur',lubricants:'graisse'})[fieldName] || 'matériel';
+    const label = document.createElement('span');
+    label.textContent = side && ['frontShocks','rearShocks','frontSpring','rearSpring','frontTires','rearTires','frontInserts','rearInserts'].includes(fieldName)
+      ? `Bibliothèque · ${categoryLabel} ${side}`
+      : `Bibliothèque · ${categoryLabel}`;
+    const search = document.createElement('input'); search.type = 'search'; search.placeholder = `Rechercher ${categoryLabel}${side ? ' ' + side : ''} (marque, nom, référence)…`; search.setAttribute('aria-label', label.textContent); search.dataset.librarySearch = 'true';
     const select = document.createElement('select'); select.dataset.libraryCategory = categories; select.setAttribute('aria-label', 'Choisir un matériel de la bibliothèque');
     search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
     select.addEventListener('change', () => { if (select.value) input.value = select.value; });
