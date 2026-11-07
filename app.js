@@ -6137,10 +6137,28 @@ function formValues(form, names) {
 
 function getCatalogFilters() {
   return {
-    brand: document.getElementById('carCatalogBrand')?.value || '',
+    brand: document.getElementById('carCatalogBrandPicker')?.dataset.selectedBrand || '',
     era: document.getElementById('carCatalogEra')?.value || '',
     query: (document.getElementById('carCatalogSearch')?.value || '').trim().toLocaleLowerCase('fr')
   };
+}
+function renderCarCatalogBrandPicker() {
+  const picker=document.getElementById('carCatalogBrandPicker');
+  if(!picker || picker.dataset.ready==='true')return;
+  const brands=[...new Set(CAR_CATALOG.map(model=>model.brand).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'));
+  const logos={
+    'Team Associated':'https://apps.associatedelectrics.com/downloads/thumbs/TeamAssociated-color-lightBG-300.png',
+    'Schumacher':'https://schumacher-racing.com/wp-content/uploads/2024/01/Schumacher_racing_pink-gelb-1.png',
+    'Kyosho':'https://www.kyosho.com/eng/support/instructionmanual/images/kyosho_logo.gif',
+    'Tamiya':'https://www.most-models.com/files/tamiya-modelbouw.png',
+    'Yokomo':'https://cdn.ecommercedns.uk/files/7/229017/4/49342684/yokomo-logo-retro.png'
+  };
+  picker.innerHTML=brands.map(brand=>{
+    const initials=brand.split(/[\\s-]+/).map(word=>word[0]).slice(0,2).join('').toUpperCase();
+    const logo=logos[brand];
+    return '<button type="button" class="material-brand-tile'+(logo?' has-brand-logo':'')+'" data-brand="'+escapeHtml(brand)+'" aria-pressed="false">'+(logo?'<img class="material-brand-logo" src="'+logo+'" alt="" loading="lazy" decoding="async" onload="this.parentElement.classList.add(\\'has-logo-loaded\\')" onerror="this.parentElement.classList.remove(\\'has-brand-logo\\');this.remove()">':'')+'<span class="brand-logo-mark">'+escapeHtml(initials)+'</span><span class="material-brand-name">'+escapeHtml(brand)+'</span></button>';
+  }).join('');
+  picker.dataset.ready='true';
 }
 function addCatalogCarByIndex(index) {
   const model = CAR_CATALOG[Number(index)];
@@ -6162,8 +6180,15 @@ function updateCarCatalogOptions() {
   select.innerHTML = '<option value="">Choisir un modèle…</option>' + filtered.map(({model,index}) =>
     '<option value="' + index + '">' + escapeHtml(model.name + ' · ' + model.brand + ' · ' + model.scale + ' · ' + model.drive) + '</option>'
   ).join('');
+  const picker=document.getElementById('carCatalogBrandPicker');
+  picker?.querySelectorAll('[data-brand]').forEach(button=>{
+    const active=brand===button.dataset.brand;
+    button.classList.toggle('selected',active);
+    button.setAttribute('aria-pressed',String(active));
+  });
+  document.getElementById('clearCarCatalogBrand')?.classList.toggle('active',!brand);
   const count = document.getElementById('carCatalogCount');
-  if (count) count.textContent = filtered.length + ' modèles disponibles dans la liste déroulante.';
+  if (count) count.textContent = filtered.length + ' modèles disponibles.';
 }
 function handleCarCatalogAdd() {
   const selected = document.getElementById('carCatalogModel')?.value;
@@ -6524,7 +6549,19 @@ document.querySelectorAll('[data-shortcut-view]').forEach(button=>button.addEven
   }));
 }));
 document.querySelectorAll('[data-go-view]').forEach((button) => button.addEventListener('click', (event) => { event.preventDefault(); setView(button.dataset.goView); }));
-document.getElementById('carCatalogBrand').addEventListener('change', updateCarCatalogOptions);
+renderCarCatalogBrandPicker();
+document.getElementById('carCatalogBrandPicker')?.addEventListener('click',event=>{
+  const button=event.target.closest('[data-brand]');
+  if(!button)return;
+  const picker=document.getElementById('carCatalogBrandPicker');
+  picker.dataset.selectedBrand=picker.dataset.selectedBrand===button.dataset.brand?'':button.dataset.brand;
+  updateCarCatalogOptions();
+});
+document.getElementById('clearCarCatalogBrand')?.addEventListener('click',()=>{
+  const picker=document.getElementById('carCatalogBrandPicker');
+  if(picker)picker.dataset.selectedBrand='';
+  updateCarCatalogOptions();
+});
 document.getElementById('carCatalogEra').addEventListener('change', updateCarCatalogOptions);
 document.getElementById('carCatalogSearch').addEventListener('input', updateCarCatalogOptions);
 document.getElementById('addCatalogCar').addEventListener('click', handleCarCatalogAdd);
