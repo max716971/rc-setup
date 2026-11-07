@@ -6201,6 +6201,7 @@ function renderMaintenanceList(){
 function populateBatterySelect(){
   const select=document.getElementById('batteryLogSelect');if(!select)return;
   const value=select.value;select.innerHTML='<option value="">Choisir une batterie…</option>'+(state.batteries||[]).map(b=>'<option value="'+escapeHtml(b.id)+'">'+escapeHtml(b.name)+' · '+escapeHtml(b.capacity)+' mAh</option>').join('');
+  const carSelect=document.getElementById('batteryCar');if(carSelect){const selected=carSelect.value;carSelect.innerHTML='<option value="">Aucune voiture associée</option>'+state.cars.map(car=>'<option value="'+escapeHtml(car.id)+'">'+escapeHtml(car.name)+'</option>').join('');if(state.cars.some(car=>car.id===selected))carSelect.value=selected;}
   if((state.batteries||[]).some(b=>b.id===value))select.value=value;
 }
 function renderBatteries(){
@@ -6209,7 +6210,7 @@ function renderBatteries(){
   list.innerHTML=!batteries.length?'<p class="item-sub">Aucune batterie enregistrée. Ajoute ta première LiPo ci-dessus.</p>':batteries.map(b=>{
     const latest=(b.history||[])[0],voltage=b.voltage?Number(b.voltage).toFixed(2)+' V':latest?.voltage?Number(latest.voltage).toFixed(2)+' V':'Non renseignée',cells=Number(b.cells||0);
     const perCell=b.voltage&&cells?(Number(b.voltage)/cells).toFixed(2)+' V':'';
-    return '<article class="battery-entry"><div class="battery-entry-head"><div><strong>'+escapeHtml(b.name)+'</strong><p>'+escapeHtml(b.brand||'Marque non précisée')+' · '+escapeHtml(b.capacity)+' mAh · '+cells+'S</p></div><span class="battery-cycles">'+Number(b.cycles||0)+' cycles</span></div><div class="battery-metrics"><span><small>Tension</small><b>'+voltage+'</b></span><span><small>Par cellule (moy.)</small><b>'+(perCell||'—')+'</b></span><span><small>Connecteur</small><b>'+escapeHtml(b.connector||'—')+'</b></span></div>'+(b.notes?'<p class="item-sub">'+escapeHtml(b.notes)+'</p>':'')+'<details class="battery-history"><summary>Historique ('+(b.history||[]).length+')</summary>'+((b.history||[]).length?(b.history||[]).map(h=>'<p>'+escapeHtml(formatDate(h.date))+' · '+escapeHtml(h.type||'Utilisation')+(h.voltage?' · '+Number(h.voltage).toFixed(2)+' V':'')+(h.cycles?' · +'+Number(h.cycles)+' cycle(s)':'')+(h.notes?' — '+escapeHtml(h.notes):'')+'</p>').join(''):'<p class="item-sub">Aucun événement enregistré.</p>')+'</details><div class="battery-entry-actions"><button class="button button-quiet battery-delete" data-id="'+escapeHtml(b.id)+'" type="button">Supprimer</button></div></article>';
+    return '<article class="battery-entry"><div class="battery-entry-head"><div><strong>'+escapeHtml(b.name)+'</strong><p>'+escapeHtml(b.brand||'Marque non précisée')+' · '+escapeHtml(b.capacity)+' mAh · '+cells+'S'+(getCarById(b.carId)?' · '+escapeHtml(getCarById(b.carId).name):'')+'</p></div><span class="battery-cycles">'+Number(b.cycles||0)+' cycles</span></div><div class="battery-metrics"><span><small>Tension</small><b>'+voltage+'</b></span><span><small>Par cellule (moy.)</small><b>'+(perCell||'—')+'</b></span><span><small>Connecteur</small><b>'+escapeHtml(b.connector||'—')+'</b></span></div>'+(b.notes?'<p class="item-sub">'+escapeHtml(b.notes)+'</p>':'')+'<details class="battery-history"><summary>Historique ('+(b.history||[]).length+')</summary>'+((b.history||[]).length?(b.history||[]).map(h=>'<p>'+escapeHtml(formatDate(h.date))+' · '+escapeHtml(h.type||'Utilisation')+(h.voltage?' · '+Number(h.voltage).toFixed(2)+' V':'')+(h.cycles?' · +'+Number(h.cycles)+' cycle(s)':'')+(h.notes?' — '+escapeHtml(h.notes):'')+'</p>').join(''):'<p class="item-sub">Aucun événement enregistré.</p>')+'</details><div class="battery-entry-actions"><button class="button button-quiet battery-delete" data-id="'+escapeHtml(b.id)+'" type="button">Supprimer</button></div></article>';
   }).join('');
   populateBatterySelect();
   list.querySelectorAll('.battery-delete').forEach(button=>button.addEventListener('click',()=>{
@@ -6222,7 +6223,7 @@ function handleBatterySubmit(event){
   event.preventDefault();const form=event.currentTarget,data=new FormData(form);
   const name=String(data.get('name')||'').trim(),capacity=Number(data.get('capacity')||0),cells=Number(data.get('cells')||0);
   if(!name||capacity<=0||cells<1)return;
-  const battery={id:uid('battery'),name,brand:String(data.get('brand')||'').trim(),capacity,cells,connector:String(data.get('connector')||'').trim(),cycles:Number(data.get('cycles')||0),voltage:Number(data.get('voltage')||0),notes:String(data.get('notes')||'').trim(),history:[]};
+  const battery={id:uid('battery'),name,brand:String(data.get('brand')||'').trim(),capacity,cells,carId:String(data.get('carId')||''),connector:String(data.get('connector')||'').trim(),cycles:Number(data.get('cycles')||0),voltage:Number(data.get('voltage')||0),notes:String(data.get('notes')||'').trim(),history:[]};
   state.batteries=Array.isArray(state.batteries)?state.batteries:[];
   state.batteries.unshift(battery);
   if(!saveState()){state.batteries.shift();return;}
@@ -6702,7 +6703,7 @@ function importJson(file) {
       state.cars=parsed.cars;state.tracks=parsed.tracks;state.maintenance=Array.isArray(parsed.maintenance)?parsed.maintenance:[];if(Array.isArray(parsed.batteries))state.batteries=parsed.batteries;state.setups=parsed.setups.map(setup=>({...setup,photos:Array.isArray(setup.photos)?setup.photos:[],history:Array.isArray(setup.history)?setup.history:[]}));
       if(!saveState()){Object.assign(state,previous);return;}
       if(Array.isArray(parsed.materials)&&window.RCSetupMaterials&&!window.RCSetupMaterials.importData(parsed.materials)){Object.assign(state,previous);saveState();showToast('Import matériel impossible : les données précédentes ont été conservées.');return;}
-      renderAll();populateMaintenanceCars();showToast(Array.isArray(parsed.materials)?'Sauvegarde complète importée.':'Sauvegarde importée. La bibliothèque personnelle actuelle a été conservée.');
+      renderAll();populateMaintenanceCars();renderBatteries();showToast(Array.isArray(parsed.materials)?'Sauvegarde complète importée.':'Sauvegarde importée. La bibliothèque personnelle actuelle a été conservée.');
     } catch (error) {
       console.error(error); showToast('Fichier JSON invalide ou incompatible.');
     }
