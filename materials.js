@@ -1017,6 +1017,39 @@
     // Keep the library controls inside their field label so they do not break the form grid.
     input.closest('label').insertBefore(picker, input);
   }
+
+  // Add searchable library selectors to the current equipment fields in the garage.
+  const carForm = document.getElementById('carForm');
+  if (carForm) {
+    const carPickerMap = [
+      ['engineEquipment', 'Moteur', 'moteur'],
+      ['escEquipment', 'Variateur (ESC)', 'variateur / ESC'],
+      ['servoEquipment', 'Servo', 'servo'],
+      ['tiresEquipment', 'Pneus / roues', 'pneus'],
+      ['shocksEquipment', 'Huile amortisseur|Ressort', 'suspension (huile / ressorts)']
+    ];
+    for (const [fieldName, categories, labelText] of carPickerMap) {
+      const input = carForm.elements.namedItem(fieldName);
+      if (!input || input.dataset.libraryEnhanced) continue;
+      input.dataset.libraryEnhanced = 'true';
+      const picker = document.createElement('div');
+      picker.className = 'setup-library-picker car-library-picker';
+      const label = document.createElement('span');
+      label.textContent = 'Bibliothèque · ' + labelText;
+      const search = document.createElement('input');
+      search.type = 'search';
+      search.placeholder = 'Rechercher ' + labelText + ' (marque, modèle, référence)…';
+      search.setAttribute('aria-label', label.textContent);
+      search.dataset.librarySearch = 'true';
+      const select = document.createElement('select');
+      select.dataset.libraryCategory = categories;
+      select.setAttribute('aria-label', 'Choisir un équipement de la bibliothèque');
+      search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
+      select.addEventListener('change', () => { if (select.value) input.value = select.value; });
+      picker.append(label, search, select);
+      input.closest('label')?.insertBefore(picker, input);
+    }
+  }
   // Populate every library selector immediately when the setup form is initialized.
   refreshPickers();
   setupForm.addEventListener('submit', () => {
