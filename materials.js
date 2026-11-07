@@ -174,9 +174,9 @@
       detail: product + ' XTR. Utilisation fabricant : ' + use + '.',
       url: 'https://xtr-rc.com/en/232-greases-lubricants'
     })),
-        { brand: '1UP Racing', category: 'Graisse', name: 'Graisse RC', reference: 'Référence à confirmer', detail: 'Gamme 1UP Racing ; choisir le produit selon l’application.', url: 'https://1upracing.com/' },
-    { brand: 'SRT', category: 'Servo', name: 'Servo SRT', reference: 'Modèle à préciser', detail: 'Catalogue SRT : choisir couple, vitesse, tension et dimensions selon le véhicule.', url: 'https://www.srt-rc.com/' },
-    { brand: 'Power HD', category: 'Servo', name: 'Servo Power HD', reference: 'Modèle à préciser', detail: 'Catalogue Power HD : choisir couple, vitesse, tension et dimensions.', url: 'https://www.powerhd.com.tw/' },
+        
+    
+    
     { brand: 'Savox', category: 'Servo', name: 'SC-1258TG Black Edition', reference: 'SC-1258TG', detail: 'Servo numérique à pignons titane ; vérifier tension d’alimentation et dimensions.', url: 'https://www.savoxusa.com/' },
     // Pneus 6MIK TT 1/10 — modèles, positions, gommes et références vérifiés chez revendeurs/catalogue.
     { brand: '6MIK', category: 'Pneus / roues', name: 'Pneu 1/10 AXIAL — Avant 2WD — Purple', reference: 'T113P', detail: 'Avant 2WD sur moquette/astro ; pneu AXIAL conçu pour une direction progressive. Référence de pneu 6MIK TT 1/10 ; paire.', url: 'https://www.power-racing.fr/roues-pneus-jantes/roue-buggy-1-10/' },
@@ -213,8 +213,8 @@
     { brand: '6MIK', category: 'Pneus / roues', name: 'Pneu 1/10 WASABI — Avant 4WD — Blue', reference: 'TM111B', detail: 'Paire avec mousse spécifique avant. Référence de pneu 6MIK TT 1/10 ; paire.', url: 'https://www.power-racing.fr/roues-pneus-jantes/roue-buggy-1-10/' },
     { brand: '6MIK', category: 'Pneus / roues', name: 'Pneu 1/10 WASABI — Avant 4WD — Silver', reference: 'TM111S', detail: 'Paire avec mousse spécifique avant. Référence de pneu 6MIK TT 1/10 ; paire.', url: 'https://www.power-racing.fr/roues-pneus-jantes/roue-buggy-1-10/' },
     { brand: '6MIK', category: 'Pneus / roues', name: 'Pneu 1/10 WASABI — Avant 4WD — Silver', reference: 'T111S', detail: 'Paire sans mousse. Référence de pneu 6MIK TT 1/10 ; paire.', url: 'https://www.power-racing.fr/roues-pneus-jantes/roue-buggy-1-10/' },
-    { brand: 'Schumacher', category: 'Insert pneu', name: 'Insert mousse buggy 1/10', reference: 'Modèle à préciser', detail: 'Choisir la densité et la forme selon le pneu Schumacher utilisé.', url: 'https://www.racing-cars.com/wheels-tyres' },
-    { brand: '6MIK', category: 'Insert pneu', name: 'Insert pneu buggy 1/10', reference: 'Modèle à préciser', detail: 'Choisir la densité et la forme selon le pneu 6MIK utilisé.', url: 'https://www.6mik-racing.com/' },
+    
+    
 
     // Ressorts Team Associated — couleur, taux en lb/in, position et diamètre clairement affichés.
     ...[
@@ -307,7 +307,7 @@
       url:'https://www.hudy.net/xhudy/products/prodpart.php?prod_id=333'
     })),
     { brand:'Tamiya', category:'Graisse', name:'RC Anti-Wear Grease', reference:'53439', detail:'Graisse anti-usure haute viscosité pour arbres, joints et engrenages de différentiel. Tube 3 g.', url:'https://www.tamiyausa.com/shop/maintenance-supplies/rc-anti-wear-grease/' },
-    { brand:'Team Associated', category:'Graisse', name:'Stealth Differential Grease', reference:'Référence à confirmer', detail:'Graisse pour entretien du différentiel ; vérifier la référence et la compatibilité selon génération.', url:'https://www.associatedelectrics.com/teamassociated/' },
+    
 
     // Moteurs brushless 1/10 Reedy et LRP.
     ...['9.5','8.5','8.0','7.5','7.0','6.5','6.0','5.5','5.0','4.5','4.0','3.5'].map((turn,i) => ({
@@ -438,6 +438,79 @@
       detail:'Pneu VP-Pro buggy TT 1/10. Gomme '+compound+'. Version sans jante ; consulter la fiche fabricant pour les variantes montées.',
       url:'https://www.vp-racing.com/products/vppro/tires/1-10-buggy'
     })),
+
+
+    // Compléments de références commerciales vérifiées — gamme réellement disponible par marque.
+    ...[
+      ['U6652','Insert mousse avant buggy 1/10 — Hard','Avant 4WD / 2WD','Hard'],
+      ['U6653','Insert mousse arrière buggy 1/10 — Hard','Arrière 2WD/4WD','Hard'],
+      ['U6733','Insert mousse avant buggy 1/10 — Medium','Avant 4WD / 2WD','Medium'],
+      ['U6734','Insert mousse arrière buggy 1/10 — Medium','Arrière 2WD/4WD','Medium'],
+      ['U6746','Insert Tubby avant buggy 1/10 — Medium','Avant 4WD','Tubby Medium'],
+      ['U6747','Insert Tubby arrière buggy 1/10 — Medium','Arrière 2WD/4WD','Tubby Medium'],
+      ['U6668','Insert mousse buggy 1/10 — Soft Ultra Wide','Largeur ultra-wide','Soft'],
+      ['U6669','Insert mousse buggy 1/10 — Hard Ultra Wide','Largeur ultra-wide','Hard']
+    ].map(([reference,name,position,compound]) => ({
+      brand:'Schumacher', category:'Insert pneu', name, reference, compatibility:position,
+      detail:'Insert mousse Schumacher pour buggy 1/10. Densité : '+compound+'.',
+      url:'https://www.racing-cars.com/wheels-tyres'
+    })),
+    ...[
+      ['PM113S','Insert avant 1/10 4WD Slim pour Wasabi','Avant 4WD','Slim'],
+      ['PM114','Insert arrière buggy 1/10','Arrière 2WD/4WD','Standard'],
+      ['PM114H','Insert arrière buggy 1/10 — Hard','Arrière 2WD/4WD','Hard']
+    ].map(([reference,name,position,compound]) => ({
+      brand:'6MIK', category:'Insert pneu', name, reference, compatibility:position,
+      detail:'Insert 6MIK pour buggy 1/10. Version : '+compound+'.',
+      url:'https://6mik-racing.com/new-1-10-foams/'
+    })),
+    ...[
+      ['JK6221BK','Insert Jetko buggy 1/10 — avant 4WD','Avant 4WD','Noir'],
+      ['JK6222BK','Insert Jetko buggy 1/10 — arrière','Arrière 2WD/4WD','Noir']
+    ].map(([reference,name,position,compound]) => ({
+      brand:'Jetko', category:'Insert pneu', name, reference, compatibility:position,
+      detail:'Insert mousse Jetko buggy 1/10. Couleur : '+compound+'.',
+      url:'https://www.rccarshop.co.uk/1-10-buggy-inserts'
+    })),
+    // 1UP Racing — graisses et lubrifiants classés uniquement dans les catégories existantes.
+    { brand:'1UP Racing', category:'Graisse', name:'Gold AW Grease', reference:'120101', detail:'Graisse anti-usure 1UP Racing.', url:'https://www.rcpro.it/en/139-greases-oils' },
+    { brand:'1UP Racing', category:'Graisse', name:'Blue O-Ring Grease', reference:'120301', detail:'Graisse bleue pour joints toriques et joints d’amortisseurs.', url:'https://www.rcpro.it/en/139-greases-oils' },
+    { brand:'1UP Racing', category:'Graisse', name:'Red CV Joint Oil', reference:'120401', detail:'Lubrifiant rouge pour articulations CV/CVD ; rangé dans Graisse faute de catégorie dédiée aux huiles de transmission.', url:'https://www.rcpro.it/en/139-greases-oils' },
+    // Tamiya — huiles de différentiel officielles.
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #500000', reference:'54418', detail:'Huile silicone de différentiel 500 000 ; flacon 30 ml.', url:'https://www.tamiya.com/english/products/54418/index.html' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #1000000', reference:'54419', detail:'Huile silicone de différentiel 1 000 000 ; flacon 30 ml.', url:'https://www.tamiya.com/english/products/54419/index.html' },
+    // WS Line — références de modèles et codes produit relevés sur les fiches détaillées.
+    { brand:'WS Line', category:'Servo', name:'Servo brushless low profile WS-3LP', reference:'WS-3LP', detail:'Servo low profile brushless HV, 25 dents ; 20 kg·cm à 6 V, 26 kg·cm à 7,4 V, 30 kg·cm à 8,4 V.', url:'https://www.wartelle-shop.com/servo-brushless-low-profil-ws-3lp-ws-line-c2x40885683' },
+    { brand:'WS Line', category:'Moteur', name:'Moteur brushless 1/10 V2 — bobinage au choix', reference:'WS1005', detail:'Moteur 1/10 avec timing ajustable et double prise capteur ; bobinage à sélectionner sur la fiche.', url:'https://www.wartelle-shop.com/moteur-brushless-1-10eme-v2-ws-line-c2x32540276' },
+    { brand:'WS Line', category:'Moteur', name:'Moteur brushless Stock 1/10 — 10.5T', reference:'WS10-10.5T-STOCK', detail:'Moteur brushless stock 1/10, 10.5T.', url:'https://www.wartelle-shop.com/moteur-brushless-1-10-stock-105t-ws-line-c2x42714447' },
+    { brand:'WS Line', category:'Moteur', name:'Moteur brushless Stock 1/10 — 13.5T', reference:'WS10-13.5T-STOCK', detail:'Moteur brushless stock 1/10, 13.5T.', url:'https://www.wartelle-shop.com/moteur-brushless-1-10-stock-135t-ws-line-c2x42714458' },
+    { brand:'WS Line', category:'Huile différentiel', name:'Huile silicone différentiel 100 ml — grade CPS au choix', reference:'WSDIFF1000', detail:'Référence de base du flacon ; viscosité CPS à sélectionner sur la fiche produit.', url:'https://www.wartelle-shop.com/huile-silicone-de-differentiel-100ml-choix-de-grade-cps-ws-line-c2x38716175' },
+    { brand:'WS Line', category:'Huile différentiel', name:'Huile silicone différentiel haut grade 100 ml — CST au choix', reference:'WSDIFFPOT-2M', detail:'Référence de base du pot ; viscosité CST à sélectionner sur la fiche produit.', url:'https://www.wartelle-shop.com/huile-silicone-de-differentiel-haut-grade-en-pot-100ml-choix-de-grade-cst-ws-line-c2x38716211' },
+    { brand:'WS Line', category:'Graisse', name:'Graisse cuivre 75 g', reference:'WSGRAISSE-CUIVRE', detail:'Graisse pour couples coniques de différentiel et articulations de cardans CVA.', url:'https://www.wartelle-shop.com/graisse-cuivre-en-pot-75gr-ws-line-c2x38716223' },
+    // Corsatec — moteurs et électronique de compétition 1/10.
+    { brand:'Corsatec', category:'Moteur', name:'Race Pro 1/10 — 3.5T', reference:'CT40010', detail:'Moteur brushless 540 sensored pour buggy/piste 1/10.', url:'https://www.corsatec.net/electro/36-corsatec-race-pro-motor-1-10-35-t-0651637033475.html' },
+    { brand:'Corsatec', category:'Moteur', name:'Race Pro 1/10 — 4.5T', reference:'CT40011', detail:'Moteur brushless 540 sensored pour buggy/piste 1/10.', url:'https://www.corsatec.net/electro/37-corsatec-race-pro-motor-1-10-45-t-0651637033758.html' },
+    { brand:'Corsatec', category:'Moteur', name:'CT-R Race Pro 1/10 — 6.5T', reference:'CT40014', detail:'Moteur brushless 540 sensored ; dimensions 52 × 34 mm.', url:'https://www.rcteam.com/products/corsatec-moteur-race-pro-1-10' },
+    { brand:'Corsatec', category:'Moteur', name:'CT-R Race Pro 1/10 — 7.5T', reference:'CT40015', detail:'Moteur brushless 540 sensored ; dimensions 52 × 34 mm.', url:'https://www.rcteam.com/products/corsatec-moteur-brushless-ct-r-race-pro-1-10' },
+    { brand:'Corsatec', category:'Variateur (ESC)', name:'Race Pro ESC 1/10 220A Black Edition', reference:'CT30010BK', detail:'Variateur compétition brushless sensored 1/10.', url:'https://www.corsatec.net/110/284-corsatec-race-pro-esc-1-10-220a-black-edition-corsatec-ct30010bk.html' },
+    { brand:'Corsatec', category:'Programmation', name:'PCB de programmation CTX-10RS', reference:'CT30200', detail:'Carte de programmation Corsatec CTX-10RS.', url:'https://www.corsatec.net/110/372-corsatec-pcb-ctx-10rs-corsatec-ct30200-0651637384959.html' },
+    // Cayote — gamme Crest 1/10.
+    { brand:'Cayote', category:'Variateur (ESC)', name:'Crest RS120 1/10 Stock 120A', reference:'CYEA11002', detail:'Variateur compétition sensored 1/10.', url:'https://www.senditrc.com/brand/cayote' },
+    { brand:'Cayote', category:'Variateur (ESC)', name:'Crest RS80 1/10 Stock 80A', reference:'CYEA11003', detail:'Variateur compétition sensored 1/10.', url:'https://www.senditrc.com/brand/cayote' },
+    { brand:'Cayote', category:'Moteur', name:'Crest 1/10 Stock — 25.5T', reference:'CYEB11014', detail:'Moteur brushless sensored compétition 1/10.', url:'https://www.senditrc.com/brand/cayote' },
+    { brand:'Cayote', category:'Programmation', name:'Program Box Cayote X-Link', reference:'CACPB01', detail:'Boîtier de programmation pour variateurs Cayote compatibles.', url:'https://www.senditrc.com/brand/cayote' },
+    // REDS Racing — électronique 1/10 et programmation.
+    { brand:'REDS', category:'Variateur (ESC)', name:'ZX PRO 160A 1/10 GEN3', reference:'SPCO0018', detail:'Variateur brushless sensored 1/10, BEC 6–7,4 V / 10 A ; programmation via application.', url:'https://www.reds-racing.com/shop/ESC-REDS-ZX-PRO-160A-1-10-GEN3-p646849677' },
+    { brand:'REDS', category:'Programmation', name:'LCD Program Box REDS Z-Line 1/10', reference:'SPCS0015', detail:'Boîtier de programmation pour ESC REDS 1/10 compatibles.', url:'https://www.reds-racing.com/download' },
+    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 13.5T', reference:'MTTE0036C', detail:'Moteur brushless sensored 540, version Factory Selected.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
+    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 17.5T', reference:'MTTE0037C', detail:'Moteur brushless sensored 540, version Factory Selected.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
+    { brand:'REDS', category:'Moteur', name:'VX3 540 Stock Pro Factory Selected — 21.5T', reference:'MTTE0038C', detail:'Moteur brushless sensored 540, version Factory Selected.', url:'https://www.reds-racing.com/vx3factoryselectedmotors' },
+    // SRT / Power HD / Sanwa / Futaba : modèles réels plutôt que fiches génériques.
+    { brand:'SRT', category:'Servo', name:'BH8015 HV Brushless Low Profile', reference:'BH8015', detail:'Servo brushless low profile 1/10, 13 kg·cm à 7,4 V et 0,055 s/60°.', url:'https://srt-rc.com/index.php?id=43' },
+    { brand:'Power HD', category:'Servo', name:'GTS-2 Low Profile Brushless HV', reference:'HD-GTS-2', detail:'Servo brushless low profile HV, 23 kg·cm / 0,06 s selon fiche revendeur.', url:'https://rc78.fr/75-servos' },
+    { brand:'Power HD', category:'Servo', name:'B4S Brushless HV', reference:'HD-B4S', detail:'Servo brushless HV, câble 32 kg selon fiche revendeur.', url:'https://rc78.fr/75-servos' },
+    { brand:'Sanwa', category:'Servo', name:'PGS-LH II Low Profile', reference:'SAN107A54479A', detail:'Servo digital low profile brushless, compatible 2S LiPo selon catalogue distributeur.', url:'https://shop.hoeco.at/download/Sanwa-Katalog.pdf' },
+    { brand:'Futaba', category:'Servo', name:'S-C400', reference:'S-C400', detail:'Servo pour voitures électriques 1/10 buggy et touring selon catalogue Futaba.', url:'https://www.rc.futaba.co.jp/products/servo_car/' },
 
 
   ];
