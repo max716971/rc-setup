@@ -6656,22 +6656,36 @@ function importJson(file) {
   };
   reader.readAsText(file);
 }
+const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v198';
+async function clearObsoleteAppCaches() {
+  if (!('caches' in window)) return;
+  const cacheNames = await caches.keys();
+  const obsolete = cacheNames.filter(name => name.startsWith(RC_SETUP_CACHE_PREFIX) && name !== RC_SETUP_CURRENT_CACHE);
+  await Promise.all(obsolete.map(name => caches.delete(name)));
+}
+async function refreshAppWorker() {
+  const registration = await navigator.serviceWorker.register('./sw.js?v=95', { updateViaCache: 'none' });
+  await registration.update();
+  await clearObsoleteAppCaches();
+  return registration;
+}
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   window.addEventListener('load', async () => {
     const hadController = Boolean(navigator.serviceWorker.controller);
     let reloading = false;
-    const reloadAfterUpdate = () => {
-      if (!hadController || reloading) return;
-      reloading = true;
-      window.location.reload();
-    };
-    if (hadController) navigator.serviceWorker.addEventListener('controllerchange', reloadAfterUpdate, { once: true });
+    if (hadController) {
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (reloading) return;
+        reloading = true;
+        window.location.reload();
+      }, { once: true });
+    }
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js?v=94', { updateViaCache: 'none' });
-      await registration.update();
+      await refreshAppWorker();
     } catch (error) {
-      console.error('Échec de la mise à jour du service worker :', error);
+      console.error('Échec de la vérification automatique de RC SETUP :', error);
     }
   });
 }
@@ -6685,24 +6699,14 @@ async function checkForAppUpdate() {
   }
   button.disabled = true;
   button.textContent = 'Nettoyage et mise à jour…';
-  status.textContent = 'Suppression de l’ancienne version en cache. Tes données personnelles sont conservées.';
+  status.textContent = 'Recherche de la dernière version et suppression des anciens fichiers en cache. Tes voitures et réglages sont conservés.';
   try {
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    for (const registration of registrations) {
-      if (new URL(registration.scope).origin === location.origin) await registration.unregister();
-    }
-    if ('caches' in window) {
-      const cacheNames = await caches.keys();
-      await Promise.all(cacheNames.filter(name => name.startsWith('rc-setup-')).map(name => caches.delete(name)));
-    }
-    status.textContent = 'Installation de la dernière version…';
-    await navigator.serviceWorker.register('./sw.js?v=94', { updateViaCache: 'none' });
-    await navigator.serviceWorker.ready;
-    status.textContent = 'Mise à jour terminée. Rechargement de RC SETUP…';
+    await refreshAppWorker();
+    status.textContent = 'Vérification terminée. Rechargement de la dernière version…';
     window.location.reload();
   } catch (error) {
-    console.error('Mise à jour forcée impossible :', error);
-    status.textContent = 'La mise à jour automatique a échoué. Ouvre RC SETUP dans Safari puis réessaie.';
+    console.error('Mise à jour impossible :', error);
+    status.textContent = 'La mise à jour automatique a échoué. Vérifie ta connexion puis réessaie.';
     button.disabled = false;
     button.textContent = '↻ Réessayer la mise à jour';
   }
