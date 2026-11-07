@@ -833,7 +833,7 @@
     'Schumacher': 'https://schumacher-racing.com/wp-content/uploads/2024/01/Schumacher_racing_pink-gelb-1.png',
     'Savöx': 'https://atomfire.com/cdn/shop/collections/savox-logo-square.png?v=1701816872',
     'OPTIMA': 'https://6mik-racing.com/wp-content/uploads/2020/04/logo-OPTIMA-2016-1200.jpg',
-    '6MIK': 'https://www.rcteam.com/cdn/shop/files/6mik-planche-de-stickers-logo-pg01_large.jpg?v=1705739978',
+    '6MIK': 'https://cdn.houseofrc.com/storage/images/13021/conversions/Bnrxbkcd4O8n0rPCSktrvsl3mYbwWcyXVnilYn8A-display.jpg',
     'Cayote': 'https://www.hearnshobbies.com/cdn/shop/files/banner_1.png?v=1731377454&width=2169',
     'Corsatec': 'https://www.corsatec.net/img/cms/Logo%20%281%29.png',
     'Hot Race Tires': 'https://www.hotrace-asia.com/media/12/45/d9/1746796312/hotrace.png?ts=1746796313',
@@ -845,7 +845,7 @@
     'Tekin': 'https://www.teamtekin.com/images/tekin_logo_hires_2015.png?crc=4065896322',
     'VP-Pro': 'https://cdn.hardwickrctrack.co.uk/static/logos/vpracing.webp',
     'WS Line': 'https://www.wartelle-shop.com/Files/132405/Img/07/IMG-0614-1-003-zoom.jpg',
-    'XTR Racing': 'https://www.inforc.net/wp-content/uploads/2016/04/xtr-racing.jpg',
+    'XTR Racing': brandWordmark('XTR RACING', '#e53935', '#171717'),
     'Yokomo': 'https://cdn.ecommercedns.uk/files/7/229017/4/49342684/yokomo-logo-retro.png',
     '1UP Racing': 'https://i.ytimg.com/vi/ndTXtEMba2c/maxresdefault.jpg',
     'Futaba': 'https://images.seeklogo.com/logo-png/40/1/futaba-logo-png_seeklogo-409265.png',
@@ -853,7 +853,7 @@
     'JConcepts': 'https://rcvisions.com/cdn/shop/collections/JConcepts.jpg?v=1646700975&width=1081',
     'LRP': 'https://wp.logos-download.com/wp-content/uploads/2024/01/LRP_Logo-3000x899.png',
     'Pro-Line': 'https://images.seeklogo.com/logo-png/22/1/pro-line-logo-png_seeklogo-226869.png',
-    'Reedy': brandWordmark('REEDY', '#dc2b30', '#171717'),
+    'Reedy': 'https://www.cmldistribution.co.uk/brands/reedy.png',
     'Tamiya': 'https://www.most-models.com/files/tamiya-modelbouw.png',
     'TLR': 'https://cdn.houseofrc.com/storage/images/360/conversions/tlr-preview.jpg'
   };
