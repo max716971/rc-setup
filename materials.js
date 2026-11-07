@@ -356,6 +356,63 @@
     { brand:'LRP', category:'Moteur', name:'Dynamic10L BL 4700 kV', reference:'53550', detail:'Moteur brushless 540/550 long, 4 pôles, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53550/' },
 
 
+    // JConcepts : références fabricant confirmées pour pneus et inserts buggy 1/10.
+    ...[
+      ['Dirt-Tech 2WD avant','3231','Avant 2WD','Insert closed-cell medium/firm'],
+      ['Dirt-Tech 4WD avant','3230','Avant 4WD','Insert closed-cell medium/firm'],
+      ['Dirt-Tech arrière 2WD/4WD','3232','Arrière 2WD/4WD','Insert closed-cell medium/firm']
+    ].map(([name,reference,position,detail]) => ({
+      brand:'JConcepts', category:'Insert pneu', name, reference, compatibility:position,
+      detail:'Insert Dirt-Tech JConcepts pour buggy 1/10. '+detail+'. Réutilisable.',
+      url:reference==='3231'?'https://jconcepts.net/dirttech-110th-buggy-22-2wd-front-insert-2pc':reference==='3230'?'https://jconcepts.net/dirttech-110th-buggy-22-4wd-front-insert-2pc':'https://jconcepts.net/dirttech-110th-buggy-22-2wd-4wd-rear-insert-2pc'
+    })),
+    ...[
+      ['Double Dees V2','3160','Avant 2WD','Pneu à picots pour terre meuble et conditions variées'],
+      ['Double Dees V2','3161','Avant 4WD','Pneu avant 4WD, profil Double Dees V2'],
+      ['Double Dees V2','3159','Arrière 2WD/4WD','Pneu arrière Double Dees V2'],
+      ['Drop Step','3059-010','Arrière 2WD/4WD','Gomme rose, picots hauts pour gazon synthétique et surfaces profondes']
+    ].map(([name,reference,position,detail]) => ({
+      brand:'JConcepts', category:'Pneus / roues', name:name+' — '+position,
+      reference, compatibility:position,
+      detail:'Pneu buggy TT 1/10 JConcepts. '+detail+'.',
+      url:reference==='3160'?'https://jconcepts.net/double-dees-v2-2wd-buggy-front':reference==='3059-010'?'https://jconcepts.net/drop-step--22-buggy-rear':'https://jconcepts.net/product_index.asp?page=2'
+    })),
+    // Références issues du guide d'application JConcepts (gamme catalogue historique).
+    ...[
+      ['Groovy','3000','Avant 2WD','J82'],['Groovy','3004','Avant 2WD','Standard'],
+      ['Rounder','3005','Avant 2WD','Standard'],['Bar Codes','3017','Avant 2WD','Standard'],
+      ['Double Dee’s','3003','Avant 4WD','Standard'],['Goose Bumps','3019','Avant 4WD','Standard'],
+      ['Bar Codes','3020','Avant 4WD','Standard'],['Double Dee’s','3002','Arrière 2WD/4WD','Standard'],
+      ['Bar Codes','3016','Arrière 2WD/4WD','Standard'],['Goose Bumps','3018','Arrière 2WD/4WD','Standard']
+    ].map(([name,reference,position,compound]) => ({
+      brand:'JConcepts', category:'Pneus / roues', name:name+' — '+position+' — '+compound,
+      reference, compatibility:position,
+      detail:'Référence de pneu buggy 1/10 figurant dans le guide d’application JConcepts. Gamme catalogue historique ; disponibilité actuelle à vérifier.',
+      url:'https://www.horizonhobby.com/on/demandware.static/Sites-horizon-us-Site/Sites-horizon-master/default/Manuals/JConcepts_Tire_guide.pdf'
+    })),
+    // VP-Pro : variantes individuelles par gomme et position, SKU de la gamme 1/10.
+    ...[
+      ['Shock Wave Evo','VP-416U-M3','Arrière 2WD/4WD','M3'],
+      ['Shock Wave Evo','VP-416U-M4','Arrière 2WD/4WD','M4'],
+      ['Shock Wave Evo','VP-316U-M3','Avant 4WD','M3'],
+      ['Shock Wave Evo','VP-316U-M4','Avant 4WD','M4'],
+      ['Gripz Evo','VP-413U-M3','Arrière 2WD/4WD','M3'],
+      ['Gripz Evo','VP-413U-M4','Arrière 2WD/4WD','M4'],
+      ['Cactus Evo','VP-208U-M3','Avant 2WD','M3'],
+      ['Cactus Evo','VP-208U-M4','Avant 2WD','M4'],
+      ['Cactus Evo','VP-308U-M3','Avant 4WD','M3'],
+      ['Cactus Evo','VP-308U-M4','Avant 4WD','M4'],
+      ['Cactus Evo','VP-408U-M3','Arrière 2WD/4WD','M3'],
+      ['Cactus Evo','VP-408U-M4','Arrière 2WD/4WD','M4']
+    ].map(([name,reference,position,compound]) => ({
+      brand:'VP-Pro', category:'Pneus / roues',
+      name:name+' — '+position+' — '+compound+' — sans jante',
+      reference, compatibility:position,
+      detail:'Pneu VP-Pro buggy TT 1/10. Gomme '+compound+'. Version sans jante ; consulter la fiche fabricant pour les variantes montées.',
+      url:'https://www.vp-racing.com/products/vppro/tires/1-10-buggy'
+    })),
+
+
   ];
   const root = document.getElementById('materialsApp');
   if (!root) return;
