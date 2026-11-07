@@ -6156,8 +6156,12 @@ function renderCarCatalogBrandPicker() {
   picker.innerHTML=brands.map(brand=>{
     const initials=brand.split(/[\\s-]+/).map(word=>word[0]).slice(0,2).join('').toUpperCase();
     const logo=logos[brand];
-    return '<button type="button" class="material-brand-tile'+(logo?' has-brand-logo':'')+'" data-brand="'+escapeHtml(brand)+'" aria-pressed="false">'+(logo?'<img class="material-brand-logo" src="'+logo+'" alt="" loading="lazy" decoding="async" onload="this.parentElement.classList.add(\\'has-logo-loaded\\')" onerror="this.parentElement.classList.remove(\\'has-brand-logo\\');this.remove()">':'')+'<span class="brand-logo-mark">'+escapeHtml(initials)+'</span><span class="material-brand-name">'+escapeHtml(brand)+'</span></button>';
+    return '<button type="button" class="material-brand-tile'+(logo?' has-brand-logo':'')+'" data-brand="'+escapeHtml(brand)+'" aria-pressed="false">'+(logo?'<img class="material-brand-logo" src="'+logo+'" alt="" loading="lazy" decoding="async">':'')+'<span class="brand-logo-mark">'+escapeHtml(initials)+'</span><span class="material-brand-name">'+escapeHtml(brand)+'</span></button>';
   }).join('');
+  picker.querySelectorAll('.material-brand-logo').forEach(img=>{
+    img.addEventListener('load',()=>img.parentElement.classList.add('has-logo-loaded'));
+    img.addEventListener('error',()=>{img.parentElement.classList.remove('has-brand-logo');img.remove();});
+  });
   picker.dataset.ready='true';
 }
 function addCatalogCarByIndex(index) {
