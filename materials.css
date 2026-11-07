@@ -56,6 +56,6 @@
 /* Logos fabricants dans le filtre de marque */
 .material-brand-tile{min-height:88px;gap:6px;padding:9px 7px}
 .material-brand-logo{display:block;width:100%;height:38px;max-width:118px;object-fit:contain;border-radius:5px;background:#fff}
-.material-brand-tile[data-brand="Hot Race Tires"] .material-brand-logo{object-fit:cover;object-position:center}
+.material-brand-tile[data-brand="Hot Race Tires"] .material-brand-logo{width:100%;height:48px;max-width:150px;object-fit:cover;object-position:center}
 .material-brand-tile.has-logo-loaded .brand-logo-mark{display:none}
 .material-brand-name{display:block;line-height:1.25;text-align:center}
