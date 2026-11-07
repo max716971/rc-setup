@@ -854,7 +854,7 @@
     'LRP': 'https://wp.logos-download.com/wp-content/uploads/2024/01/LRP_Logo-3000x899.png',
     'Pro-Line': 'https://images.seeklogo.com/logo-png/22/1/pro-line-logo-png_seeklogo-226869.png',
     'Reedy': brandWordmark('REEDY', '#dc2b30', '#171717'),
-    'Tamiya': 'https://ih1.redbubble.net/image.1788008974.4653/raf,360x360,075,t,fafafa:ca443f4786.webp',
+    'Tamiya': 'https://www.most-models.com/files/tamiya-modelbouw.png',
     'TLR': brandWordmark('TLR', '#dc2b30', '#171717')
   };
   const root = document.getElementById('materialsApp');
