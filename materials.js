@@ -222,7 +222,8 @@
     search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
     select.addEventListener('change', () => { if (select.value) input.value = select.value; });
     picker.append(label, search, select);
-    input.closest('label').before(picker);
+    // Keep the library controls inside their field label so they do not break the form grid.
+    input.closest('label').insertBefore(picker, input);
   }
   // Populate every library selector immediately when the setup form is initialized.
   refreshPickers();
