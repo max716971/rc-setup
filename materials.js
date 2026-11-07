@@ -847,7 +847,7 @@
     'WS Line': 'https://www.wartelle-shop.com/Files/132405/Img/07/IMG-0614-1-003-zoom.jpg',
     'XTR Racing': 'https://www.inforc.net/wp-content/uploads/2016/04/xtr-racing.jpg',
     'Yokomo': 'https://cdn.ecommercedns.uk/files/7/229017/4/49342684/yokomo-logo-retro.png',
-    '1UP Racing': brandWordmark('1UP RACING', '#e2a21b', '#171717'),
+    '1UP Racing': 'https://i.ytimg.com/vi/ndTXtEMba2c/maxresdefault.jpg',
     'Futaba': brandWordmark('FUTABA', '#dc2b30', '#171717'),
     'HUDY': brandWordmark('HUDY', '#e0a21b', '#171717'),
     'JConcepts': brandWordmark('JCONCEPTS', '#252525', '#171717'),
