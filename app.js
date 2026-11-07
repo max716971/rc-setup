@@ -6227,7 +6227,7 @@ function handleBatterySubmit(event){
   state.batteries=Array.isArray(state.batteries)?state.batteries:[];
   state.batteries.unshift(battery);
   if(!saveState()){state.batteries.shift();return;}
-  form.reset();renderBatteries();showToast('Batterie ajoutée au gestionnaire.');
+  form.elements.namedItem('name').value='';form.elements.namedItem('brand').value='';form.elements.namedItem('carId').value='';form.elements.namedItem('capacity').value='';form.elements.namedItem('cells').value='2';form.elements.namedItem('connector').value='';form.elements.namedItem('cycles').value='0';form.elements.namedItem('voltage').value='';form.elements.namedItem('notes').value='';renderBatteries();showToast('Batterie ajoutée au gestionnaire.');
 }
 function handleBatteryLog(event){
   event.preventDefault();const battery=state.batteries?.find(b=>b.id===document.getElementById('batteryLogSelect').value);if(!battery)return;
@@ -6237,7 +6237,7 @@ function handleBatteryLog(event){
   battery.history=Array.isArray(battery.history)?battery.history:[];
   battery.history.unshift({date:new Date().toISOString().slice(0,10),type,voltage:voltage||null,cycles,notes});
   if(!saveState())return;
-  event.currentTarget.reset();renderBatteries();showToast('Événement batterie enregistré.');
+  document.getElementById('batteryLogSelect').value='';document.getElementById('batteryLogVoltage').value='';document.getElementById('batteryLogCycles').value='0';document.getElementById('batteryLogNotes').value='';renderBatteries();showToast('Événement batterie enregistré.');
 }
 function formValues(form, names) {
   const data = new FormData(form);
@@ -6842,7 +6842,7 @@ document.getElementById('maintenanceForm')?.addEventListener('submit',event=>{
  state.maintenance=Array.isArray(state.maintenance)?state.maintenance:[];
  state.maintenance.unshift({id:uid('maintenance'),carId,part,workType:document.getElementById('maintenanceWorkType').value,date:document.getElementById('maintenanceDate').value,sessions:Number(document.getElementById('maintenanceSessions').value||0),next:Number(document.getElementById('maintenanceNext').value||0),replacedParts:document.getElementById('maintenanceReplacedParts').value.trim(),notes:document.getElementById('maintenanceNotes').value.trim()});
  if(!saveState())return;
- event.target.reset();document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);renderMaintenanceList();showToast('Révision enregistrée.');
+ document.getElementById('maintenancePart').value='';document.getElementById('maintenanceWorkType').value='Entretien';document.getElementById('maintenanceSessions').value='0';document.getElementById('maintenanceNext').value='';document.getElementById('maintenanceReplacedParts').value='';document.getElementById('maintenanceNotes').value='';document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);renderMaintenanceList();showToast('Intervention enregistrée.');
 });
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
 document.getElementById('exportButton').addEventListener('click', exportJson);
