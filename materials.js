@@ -67,9 +67,19 @@
   ];
   const root = document.getElementById('materialsApp');
   if (!root) return;
-  let savedItems = loadSaved();
   let activeTab = 'catalog';
   function loadSaved() { try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); return Array.isArray(data) ? data : []; } catch { return []; } }
+  // Move automatically seeded catalogue entries out of the personal inventory.
+  const legacyPrefixes = ['seed-hobbywing-esc-v1-', 'seed-hobbywing-motors-v3-', 'seed-rsrc-xrt-oils-v3-', 'seed-associated-spring-v1-'];
+  let savedItems = loadSaved();
+  const legacyCatalogItems = savedItems.filter(item => legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
+  for (const item of legacyCatalogItems) {
+    if (!catalog.some(existing => existing.brand === item.brand && existing.name === item.name && existing.reference === item.reference)) catalog.push({ ...item, id: undefined });
+  }
+  if (legacyCatalogItems.length) {
+    savedItems = savedItems.filter(item => !legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); } catch {}
+  }
   function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); return true; } catch { alert('Stockage local plein : retire une fiche ou libère de l’espace.'); return false; } }
   function esc(value) { return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c]); }
   function allMaterials() { return [...catalog, ...savedItems]; }
