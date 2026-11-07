@@ -46,3 +46,8 @@ Bibliothèque enrichie avec les variantes Mini Spike 2 (avant 2WD Slim, avant 4W
 ## Gestion manuelle des voitures et modification des pistes
 - Le formulaire d'ajout de voiture est explicitement identifié comme ajout manuel, en complément du catalogue de modèles prédéfinis.
 - Ajout de l'édition des pistes existantes : modification du nom, de la surface, de l'adhérence, du type, du lieu et des détails sans supprimer les setups associés.
+
+
+## Accueil de présentation et aide — 7 novembre 2026
+- Enrichissement de la page d'accueil avec une présentation des points forts et des accès directs au garage, aux pistes, aux setups, à la bibliothèque matériel, aux outils et à l'aide.
+- Ajout d'une page « Aide & tutoriels » avec un parcours de démarrage en cinq étapes, des raccourcis vers les fonctions et une FAQ sur les données, les sauvegardes, le transfert, les références manquantes et l'installation.
