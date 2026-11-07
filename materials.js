@@ -295,6 +295,15 @@
       detail:'Ressort TLR '+diameter+' mm '+position.toLowerCase()+'. Couleur : '+color+'. Taux : '+rate+' lb/in.',
       url:diameter==='12'?'https://www.tlracing.com/on/demandware.static/-/Sites-horizon-master/default/dw6b76f28c/Manuals/TLR03022-Parts-MULTI.pdf':'https://hobbydex.com/rc/releases/tlr/tlr-1233/'
     })),
+    ...[
+      ['YS-650B','650'],['YS-700B','700'],['YS-750B','750'],['YS-800AB','800'],
+      ['YS-850A','850'],['YS-900B','900'],['YS-950B','950'],['YS-1000B','1000'],
+      ['YS-1500A','1500'],['YS-2000B','2000'],['YS-3000A','3000']
+    ].map(([reference,grade])=>({
+      brand:'Yokomo',category:'Huile amortisseur',name:'Super Blend Shock Oil #'+grade+' — 35 cc',
+      reference,detail:'Huile silicone Yokomo pour amortisseurs ; indice de viscosité constructeur #'+grade+'.',
+      url:'https://teamyokomo.com/downloadfiles/%2102%21MANUAL/%2104%21OFF-ROAD_KIT/SO3.0_Instruction_Manual.pdf'
+    })),
     // Ressorts Yokomo TT 1/10 — références de gammes RPU/Yatabe ; compatibilité à contrôler selon châssis.
     ...[
       ['Avant','YS-A750','Orange'],['Avant','YS-A775','Green'],['Avant','YS-A800','Pink'],['Avant','YS-A850','Red'],['Avant','YS-A875','Yellow'],['Avant','YS-A900','Gold'],
@@ -626,8 +635,8 @@
     { brand:'HUDY', category:'Graisse', name:'Joint Grease', reference:'106213', detail:'Graisse spéciale pour joints et articulations de transmission.', url:'https://www.hudy.net/xhudy/products/product_main.php?Hudy_Session=cf1596c1b02ac9279b287ee37fa66690&kategoria=333' },
     // Yokomo — huiles silicone de différentiel et graisses d'entretien.
     ...[
-      ['CS-7500B','7 500'],['CS-10000B','10 000'],['CS-15000B','15 000'],['CS-20000B','20 000'],
-      ['CS-30000B','30 000'],['CS-50000B','50 000']
+      ['CS-5000B','5 000'],['CS-7500B','7 500'],['CS-10000B','10 000'],['CS-15000B','15 000'],['CS-20000B','20 000'],
+      ['CS-30000B','30 000'],['CS-50000OB','50 000']
     ].map(([reference,grade]) => ({
       brand:'Yokomo', category:'Huile différentiel', name:'Super Blend Silicone Oil #'+grade+' — 30 cc',
       reference, detail:'Huile silicone Yokomo pour différentiels ; viscosité nominale '+grade+'.',
