@@ -174,8 +174,6 @@
       detail: product + ' XTR. Utilisation fabricant : ' + use + '.',
       url: 'https://xtr-rc.com/en/232-greases-lubricants'
     })),
-    { brand: 'XTR Racing', category: 'Huile moteur', name: 'Huile After Run XTR', reference: 'XTR-0234 — 80 ml', detail: 'Huile de conservation après utilisation pour moteurs thermiques.', url: 'https://www.rcnest.it/en/15-oli' },
-    { brand: 'XTR Racing', category: 'Huile roulements', name: 'Huile XTR Long Life pour roulements', reference: 'XTR-0253 — 20 ml', detail: 'Lubrifiant longue durée pour roulements.', url: 'https://www.rcnest.it/en/15-oli' },
         { brand: '1UP Racing', category: 'Graisse', name: 'Graisse RC', reference: 'Référence à confirmer', detail: 'Gamme 1UP Racing ; choisir le produit selon l’application.', url: 'https://1upracing.com/' },
     { brand: 'SRT', category: 'Servo', name: 'Servo SRT', reference: 'Modèle à préciser', detail: 'Catalogue SRT : choisir couple, vitesse, tension et dimensions selon le véhicule.', url: 'https://www.srt-rc.com/' },
     { brand: 'Power HD', category: 'Servo', name: 'Servo Power HD', reference: 'Modèle à préciser', detail: 'Catalogue Power HD : choisir couple, vitesse, tension et dimensions.', url: 'https://www.powerhd.com.tw/' },
@@ -225,6 +223,92 @@
     ...Array.from({length:12}, (_,i) => ({ brand: 'Team Associated', category: 'Ressort', name: 'Ressort RC10B7 — réf. ' + (91940+i), reference: String(91940+i), detail: 'Référence reprise du tableau précédent. Couleur/taux/longueur à confirmer avant utilisation ; ressorts 13 mm.', url: 'https://www.associatedelectrics.com/teamassociated/' })),
 
     { brand: 'Team Associated', category: 'Huile amortisseur', name: 'Factory Team Shock Oil 35 wt', reference: '5435', detail: 'Exemple ; confirmer compatibilité et catalogue actuel.', url: 'https://www.associatedelectrics.com/teamassociated/parts/fluids/' },
+
+    // Marques complémentaires — pneus, inserts, huiles, ressorts et électronique.
+    ...[
+      ['Shock Wave Evo M4','VP-416','Arrière 2WD/4WD','M4'],
+      ['Shock Wave Evo M4','VP-316','Avant 4WD','M4'],
+      ['Gripz Evo M5','VP-413','Arrière 2WD/4WD','M5'],
+      ['Frontier Evo M5','VP-412','Arrière 2WD/4WD','M5'],
+      ['Cactus Evo M5','VP-408U','Arrière 2WD/4WD','M5'],
+      ['Turbo Trax Evo M5','VP-404','Arrière 2WD/4WD','M5'],
+      ['Cactus Evo M3','VP-208U','Avant 2WD','M3']
+    ].map(([name,reference,position,compound]) => ({
+      brand:'VP-Pro', category:'Pneus / roues', name:name+' — '+position+' — '+compound,
+      reference, compatibility:position, detail:'Pneu buggy TT 1/10 VP-Pro. Choisir la version avec jante ou sans jante selon la référence complète.',
+      url:'https://www.vp-racing.com/products/vppro/tires/1-10-buggy'
+    })),
+    { brand:'Matrix Racing', category:'Pneus / roues', name:'Gamme pneus buggy 1/10 Matrix Racing', reference:'Modèle et gomme à préciser', compatibility:'TT 1/10 — position à préciser', detail:'Entrée de marque. Sélectionner le profil, la position et la gomme exacts avant achat ; aucune référence SKU ajoutée sans vérification.', url:'https://www.matrixracingproducts.com/' },
+
+    ...[
+      ['Insert mousse buggy JConcepts 1/10','JConcepts','JConcepts','Choisir le profil et la densité adaptés au pneu.'],
+      ['Insert mousse buggy Pro-Line 1/10','Pro-Line','Pro-Line','Choisir le profil et la densité adaptés au pneu.']
+    ].map(([name,brand,product,detail]) => ({
+      brand, category:'Insert pneu', name, reference:'Modèle à préciser',
+      detail:product+' : insert à sélectionner selon le pneu, la jante et la surface. '+detail,
+      url:brand==='JConcepts'?'https://jconcepts.net/':'https://www.prolineracing.com/'
+    })),
+
+    // Huiles Yokomo — viscosités constructeur exprimées en indice Yokomo, pas en CST.
+    ...['475','575','600'].map(value => ({
+      brand:'Yokomo', category:'Huile amortisseur', name:'Super Blend Shock Oil #'+value,
+      reference:'YS-'+value+'B — 35 cc',
+      detail:'Huile silicone amortisseur Yokomo. L’indice Yokomo n’est pas une conversion directe en WT/CST.',
+      url:'https://teamyokomo.com/parts/YS-600B/'
+    })),
+    // Ressorts Yokomo TT 1/10 — références de gammes RPU/Yatabe ; compatibilité à contrôler selon châssis.
+    ...[
+      ['Avant','A750','Orange'],['Avant','A775','Green'],['Avant','A800','Pink'],['Avant','A850','Red'],['Avant','A875','Yellow'],['Avant','A900','Gold'],
+      ['Arrière','YOKYS-A1200','Green'],['Arrière','YOKYS-A1175','Orange']
+    ].map(([position,reference,colour]) => ({
+      brand:'Yokomo', category:'Ressort', name:'Ressort '+position+' TT 1/10 — '+colour,
+      reference, compatibility:'Buggy 1/10 Yokomo — vérifier longueur et diamètre',
+      detail:'Référence de ressort Yokomo issue des tableaux de ressorts TT 1/10 ; vérifier la famille de châssis avant montage.',
+      url:'https://www.sodialed.com/rc-setup-tips/yokomo-1-10-off-road-car-shock-spring-list'
+    })),
+    ...[
+      ['TLR143005','Blanc','2.7 lb/in'],['TLR143006','Vert','3.0 lb/in'],['TLR143007','Orange','3.6 lb/in'],['TLR143008','Silver','4.0 lb/in']
+    ].map(([reference,colour,rate]) => ({
+      brand:'TLR', category:'Ressort', name:'Ressort amortisseur TLR — '+colour+' — '+rate,
+      reference, compatibility:'Losi LMT / TLR Tuned 4x4 (pas buggy 1/10 standard)',
+      detail:'Ressort TLR vendu par 4. Compatibilité LMT ; ne pas considérer comme ressort universel de buggy TT 1/10.',
+      url:'https://www.tlracing.com/new-tlr-rc-parts/'
+    })),
+
+    // Graisses HUDY, Team Associated et Tamiya.
+    ...[
+      ['106210','Graphite Grease'],['106211','Diff Grease'],['106212','Super Differential Grease'],['106213','Joint Grease']
+    ].map(([reference,name]) => ({
+      brand:'HUDY', category:'Graisse', name, reference,
+      detail:'Graisse HUDY. Vérifier l’application précise dans la fiche fabricant.',
+      url:'https://www.hudy.net/xhudy/products/prodpart.php?prod_id=333'
+    })),
+    { brand:'Tamiya', category:'Graisse', name:'RC Anti-Wear Grease', reference:'53439', detail:'Graisse anti-usure haute viscosité pour arbres, joints et engrenages de différentiel. Tube 3 g.', url:'https://www.tamiyausa.com/shop/maintenance-supplies/rc-anti-wear-grease/' },
+    { brand:'Team Associated', category:'Graisse', name:'Stealth Differential Grease', reference:'Référence à confirmer', detail:'Graisse pour entretien du différentiel ; vérifier la référence et la compatibilité selon génération.', url:'https://www.associatedelectrics.com/teamassociated/' },
+
+    // Moteurs brushless 1/10 Reedy et LRP.
+    ...['9.5','8.5','8.0','7.5','7.0','6.5','6.0','5.5','5.0','4.5','4.0','3.5'].map((turn,i) => ({
+      brand:'Reedy', category:'Moteur', name:'Sonic 540-M4 '+turn+'T',
+      reference:String([27438,27439,27440,27441,27442,27444,27445,27446,27451,27452,27453,27454][i]),
+      detail:'Moteur brushless sensored 540 compétition 1/10. Vérifier règlement de catégorie et compatibilité ESC.',
+      url:'https://apps.associatedelectrics.com/aereferencelibrary/pages/reedy_motors.html'
+    })),
+    { brand:'LRP', category:'Moteur', name:'Dynamic10 BL 3800 kV', reference:'53430', detail:'Moteur brushless 540/550 1/10, fonctionnement sensored/sensorless.', url:'https://www.lrp.cc/en/product/53430/' },
+    { brand:'LRP', category:'Moteur', name:'Dynamic10L BL 4700 kV', reference:'53550', detail:'Moteur brushless 1/10 format 540/550, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53550/' },
+
+    // Variateurs 1/10.
+    { brand:'Reedy', category:'Variateur (ESC)', name:'Blackbox 610R Competition', reference:'27016', detail:'Variateur compétition 1/10, 160 A, compatible moteurs brushless sensored.', url:'https://www.cml-racing.com/fr/369-1-10' },
+    { brand:'Reedy', category:'Programmation', name:'Blackbox ESC Programmer 2', reference:'27027', detail:'Boîtier de programmation pour ESC Reedy Blackbox compatibles.', url:'https://www.cml-racing.com/fr/369-1-10' },
+    { brand:'Tekin', category:'Variateur (ESC)', name:'RS GEN3 1/10', reference:'TT1156', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
+    { brand:'Tekin', category:'Variateur (ESC)', name:'RS SPEC GEN3 1/10', reference:'TT1157', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
+    { brand:'Tekin', category:'Variateur (ESC)', name:'RSX PRO 1/10', reference:'TT1159', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
+    { brand:'LRP', category:'Variateur (ESC)', name:'Variateurs brushless LRP 1/10', reference:'Modèle à préciser', detail:'Gamme LRP de speed controllers. Ajouter la référence exacte selon génération et catégorie.', url:'https://www.lrp.cc/en/products/' },
+
+    // Servos de direction.
+    { brand:'Sanwa', category:'Servo', name:'PGS-CL II', reference:'107A54514B', detail:'Servo programmable low-profile, compatible CODE10 dont MT-5 ; 16,6 kg·cm à 7,4 V.', url:'https://www.sanwa-denshi.co.jp/rc/car/servo/pgs-cl%E2%85%A1.html' },
+    { brand:'Futaba', category:'Servo', name:'S9470SV', reference:'01000837', detail:'Servo numérique surface ; vérifier dimensions, tension et mode de transmission requis.', url:'https://futaba.fr/5-servos' },
+    { brand:'Power HD', category:'Servo', name:'Servo Power HD pour buggy 1/10', reference:'Modèle à préciser', detail:'Choisir le modèle selon couple, vitesse, tension et encombrement du châssis.', url:'https://www.powerhd.com.tw/' },
+
   ];
   const root = document.getElementById('materialsApp');
   if (!root) return;
@@ -303,7 +387,7 @@
     ['differentials','Huile différentiel|Graisse'], ['centerDiff','Huile différentiel|Graisse'],
     ['motor','Moteur'], ['escModel','Variateur (ESC)'], ['servoSteering','Servo'],
     ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur'],
-    ['lubricants','Graisse|Huile moteur|Huile roulements']
+    ['lubricants','Graisse']
   ];
   for (const [fieldName, categories] of pickerMap) {
     const input = setupForm.elements.namedItem(fieldName);
