@@ -5766,8 +5766,8 @@ const MAX_PHOTO_BYTES = 12 * 1024 * 1024;
 const SETUP_FIELDS = [
   'sessionDate', 'temperature', 'weather', 'goal', 'lubricants',
   'frontTires', 'rearTires', 'inserts', 'tireTreatment', 'wheels', 'tireCondition',
-  'frontShocks', 'frontPiston', 'frontSpring', 'rearShocks', 'rearPiston', 'rearSpring', 'springs', 'frontRideHeight', 'rearRideHeight', 'rideHeight', 'frontCamber', 'rearCamber', 'frontToe', 'rearToe', 'frontCaster', 'ackermann', 'frontAntiRollBar', 'rearAntiRollBar', 'frontDroop', 'rearDroop', 'camber', 'toe', 'casterAckermann', 'antiRollBars', 'droop', 'stopsDiaphragms',
-  'gearing', 'differentials', 'centerDiff', 'motor', 'esc', 'servoSteering', 'brakes', 'battery', 'radio',
+  'frontShocks', 'frontPiston', 'frontSpring', 'rearShocks', 'rearPiston', 'rearSpring', 'springs', 'frontRideHeight', 'rearRideHeight', 'rideHeight', 'frontCamber', 'rearCamber', 'frontToe', 'rearToe', 'frontCaster', 'ackermann', 'frontAntiRollBar', 'rearAntiRollBar', 'frontDroop', 'rearDroop', 'camber', 'toe', 'casterAckermann', 'antiRollBars', 'droop', 'stopsDiaphragms', 'frontShockTower', 'rearShockTower', 'frontShockPosition', 'rearShockPosition', 'frontArmPosition', 'rearArmPosition',
+  'gearing', 'differentials', 'frontDiffOil', 'rearDiffOil', 'centerDiff', 'slipper', 'ballDiff', 'motor', 'esc', 'servoSteering', 'brakes', 'battery', 'radio',
   'escModel', 'escMode', 'escMotorTiming', 'escBoost', 'escTurbo', 'escTurboDelay', 'escTiming', 'escPunch', 'escBrake', 'escDragBrake', 'escBrakeFrequency', 'escThrottleFrequency', 'escNeutralRange', 'escCutoff', 'escBec', 'escThermal', 'escReverse', 'escBrakeRate', 'escThrottleRate', 'electronicsNotes', 'esc', 'radio', 'radioSteeringDualRate', 'radioSteeringExpo', 'radioEPA', 'radioSteeringTrim', 'radioSubtrim', 'radioSteeringReverse', 'radioThrottleExpo', 'radioThrottleEPA', 'radioThrottleTrim', 'radioThrottleReverse', 'radioBrakeEPA', 'radioBrakeExpo', 'radioFailsafe', 'radioTrim', 'txModel', 'rxModel', 'lapTime', 'rating', 'notes'
 ];
 
@@ -5776,6 +5776,8 @@ const installButton = document.getElementById('installButton');
 let deferredPrompt = null;
 let toastTimer;
 let pendingPhotos = [];
+let editingSetupId = null;
+let setupDraftSource = null;
 const emptyStateTemplate = document.getElementById('emptyStateTemplate');
 
 function loadState() {
@@ -5829,17 +5831,16 @@ function renderDashboard() {
   document.getElementById('setupCount').textContent = state.setups.length;
   const container = document.getElementById('recentSetups');
   container.replaceChildren();
-  const recent = [...state.setups].sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0)).slice(0, 4);
-  if (!recent.length) { container.append(emptyState()); return; }
-  recent.forEach((setup) => {
-    const car = getCarById(setup.carId);
-    const track = getTrackById(setup.trackId);
-    const item = document.createElement('article');
-    item.className = 'list-item setup-list-item';
-    item.innerHTML = `<div class="item-avatar">⚙</div><div class="item-main"><h3>${escapeHtml(car?.name || 'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name || 'Piste inconnue')}</h3><p class="item-sub">${escapeHtml(setup.weather || 'Conditions non renseignées')} · ${escapeHtml(setup.temperature || 'Température —')}</p></div><button class="icon-button view-setup" data-id="${escapeHtml(setup.id)}" aria-label="Voir le setup" type="button">↗</button>`;
+  const recent = [...state.setups].sort((a,b)=>new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0)).slice(0,4);
+  if (!recent.length) container.append(emptyState());
+  recent.forEach(setup => {
+    const car=getCarById(setup.carId),track=getTrackById(setup.trackId),item=document.createElement('article');
+    item.className='list-item setup-list-item';
+    item.innerHTML=`<div class="item-avatar">⚙</div><div class="item-main"><h3>${escapeHtml(setup.setupName||car?.name||'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name||'Piste inconnue')}</h3><p class="item-sub">${escapeHtml(setup.weather||'Conditions non renseignées')} · ${escapeHtml(setup.temperature||'Température —')}</p></div><button class="icon-button view-setup" data-id="${escapeHtml(setup.id)}" aria-label="Voir le setup" type="button">↗</button>`;
     container.append(item);
   });
-  container.querySelectorAll('.view-setup').forEach((button) => button.addEventListener('click', () => showSetup(button.dataset.id)));
+  container.querySelectorAll('.view-setup').forEach(button=>button.addEventListener('click',()=>showSetup(button.dataset.id)));
+  renderPerformanceTrend();
 }
 
 function renderCars() {
@@ -5869,19 +5870,73 @@ function renderTracks() {
 }
 
 function renderSetups() {
-  const container = document.getElementById('setupsList');
-  container.replaceChildren();
-  if (!state.setups.length) { container.append(emptyState()); return; }
-  [...state.setups].sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0)).forEach((setup) => {
-    const car = getCarById(setup.carId);
-    const track = getTrackById(setup.trackId);
-    const item = document.createElement('article');
-    item.className = 'list-item setup-card';
-    item.innerHTML = `<div class="setup-card-top"><span class="setup-tag">SETUP</span><span class="setup-date">${escapeHtml(setup.sessionDate || formatDate(setup.createdAt))}</span></div><div class="item-main"><h3>${escapeHtml(car?.name || 'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name || 'Piste inconnue')}</h3><p class="item-sub">${escapeHtml(setup.weather || 'Conditions non renseignées')} · ${escapeHtml(setup.temperature || 'Température —')}</p></div>${setup.photos?.length ? `<div class="setup-photo-strip">${setup.photos.slice(0, 3).map((photo) => `<img src="${photo}" alt="Photo du setup" loading="lazy">`).join('')}<span>${setup.photos.length} photo${setup.photos.length > 1 ? 's' : ''}</span></div>` : ''}<div class="setup-chips">${setup.frontTires || setup.rearTires ? `<span>Pneus · ${escapeHtml(setup.frontTires || '—')} / ${escapeHtml(setup.rearTires || '—')}</span>` : ''}${setup.lapTime ? `<span>⏱ ${escapeHtml(setup.lapTime)}</span>` : ''}${setup.rating ? `<span>${escapeHtml(setup.rating)}</span>` : ''}</div><div class="item-actions"><button class="button button-soft view-setup" data-id="${escapeHtml(setup.id)}" type="button">Voir les détails</button><button class="button button-quiet danger-action delete-setup" data-id="${escapeHtml(setup.id)}" type="button">Supprimer</button></div>`;
+  const container=document.getElementById('setupsList');container.replaceChildren();
+  updateSetupFilterOptions();updateComparisonOptions();
+  const query=(document.getElementById('setupSearch')?.value||'').trim().toLocaleLowerCase('fr');
+  const carFilter=document.getElementById('setupCarFilter')?.value||'',trackFilter=document.getElementById('setupTrackFilter')?.value||'';
+  const surfaceFilter=document.getElementById('setupSurfaceFilter')?.value||'',gripFilter=document.getElementById('setupGripFilter')?.value||'';
+  const from=document.getElementById('setupDateFrom')?.value||'',to=document.getElementById('setupDateTo')?.value||'';
+  const filtered=[...state.setups].filter(setup=>{
+    const car=getCarById(setup.carId),track=getTrackById(setup.trackId),date=setup.sessionDate||String(setup.createdAt||'').slice(0,10);
+    const hay=[car?.name,track?.name,track?.surface,setup.weather,setup.goal,setup.notes,setup.frontTires,setup.rearTires].join(' ').toLocaleLowerCase('fr');
+    return (!query||hay.includes(query))&&(!carFilter||setup.carId===carFilter)&&(!trackFilter||setup.trackId===trackFilter)&&(!surfaceFilter||track?.surface===surfaceFilter)&&(!gripFilter||String(setup.weather||'').toLocaleLowerCase('fr').includes(gripFilter.toLocaleLowerCase('fr')))&&(!from||date>=from)&&(!to||date<=to);
+  }).sort((a,b)=>Number(Boolean(b.favorite))-Number(Boolean(a.favorite))||new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0));
+  if(!filtered.length){const empty=emptyState();empty.querySelector('span:last-child').textContent=state.setups.length?'Aucun setup ne correspond à ces filtres.':'Ajoute une première fiche pour commencer.';container.append(empty);return;}
+  filtered.forEach(setup=>{
+    const car=getCarById(setup.carId),track=getTrackById(setup.trackId),item=document.createElement('article');
+    item.className='list-item setup-card';
+    item.innerHTML=`<div class="setup-card-top"><span class="setup-tag">${setup.favorite?'★ FAVORI':'SETUP'}</span><span class="setup-date">${escapeHtml(setup.sessionDate||formatDate(setup.createdAt))}</span></div><div class="item-main"><h3>${escapeHtml(setup.setupName||car?.name||'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name||'Piste inconnue')}</h3><p class="item-sub">${escapeHtml(car?.name||'')} · ${escapeHtml(track?.surface||'Surface non renseignée')} · ${escapeHtml(setup.weather||'Adhérence non renseignée')}</p></div>${setup.photos?.length?`<div class="setup-photo-strip">${setup.photos.slice(0,3).map(photo=>`<img src="${photo}" alt="Photo du setup" loading="lazy">`).join('')}<span>${setup.photos.length} photo(s)</span></div>`:''}<div class="setup-chips">${setup.frontTires||setup.rearTires?`<span>Pneus · ${escapeHtml(setup.frontTires||'—')} / ${escapeHtml(setup.rearTires||'—')}</span>`:''}${setup.lapTime?`<span>⏱ ${escapeHtml(setup.lapTime)}</span>`:''}${setup.rating?`<span>${escapeHtml(setup.rating)}</span>`:''}<span>${(setup.history||[]).length} modification(s)</span></div><div class="item-actions"><button class="button button-soft view-setup" data-id="${escapeHtml(setup.id)}" type="button">Détails</button><button class="button button-soft edit-setup" data-id="${escapeHtml(setup.id)}" type="button">Modifier</button><button class="button button-soft duplicate-setup" data-id="${escapeHtml(setup.id)}" type="button">Dupliquer</button><button class="button button-quiet favorite-setup" data-id="${escapeHtml(setup.id)}" type="button">${setup.favorite?'★':'☆'}</button><button class="button button-quiet danger-action delete-setup" data-id="${escapeHtml(setup.id)}" type="button">Supprimer</button></div>`;
     container.append(item);
   });
-  container.querySelectorAll('.view-setup').forEach((button) => button.addEventListener('click', () => showSetup(button.dataset.id)));
-  container.querySelectorAll('.delete-setup').forEach((button) => button.addEventListener('click', () => removeSetup(button.dataset.id)));
+  container.querySelectorAll('.view-setup').forEach(b=>b.addEventListener('click',()=>showSetup(b.dataset.id)));
+  container.querySelectorAll('.edit-setup').forEach(b=>b.addEventListener('click',()=>openSetupEditor(b.dataset.id)));
+  container.querySelectorAll('.duplicate-setup').forEach(b=>b.addEventListener('click',()=>openSetupEditor(b.dataset.id,true)));
+  container.querySelectorAll('.favorite-setup').forEach(b=>b.addEventListener('click',()=>toggleSetupFavorite(b.dataset.id)));
+  container.querySelectorAll('.delete-setup').forEach(b=>b.addEventListener('click',()=>removeSetup(b.dataset.id)));
+}
+
+function updateSetupFilterOptions(){
+  const fill=(id,items,key,label,first)=>{const el=document.getElementById(id);if(!el)return;const current=el.value;el.innerHTML=`<option value="">${first}</option>`+items.map(x=>`<option value="${escapeHtml(x[key])}">${escapeHtml(label(x))}</option>`).join('');if(items.some(x=>String(x[key])===current))el.value=current;};
+  fill('setupCarFilter',state.cars,'id',x=>x.name,'Toutes les voitures');fill('setupTrackFilter',state.tracks,'id',x=>x.name,'Toutes les pistes');
+  const surfaces=[...new Set(state.tracks.map(t=>t.surface).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr')),el=document.getElementById('setupSurfaceFilter');
+  if(el){const current=el.value;el.innerHTML='<option value="">Toutes les surfaces</option>'+surfaces.map(s=>`<option>${escapeHtml(s)}</option>`).join('');if(surfaces.includes(current))el.value=current;}
+}
+function updateComparisonOptions(){
+  ['compareSetupA','compareSetupB'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const current=el.value;el.innerHTML='<option value="">Choisir un setup…</option>'+state.setups.map(s=>{const car=getCarById(s.carId),track=getTrackById(s.trackId);return `<option value="${escapeHtml(s.id)}">${escapeHtml(s.setupName||car?.name||'Voiture')} — ${escapeHtml(track?.name||'Piste')} — ${escapeHtml(s.sessionDate||formatDate(s.createdAt))}</option>`;}).join('');if(state.setups.some(s=>s.id===current))el.value=current;});
+}
+function toggleSetupFavorite(id){const setup=state.setups.find(s=>s.id===id);if(!setup)return;setup.favorite=!setup.favorite;setup.updatedAt=new Date().toISOString();if(saveState()){renderAll();showToast(setup.favorite?'Ajouté aux favoris.':'Retiré des favoris.');}}
+function openSetupEditor(id,duplicate=false){
+  const source=state.setups.find(s=>s.id===id);if(!source)return;const form=document.getElementById('setupForm');form.reset();
+  editingSetupId=duplicate?null:id;setupDraftSource=duplicate?source:null;
+  for(const name of ['carId','trackId',...SETUP_FIELDS]){const field=form.elements.namedItem(name);if(field)field.value=source[name]??'';}
+  form.elements.namedItem('setupName').value=duplicate?`${source.setupName||getCarById(source.carId)?.name||'Setup'} — copie`:(source.setupName||'');
+  pendingPhotos=[...(source.photos||[])];renderPhotoPreviews();form.querySelector('button[type="submit"]').textContent=duplicate?'Enregistrer la copie':'Enregistrer les modifications';
+  form.classList.remove('hidden');setView('setups');form.scrollIntoView({behavior:'smooth',block:'start'});updateVehicleSpecificFields();showToast(duplicate?'Copie préparée : modifie-la puis enregistre.':'Modification du setup.');
+}
+function updateVehicleSpecificFields(){
+  const form=document.getElementById('setupForm'),car=getCarById(form.elements.namedItem('carId')?.value);
+  const isFour=String(car?.drive||'').toLowerCase().includes('4');
+  ['frontDiffOil','centerDiff'].forEach(name=>{const label=form.elements.namedItem(name)?.closest('label');if(label)label.classList.toggle('vehicle-field-hidden',!isFour);});
+  ['slipper','ballDiff'].forEach(name=>{const label=form.elements.namedItem(name)?.closest('label');if(label)label.classList.toggle('vehicle-field-hidden',isFour);});
+  const hint=document.getElementById('vehicleSetupHint');if(hint)hint.textContent=car?`${car.brand||''} ${car.name} · ${car.drive||'architecture non précisée'} · Les champs affichés sont adaptés à cette transmission.`:'Sélectionne une voiture pour adapter les réglages à son architecture.';
+}
+function parseLapTime(value){const text=String(value||'').trim().replace(',','.');if(!text)return null;if(text.includes(':')){const p=text.split(':').map(Number);if(p.length===2&&p.every(Number.isFinite))return p[0]*60+p[1];}const n=Number(text);return Number.isFinite(n)&&n>0?n:null;}
+function renderPerformanceTrend(){
+  const root=document.getElementById('performanceTrend');if(!root)return;
+  const samples=state.setups.filter(s=>parseLapTime(s.lapTime)!==null).sort((a,b)=>new Date(a.sessionDate||a.createdAt)-new Date(b.sessionDate||b.createdAt)).slice(-10);
+  if(!samples.length){root.innerHTML='<p class="item-sub">Renseigne un meilleur temps dans tes setups pour afficher leur évolution.</p>';return;}
+  const values=samples.map(s=>parseLapTime(s.lapTime)),best=Math.min(...values),worst=Math.max(...values);
+  root.innerHTML='<div class="trend-chart">'+samples.map((s,i)=>{const v=values[i],height=worst===best?75:Math.max(18,Math.round(100-(v-best)/(worst-best)*72));return `<div class="trend-column" title="${escapeHtml(getCarById(s.carId)?.name||'Voiture')} · ${escapeHtml(s.lapTime)}"><span>${escapeHtml(s.lapTime)}</span><i style="height:${height}%"></i><small>${escapeHtml((s.sessionDate||s.createdAt||'').slice(0,10))}</small></div>`;}).join('')+'</div><p class="item-sub">Meilleur temps enregistré : <strong>'+escapeHtml(samples[values.indexOf(best)].lapTime)+'</strong> · '+samples.length+' sessions</p>';
+}
+function compareSetups(){
+  const a=state.setups.find(s=>s.id===document.getElementById('compareSetupA')?.value),b=state.setups.find(s=>s.id===document.getElementById('compareSetupB')?.value);
+  if(!a||!b){showToast('Sélectionne deux setups à comparer.');return;}if(a.id===b.id){showToast('Choisis deux setups différents.');return;}
+  const carA=getCarById(a.carId),carB=getCarById(b.carId),trackA=getTrackById(a.trackId),trackB=getTrackById(b.trackId);
+  const fields=[...new Set(SETUP_FIELDS)].filter(k=>String(a[k]??'')!==String(b[k]??'')&&(a[k]||b[k]));
+  const label=k=>k.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase()).replace(/esc/gi,'ESC').replace(/radio/gi,'Radio').replace(/front/gi,'avant').replace(/rear/gi,'arrière');
+  const content=document.getElementById('setupDetails');
+  content.innerHTML=`<span class="kicker">COMPARAISON DE CONFIGURATIONS</span><h2>${escapeHtml(carA?.name||'Voiture')} ↔ ${escapeHtml(carB?.name||'Voiture')}</h2><p class="dialog-subtitle">${escapeHtml(trackA?.name||'Piste')} · ${escapeHtml(a.sessionDate||formatDate(a.createdAt))} <span class="arrow">vs</span> ${escapeHtml(trackB?.name||'Piste')} · ${escapeHtml(b.sessionDate||formatDate(b.createdAt))}</p><section class="detail-group"><h3>Chronos</h3><dl><div><dt>Setup A</dt><dd>${escapeHtml(a.lapTime||'—')}</dd></div><div><dt>Setup B</dt><dd>${escapeHtml(b.lapTime||'—')}</dd></div></dl></section><section class="detail-group"><h3>Réglages différents (${fields.length})</h3>${fields.length?`<div class="compare-table"><div class="compare-row compare-head"><strong>Réglage</strong><strong>Setup A</strong><strong>Setup B</strong></div>${fields.map(k=>`<div class="compare-row"><span>${escapeHtml(label(k))}</span><span>${escapeHtml(a[k]||'—')}</span><span>${escapeHtml(b[k]||'—')}</span></div>`).join('')}</div>`:'<p class="item-sub">Les réglages enregistrés sont identiques.</p>'}</section>`;
+  document.getElementById('setupDialog').showModal();
 }
 
 function formatDate(value) {
@@ -6014,16 +6069,12 @@ async function handlePhotoSelection(event) {
   }
 }
 
-function handleSetupSubmit(event) {
-  event.preventDefault();
-  const data = formValues(event.target, ['carId', 'trackId', ...SETUP_FIELDS]);
-  if (!data.carId || !data.trackId) { showToast('Choisis une voiture et une piste.'); return; }
-  const now = new Date().toISOString();
-  state.setups.unshift({ id: uid('setup'), ...data, photos: [...pendingPhotos], createdAt: now, updatedAt: now });
-  if (!saveState()) { state.setups.shift(); return; }
-  pendingPhotos = [];
-  renderPhotoPreviews();
-  renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Setup enregistré. Bon run !');
+function handleSetupSubmit(event){
+  event.preventDefault();const data=formValues(event.target,['carId','trackId',...SETUP_FIELDS]);data.setupName=String(event.target.elements.namedItem('setupName')?.value||'').trim();
+  if(!data.carId||!data.trackId){showToast('Choisis une voiture et une piste.');return;}const now=new Date().toISOString();
+  if(editingSetupId){const index=state.setups.findIndex(s=>s.id===editingSetupId);if(index<0){showToast('Setup introuvable.');return;}const previous=state.setups[index];const history=[...(previous.history||[]),{savedAt:now,data:{...previous,photos:[...(previous.photos||[])]}}].slice(-20);state.setups[index]={...previous,...data,photos:[...pendingPhotos],history,updatedAt:now};if(!saveState()){state.setups[index]=previous;return;}showToast('Setup mis à jour. Ancienne version conservée dans l’historique.');}
+  else{const source=setupDraftSource;const created={...(source||{}),id:uid('setup'),...data,photos:[...pendingPhotos],favorite:false,history:[],createdAt:now,updatedAt:now};state.setups.unshift(created);if(!saveState()){state.setups.shift();return;}showToast(source?'Copie du setup enregistrée.':'Setup enregistré. Bon run !');}
+  editingSetupId=null;setupDraftSource=null;pendingPhotos=[];renderPhotoPreviews();renderAll();event.target.reset();event.target.classList.add('hidden');event.target.querySelector('button[type="submit"]').textContent='Enregistrer le setup';
 }
 
 function removeCar(id) {
@@ -6069,11 +6120,17 @@ function showSetup(id) {
     if (!filled.length) return '';
     return `<section class="detail-group"><h3>${escapeHtml(title)}</h3><dl>${filled.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></section>`;
   }).join('');
+  const history=Array.isArray(setup.history)?setup.history:[];
+  content.insertAdjacentHTML('beforeend',`<section class="detail-group"><h3>Historique des modifications</h3><p class="item-sub">${history.length?history.slice().reverse().map(h=>escapeHtml(new Date(h.savedAt).toLocaleString('fr-FR'))).join(' · '):'Aucune modification enregistrée pour le moment.'}</p></section><div class="item-actions detail-actions"><button class="button button-primary" id="detailEditSetup" type="button">Modifier ce setup</button><button class="button button-soft" id="detailDuplicateSetup" type="button">Dupliquer</button><button class="button button-soft" id="detailFavoriteSetup" type="button">${setup.favorite?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</button></div>`);
+  content.querySelector('#detailEditSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();openSetupEditor(id);});
+  content.querySelector('#detailDuplicateSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();openSetupEditor(id,true);});
+  content.querySelector('#detailFavoriteSetup').addEventListener('click',()=>{document.getElementById('setupDialog').close();toggleSetupFavorite(id);});
   document.getElementById('setupDialog').showModal();
 }
 
 function exportJson() {
-  const blob = new Blob([JSON.stringify({ ...state, exportedAt: new Date().toISOString(), version: 3 }, null, 2)], { type: 'application/json' });
+  const backup = { ...state, materials: window.RCSetupMaterials?.exportData?.() || [], exportedAt: new Date().toISOString(), version: 4 };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url; link.download = `rc-setup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -6087,9 +6144,12 @@ function importJson(file) {
     try {
       const parsed = JSON.parse(String(event.target?.result || ''));
       if (!parsed || !Array.isArray(parsed.cars) || !Array.isArray(parsed.tracks) || !Array.isArray(parsed.setups)) throw new Error('Format invalide');
-      if (!confirm('L’import remplacera les données présentes sur cet appareil. Continuer ?')) return;
-      state.cars = parsed.cars; state.tracks = parsed.tracks; state.setups = parsed.setups.map((setup) => ({ ...setup, photos: Array.isArray(setup.photos) ? setup.photos : [] }));
-      if (saveState()) { renderAll(); showToast('Sauvegarde importée.'); }
+      if (!confirm('L’import remplacera les voitures, pistes, setups et, si présents, les articles personnels de la bibliothèque. Continuer ?')) return;
+      const previous={cars:state.cars,tracks:state.tracks,setups:state.setups};
+      state.cars=parsed.cars;state.tracks=parsed.tracks;state.setups=parsed.setups.map(setup=>({...setup,photos:Array.isArray(setup.photos)?setup.photos:[],history:Array.isArray(setup.history)?setup.history:[]}));
+      if(!saveState()){Object.assign(state,previous);return;}
+      if(Array.isArray(parsed.materials)&&window.RCSetupMaterials&&!window.RCSetupMaterials.importData(parsed.materials)){Object.assign(state,previous);saveState();showToast('Import matériel impossible : les données précédentes ont été conservées.');return;}
+      renderAll();showToast(Array.isArray(parsed.materials)?'Sauvegarde complète importée.':'Sauvegarde importée. La bibliothèque personnelle actuelle a été conservée.');
     } catch (error) {
       console.error(error); showToast('Fichier JSON invalide ou incompatible.');
     }
@@ -6124,16 +6184,21 @@ document.getElementById('addCatalogCar').addEventListener('click', handleCarCata
 updateCarCatalogOptions();
 document.getElementById('trackForm').addEventListener('submit', handleTrackSubmit);
 document.getElementById('setupForm').addEventListener('submit', handleSetupSubmit);
+document.getElementById('setupForm').elements.namedItem('carId').addEventListener('change',updateVehicleSpecificFields);
+document.getElementById('setupSearch')?.addEventListener('input',renderSetups);
+['setupCarFilter','setupTrackFilter','setupSurfaceFilter','setupGripFilter','setupDateFrom','setupDateTo'].forEach(id=>document.getElementById(id)?.addEventListener('change',renderSetups));
+document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
 document.getElementById('exportButton').addEventListener('click', exportJson);
 document.getElementById('importInput').addEventListener('change', (event) => { importJson(event.target.files?.[0]); event.target.value = ''; });
 document.querySelectorAll('form').forEach((form) => form.addEventListener('reset', () => setTimeout(() => {
   form.classList.add('hidden');
-  if (form.id === 'setupForm') { pendingPhotos = []; renderPhotoPreviews(); }
+  if (form.id === 'setupForm') { pendingPhotos=[];editingSetupId=null;setupDraftSource=null;renderPhotoPreviews();const submit=form.querySelector('button[type="submit"]');if(submit)submit.textContent='Enregistrer le setup'; }
 }, 0)));
 document.getElementById('setupDialog').addEventListener('click', (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
 
 renderAll();
+updateVehicleSpecificFields();
 setView('dashboard');
 registerServiceWorker();
 setupInstallPrompt();
