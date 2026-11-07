@@ -6038,9 +6038,9 @@ function printSetupDetails(){
     .setup-gallery a{display:block;break-inside:avoid}
     .setup-gallery img,.car-photo-gallery img,.car-detail-photos img{display:block;width:100%;max-height:190px;aspect-ratio:4/3;object-fit:contain;border:1px solid var(--line);background:#f7f8f9}
     .compare-table{width:100%}
-    .compare-row{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:10px;padding:7px 8px;border-bottom:1px solid var(--line);break-inside:avoid;font-size:8pt}
+    .compare-row{display:grid;grid-template-columns:1.05fr .9fr .9fr 1.2fr;gap:8px;padding:7px 8px;border-bottom:1px solid var(--line);break-inside:avoid;font-size:8pt}
     .compare-row:nth-child(odd):not(.compare-head){background:#f6f7f8}
-    .compare-head{background:#252d36;color:#fff;font-weight:800}
+    .compare-head{background:#252d36;color:#fff;font-weight:800}\n    .compare-change{color:var(--accent-dark);font-weight:800;overflow-wrap:anywhere}
     .history-entry{padding:6px 0;border-bottom:1px solid var(--line);font-size:8pt}
     .dialog-subtitle{color:var(--muted)}
     .print-footer{display:flex;justify-content:space-between;gap:15px;margin-top:22px;padding-top:9px;border-top:1px solid var(--line);color:var(--muted);font-size:7pt}
@@ -6060,7 +6060,7 @@ function printSetupDetails(){
       .print-footer{position:fixed;bottom:-8mm;left:0;right:0}
       *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     }
-    @media(max-width:650px){body{padding:0 16px}.print-overview{grid-template-columns:1fr 1fr}.print-section dl{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr 1fr 1fr}}
+    @media(max-width:650px){body{padding:0 16px}.print-overview{grid-template-columns:1fr 1fr}.print-section dl{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr 1fr 1fr 1.2fr}}
   `;
   const buggyDiagram='';
 
@@ -6083,7 +6083,7 @@ function compareSetups(){
   const fields=[...new Set(SETUP_FIELDS)].filter(k=>String(a[k]??'')!==String(b[k]??'')&&(a[k]||b[k]));
   const label=k=>k.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase()).replace(/esc/gi,'ESC').replace(/radio/gi,'Radio').replace(/front/gi,'avant').replace(/rear/gi,'arrière');
   const content=document.getElementById('setupDetails');
-  content.innerHTML=`<div class="pdf-action-banner"><div><strong>Exporter cette comparaison en PDF</strong><span>Fiche A4 avec les différences et les chronos.</span></div><button class="button button-primary pdf-main-button" id="printCompareSetupTop" type="button">⇩ Imprimer / PDF</button></div><span class="kicker">COMPARAISON DE CONFIGURATIONS</span><h2>${escapeHtml(carA?.name||'Voiture')} ↔ ${escapeHtml(carB?.name||'Voiture')}</h2><p class="dialog-subtitle">${escapeHtml(trackA?.name||'Piste')} · ${escapeHtml(a.sessionDate||formatDate(a.createdAt))} <span class="arrow">vs</span> ${escapeHtml(trackB?.name||'Piste')} · ${escapeHtml(b.sessionDate||formatDate(b.createdAt))}</p><section class="detail-group"><h3>Chronos</h3><dl><div><dt>Setup A</dt><dd>${escapeHtml(a.lapTime||'—')}</dd></div><div><dt>Setup B</dt><dd>${escapeHtml(b.lapTime||'—')}</dd></div></dl></section><section class="detail-group"><h3>Réglages différents (${fields.length})</h3>${fields.length?`<div class="compare-table"><div class="compare-row compare-head"><strong>Réglage</strong><strong>Setup A</strong><strong>Setup B</strong></div>${fields.map(k=>`<div class="compare-row"><span>${escapeHtml(label(k))}</span><span>${escapeHtml(a[k]||'—')}</span><span>${escapeHtml(b[k]||'—')}</span></div>`).join('')}</div>`:'<p class="item-sub">Les réglages enregistrés sont identiques.</p>'}</section><div class="item-actions detail-actions"><button class="button button-primary" id="printSetupDetails" type="button">Imprimer / PDF</button></div>`;
+  content.innerHTML=`<div class="pdf-action-banner"><div><strong>Exporter cette comparaison en PDF</strong><span>Fiche A4 avec les différences et les chronos.</span></div><button class="button button-primary pdf-main-button" id="printCompareSetupTop" type="button">⇩ Imprimer / PDF</button></div><span class="kicker">COMPARAISON DE CONFIGURATIONS</span><h2>${escapeHtml(carA?.name||'Voiture')} ↔ ${escapeHtml(carB?.name||'Voiture')}</h2><p class="dialog-subtitle">${escapeHtml(trackA?.name||'Piste')} · ${escapeHtml(a.sessionDate||formatDate(a.createdAt))} <span class="arrow">vs</span> ${escapeHtml(trackB?.name||'Piste')} · ${escapeHtml(b.sessionDate||formatDate(b.createdAt))}</p><section class="detail-group"><h3>Chronos</h3><dl><div><dt>Setup A</dt><dd>${escapeHtml(a.lapTime||'—')}</dd></div><div><dt>Setup B</dt><dd>${escapeHtml(b.lapTime||'—')}</dd></div></dl></section><section class="detail-group"><h3>Réglages différents (${fields.length})</h3>${fields.length?`<div class="compare-table"><div class="compare-row compare-head"><strong>Réglage</strong><strong>Setup A</strong><strong>Setup B</strong></div>${fields.map(k=>{const before=a[k]||'—',after=b[k]||'—';return `<div class="compare-row"><span>${escapeHtml(label(k))}</span><span>${escapeHtml(before)}</span><span>${escapeHtml(after)}</span><strong class="compare-change">${escapeHtml(before)} → ${escapeHtml(after)}</strong></div>`;}).join('')}</div>`:'<p class="item-sub">Les réglages enregistrés sont identiques.</p>'}</section><div class="item-actions detail-actions"><button class="button button-primary" id="printSetupDetails" type="button">Imprimer / PDF</button></div>`;
   content.querySelector('#printSetupDetails').addEventListener('click',printSetupDetails);
   content.querySelector('#printCompareSetupTop').addEventListener('click',printSetupDetails);
   document.getElementById('setupDialog').showModal();
