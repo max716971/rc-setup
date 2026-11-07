@@ -223,7 +223,7 @@
       ['Graisse lithium XTR','Lithium Grease','Sorties de différentiel / outdrives']
     ].map(([name, product, use]) => ({
       brand: 'XTR Racing', category: 'Graisse',
-      name, reference: '40 g',
+      name, reference: '',
       detail: product + ' XTR. Utilisation fabricant : ' + use + '.',
       url: 'https://xtr-rc.com/en/232-greases-lubricants'
     })),
