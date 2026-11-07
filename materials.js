@@ -313,16 +313,7 @@
       url:'https://www.rcteam.com/en/collections/shock-absorber-oil'
     })),
 
-    // Team Associated / Factory Team : viscosités connues, sans inventer de SKU pour les autres grades.
-    ...['20','25','30','35','40','45','50','60','70','80'].map(wt => ({
-      brand:'Team Associated', category:'Huile amortisseur',
-      name:'Factory Team Silicone Shock Oil — '+wt+' WT',
-      reference:wt==='35'?'5435':wt+' WT — référence fabricant à confirmer',
-      detail:'Huile silicone Factory Team pour amortisseurs. Vérifier la référence de flacon selon le grade.',
-      url:'https://www.associatedelectrics.com/teamassociated/parts/fluids/'
-    })),
-
-    // Tekin Redline GEN4 SPEC-R : bobinages 1/10 stock clairement identifiés.
+    // Team Associated Factory Team : seule la référence 5435 (35 wt) est renseignée plus haut.\n\n    // Tekin Redline GEN4 SPEC-R : bobinages 1/10 stock clairement identifiés.
     ...[
       ['17.5','TT2762'],['13.5','TT2763'],['10.5','TT2765']
     ].map(([turn,reference]) => ({
@@ -364,27 +355,6 @@
     { brand:'LRP', category:'Moteur', name:'Dynamic10 BL 4800 kV', reference:'53440', detail:'Moteur brushless 540/550, 4 pôles, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53440/' },
     { brand:'LRP', category:'Moteur', name:'Dynamic10L BL 4700 kV', reference:'53550', detail:'Moteur brushless 540/550 long, 4 pôles, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53550/' },
 
-    // Hobbywing : déclinaisons supplémentaires de la gamme compétition V10 G4.
-    ...[
-      ['3.5T','30401157'],['4.0T','30401158'],['6.5T','30401163'],
-      ['7.5T','30401165'],['8.5T','30401167'],['10.5T','30401171'],
-      ['13.5T','30401175']
-    ].map(([turn,reference]) => ({
-      brand:'Hobbywing', category:'Moteur', name:'XeRun V10 G4 — '+turn,
-      reference, compatibility:'Moteur brushless sensored 1/10',
-      detail:'Moteur compétition Hobbywing XeRun V10 G4 ; bobinage distinct. Vérifier la révision et le rotor.',
-      url:'https://www.hobbywing.com/goods.php?id=718&pid=1'
-    })),
-
-    // Reedy : variantes stock courantes de la gamme Sonic 540-M4, références individuelles.
-    ...[
-      ['21.5','27432'],['17.5','27433'],['13.5','27434'],['10.5','27435']
-    ].map(([turn,reference]) => ({
-      brand:'Reedy', category:'Moteur', name:'Sonic 540-M4 — '+turn+'T',
-      reference, compatibility:'Moteur brushless sensored 1/10',
-      detail:'Moteur Reedy Sonic 540-M4 ; bobinage distinct pour catégories stock.',
-      url:'https://apps.associatedelectrics.com/aereferencelibrary/pages/reedy_motors.html'
-    })),
 
   ];
   const root = document.getElementById('materialsApp');
