@@ -19,18 +19,27 @@
     { brand: 'Hobbywing', category: 'Moteur', name: 'EzRun 3660 / 3665 G3', reference: 'KV à préciser', detail: 'Choisir taille et KV selon le véhicule.', url: 'https://www.hobbywing.com/en/rc-systems' },
     { brand: 'Hobbywing', category: 'Programmation', name: 'LCD Program Box Pro', reference: '30502002', detail: 'Boîtier de programmation pour matériels compatibles Hobbywing.', url: 'https://www.hobbywing.com/en/rc-systems' },
 
-    // Schumacher buggy 1/10 — références reprises du tableau établi précédemment.
+    // Pneus Schumacher TT 1/10 — position explicitement indiquée d'après les références catalogue.
     ...[
-      ['Mini Dart — jaune','U6825'],['Mini Dart — jaune','U6826'],
-      ['Mini Dart — bleu','U6828'],['Mini Dart — bleu','U6829'],
-      ['Mini Dart — Silver','U6831'],['Mini Dart — Silver','U6832'],
-      ['Cactus — jaune','U6838'],['Cactus — jaune','U6840'],
-      ['Cactus — Silver','U6842'],['Cactus — Silver','U6843'],
-      ['Cactus — bleu','U6844'],['Cactus — bleu','U6845'],
-      ['Wide Stagger Rib','U6810'],['Wide Stagger Rib','U6811'],['Wide Stagger Rib','U6846'],
-      ['Mini Pin 1','U6817'],['Mini Pin 1','U6819'],['Mini Pin 1','U6820'],
-      ['Mini Pin 2','U6821'],['Mini Pin 2','U6805']
-    ].map(([name, reference]) => ({ brand: 'Schumacher', category: 'Pneus / roues', name, reference, detail: 'Référence reprise du tableau précédent ; vérifier la position et la gomme exacte sur la fiche fabricant.', url: 'https://www.racing-cars.com/wheels-tyres' })),
+      ['Mini Dart','U6825','Avant 4WD','Jaune'],['Mini Dart','U6826','Arrière 2WD/4WD','Jaune'],
+      ['Mini Dart','U6828','Avant 4WD','Bleu'],['Mini Dart','U6829','Arrière 2WD/4WD','Bleu'],
+      ['Mini Dart','U6831','Avant 4WD','Silver'],['Mini Dart','U6832','Arrière 2WD/4WD','Silver'],
+      ['Cactus','U6838','Arrière 2WD/4WD','Jaune'],['Cactus','U6840','Avant 4WD','Jaune'],
+      ['Cactus','U6842','Arrière 2WD/4WD','Silver'],['Cactus','U6843','Avant 4WD','Silver'],
+      ['Cactus','U6844','Arrière 2WD/4WD','Bleu'],['Cactus','U6845','Avant 4WD','Bleu'],
+      ['Wide Stagger Rib','U6810','Avant 4WD','Jaune'],['Wide Stagger Rib','U6811','Avant 4WD','Silver'],
+      ['Wide Stagger Rib','U6846','Avant 4WD','Bleu'],
+      ['Mini Pin 1','U6817','Arrière 2WD/4WD','Jaune'],['Mini Pin 1','U6819','Arrière 2WD/4WD','Bleu'],
+      ['Mini Pin 1','U6820','Arrière 2WD/4WD','Silver'],
+      ['Mini Pin 2','U6805','Arrière 2WD/4WD','Silver'],
+      ['Mini Pin 2','U6821','Avant 4WD','Jaune']
+    ].map(([name, reference, position, compound]) => ({
+      brand: 'Schumacher', category: 'Pneus / roues',
+      name: name + ' — ' + position + ' — ' + compound,
+      reference, compatibility: position,
+      detail: 'Paire de pneus TT 1/10. Position : ' + position + '. Gomme : ' + compound + '.',
+      url: 'https://www.racing-cars.com/wheels-tyres'
+    })),
 
     // Bibliothèque complémentaire demandée : entrées de gamme sans SKU inventé.
     // Ajouter la référence exacte du flacon lorsque le fabricant/revendeur la confirme.
