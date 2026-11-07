@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="theme-color" content="#111827" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="RC SETUP - Carnet de réglages radio-commandés pour iPhone." />
+    <title>RC SETUP</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">RC SETUP</div>
+          <h1>Carnet de réglages</h1>
+        </div>
+        <button id="installButton" class="secondary hidden" type="button">Installer</button>
+      </header>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <button class="nav-item active" data-view="dashboard" type="button">⌂ Accueil</button>
+        <button class="nav-item" data-view="cars" type="button">🚗 Voitures</button>
+        <button class="nav-item" data-view="setups" type="button">⚙️ Setups</button>
+        <button class="nav-item" data-view="tracks" type="button">🏁 Pistes</button>
+        <button class="nav-item" data-view="tools" type="button">▤ Outils</button>
+      </nav>
+
+      <main>
+        <section id="dashboardView" class="view active">
+          <div class="hero">
+            <p class="hero-title">Tes voitures, tes pistes et tes réglages au même endroit.</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="label">Voitures</span>
+              <strong id="carCount">0</strong>
+            </div>
+            <div class="stat-card">
+              <span class="label">Setups enregistrés</span>
+              <strong id="setupCount">0</strong>
+            </div>
+            <div class="stat-card">
+              <span class="label">Pistes</span>
+              <strong id="trackCount">0</strong>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Derniers setups</h2>
+              <button class="link-button" data-view="setups" type="button">Tout voir</button>
+            </div>
+            <div id="recentSetups" class="list"></div>
+          </div>
+
+          <div class="panel info-panel">
+            <h2>Stockage privé</h2>
+            <p>Les données restent dans le stockage de ce navigateur sur cet iPhone. Pense à exporter une sauvegarde JSON de temps en temps, notamment avant de changer de téléphone ou de navigateur.</p>
+          </div>
+        </section>
+
+        <section id="carsView" class="view">
+          <div class="section-header">
+            <h2>Voitures</h2>
+            <button class="primary add-entry" data-form="carForm" type="button">＋ Ajouter une voiture</button>
+          </div>
+
+          <form id="carForm" class="card form-card hidden">
+            <div class="form-grid">
+              <label>
+                Nom
+                <input name="name" type="text" placeholder="Ex. BMW M2" required />
+              </label>
+              <label>
+                Marque / Modèle
+                <input name="brand" type="text" placeholder="Ex. Tamiya / FWD" />
+              </label>
+              <label class="full-width">
+                Notes
+                <textarea name="notes" rows="3" placeholder="Moteur, conception, préférences de setup..."></textarea>
+              </label>
+            </div>
+            <div class="actions-row">
+              <button class="primary" type="submit">Enregistrer</button>
+              <button class="ghost" type="reset">Annuler</button>
+            </div>
+          </form>
+
+          <div id="carsList" class="list"></div>
+        </section>
+
+        <section id="tracksView" class="view">
+          <div class="section-header">
+            <h2>Pistes</h2>
+            <button class="primary add-entry" data-form="trackForm" type="button">＋ Ajouter une piste</button>
+          </div>
+
+          <form id="trackForm" class="card form-card hidden">
+            <div class="form-grid">
+              <label>
+                Nom
+                <input name="name" type="text" placeholder="Ex. Mini GP" required />
+              </label>
+              <label>
+                Terrain / Surface
+                <input name="surface" type="text" placeholder="Ex. Asphalte, terre, indoor" />
+              </label>
+              <label class="full-width">
+                Détails
+                <textarea name="details" rows="3" placeholder="Courbes, freinage, lignes de départ..."></textarea>
+              </label>
+            </div>
+            <div class="actions-row">
+              <button class="primary" type="submit">Enregistrer</button>
+              <button class="ghost" type="reset">Annuler</button>
+            </div>
+          </form>
+
+          <div id="tracksList" class="list"></div>
+        </section>
+
+        <section id="setupsView" class="view">
+          <div class="section-header">
+            <h2>Setups</h2>
+            <button class="primary add-entry" data-form="setupForm" type="button">＋ Nouveau setup</button>
+          </div>
+
+          <form id="setupForm" class="card form-card hidden">
+            <div class="form-grid">
+              <label>
+                Voiture
+                <select name="carId" required></select>
+              </label>
+              <label>
+                Piste
+                <select name="trackId" required></select>
+              </label>
+              <label>
+                Température
+                <input name="temperature" type="text" placeholder="Ex. 26°C" />
+              </label>
+              <label>
+                Météo / adhérence
+                <input name="weather" type="text" placeholder="Ex. Sec, bon grip" />
+              </label>
+              <label>
+                Pneus avant / arrière
+                <input name="tires" type="text" placeholder="Ex. 32/30, 27/29" />
+              </label>
+              <label>
+                Suspension / alignement
+                <input name="suspension" type="text" placeholder="Ex. 5 mm, 2° de camber" />
+              </label>
+              <label class="full-width">
+                Notes / réglages
+                <textarea name="notes" rows="4" placeholder="Ajustements, astuces, temps au tour..."></textarea>
+              </label>
+            </div>
+            <div class="actions-row">
+              <button class="primary" type="submit">Enregistrer</button>
+              <button class="ghost" type="reset">Annuler</button>
+            </div>
+          </form>
+
+          <div id="setupsList" class="list"></div>
+        </section>
+
+        <section id="toolsView" class="view">
+          <div class="panel">
+            <h2>Sauvegarde</h2>
+            <p>Exporte une copie JSON de tes données. Cette sauvegarde peut être restaurée plus tard sur le même navigateur ou sur un autre appareil.</p>
+            <div class="actions-row stacked-actions">
+              <button id="exportButton" class="primary" type="button">Exporter JSON</button>
+              <label class="upload-button">
+                <input id="importInput" type="file" accept="application/json" />
+                <span>Importer JSON</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="panel info-panel">
+            <h2>Installation sur iPhone</h2>
+            <ol>
+              <li>Ouvre cette page dans Safari.</li>
+              <li>Appuie sur le bouton <strong>Partager</strong>.</li>
+              <li>Choisis <strong>Sur l’écran d’accueil</strong>.</li>
+              <li>Touche <strong>Ajouter</strong>.</li>
+            </ol>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="emptyStateTemplate">
+      <div class="empty-state">Aucune donnée pour le moment.</div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
