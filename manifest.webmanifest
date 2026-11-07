@@ -9,9 +9,9 @@
   "lang": "fr",
   "icons": [
     {
-      "src": "assets/rc-setup-logo.png?v=173",
-      "sizes": "180x180",
-      "type": "image/png",
+      "src": "assets/rc-setup-logo.svg?v=174",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any"
     }
   ]
