@@ -5849,7 +5849,7 @@ function renderDashboard() {
 }
 
 function carEquipmentMarkup(car) {
-  const fields=[['Moteur','engineEquipment'],['Variateur / ESC','escEquipment'],['Servo','servoEquipment'],['Pneus','tiresEquipment'],['Amortisseurs','shocksEquipment']];
+  const fields=[['Moteur','engineEquipment'],['Variateur / ESC','escEquipment'],['Servo','servoEquipment']];
   const setups=state.setups.filter(setup=>setup.carId===car.id).sort((a,b)=>new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0));
   const history=Array.isArray(car.partsHistory)?[...car.partsHistory].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))):[];
   const photos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
@@ -6259,14 +6259,14 @@ function resetCarEditor() {
 }
 function handleCarSubmit(event) {
   event.preventDefault();
-  const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'type', 'diffCount', 'notes', 'engineEquipment', 'escEquipment', 'servoEquipment', 'tiresEquipment', 'shocksEquipment', 'historyPart', 'historyAction', 'historyNotes', 'historyDate']);
+  const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'type', 'diffCount', 'notes', 'engineEquipment', 'escEquipment', 'servoEquipment', 'historyPart', 'historyAction', 'historyNotes', 'historyDate']);
   if (!data.name) return;
   data.drive=normalizeDriveType(data.drive);data.diffCount=data.diffCount==='auto'?inferDifferentialCount(data):Math.min(3,Math.max(1,Number(data.diffCount)||inferDifferentialCount(data)));
   if(editingCarId){
     const car=getCarById(editingCarId);if(!car){showToast('Voiture introuvable.');return;}
     const previous={...car};
     const now=new Date().toISOString(), history=[...(car.partsHistory||[])];
-    for(const [key,label] of [['engineEquipment','Moteur'],['escEquipment','Variateur / ESC'],['servoEquipment','Servo'],['tiresEquipment','Pneus'],['shocksEquipment','Amortisseurs']]){
+    for(const [key,label] of [['engineEquipment','Moteur'],['escEquipment','Variateur / ESC'],['servoEquipment','Servo']]){
       const before=String(car[key]||'').trim(),after=String(data[key]||'').trim();
       if(before!==after&&(before||after))history.unshift({date:now.slice(0,10),part:label,action:before?'Remplacement / modification':'Ajout',notes:`${before||'Non renseigné'} → ${after||'Retiré'}`});
     }
