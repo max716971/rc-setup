@@ -414,6 +414,7 @@
 
 
   ];
+  const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS'];
   const root = document.getElementById('materialsApp');
   if (!root) return;
   let activeTab = 'catalog';
@@ -451,7 +452,7 @@
     });
   }
   function render() {
-    const brands = [...new Set(allMaterials().map((item) => item.brand))].sort((a,b) => a.localeCompare(b,'fr'));
+    const brands = [...new Set([...knownBrands, ...allMaterials().map((item) => item.brand)])].sort((a,b) => a.localeCompare(b,'fr'));
     const categories = [...new Set(allMaterials().map((item) => item.category))].sort((a,b) => a.localeCompare(b,'fr'));
     root.innerHTML = `<div class="panel material-controls"><div class="material-tabs"><button type="button" class="material-tab ${activeTab === 'catalog' ? 'active' : ''}" data-tab="catalog">Bibliothèque (${catalog.length})</button><button type="button" class="material-tab ${activeTab === 'mine' ? 'active' : ''}" data-tab="mine">Mon matériel (${savedItems.length})</button></div><div class="material-filter-row"><input id="materialSearch" type="search" placeholder="Rechercher marque, référence, catégorie…"><select id="brandFilter"><option value="">Toutes les marques</option>${brands.map((v) => `<option>${esc(v)}</option>`).join('')}</select><select id="categoryFilter"><option value="">Toutes les catégories</option>${categories.map((v) => `<option>${esc(v)}</option>`).join('')}</select></div><p class="catalog-note">Les références peuvent varier selon l’échelle et la génération : vérifie la fiche fabricant.</p></div><div class="material-add-row"><button type="button" class="button button-primary" id="showMaterialForm">＋ Ajouter manuellement</button></div><form id="materialForm" class="panel material-form hidden"><h2>Ajouter à ma bibliothèque</h2><div class="material-form-grid"><label>Marque<input name="brand" required placeholder="Ex. Schumacher"></label><label>Catégorie<select name="category"><option>Pneus / roues</option><option>Huile amortisseur</option><option>Ressort</option><option>Variateur (ESC)</option><option>Moteur</option><option>Servo</option><option>Radio / récepteur</option><option>Outil</option><option>Autre</option></select></label><label>Nom<input name="name" required></label><label>Référence<input name="reference"></label><label>Quantité<input name="quantity" type="number" min="0" step="1"></label><label>Compatibilité<input name="compatibility" placeholder="Échelle / châssis"></label><label class="material-wide">Notes<textarea name="detail" rows="2"></textarea></label><label class="material-wide">Lien fiche produit<input name="url" type="url" placeholder="https://…"></label></div><div class="actions-row"><button class="button button-primary" type="submit">Enregistrer</button><button class="button button-soft" id="cancelMaterialForm" type="button">Annuler</button></div></form><div id="materialCards" class="material-grid"></div>`;
     root.querySelectorAll('.material-tab').forEach((b) => b.addEventListener('click', () => { activeTab = b.dataset.tab; render(); }));
