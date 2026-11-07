@@ -51,3 +51,11 @@ Bibliothèque enrichie avec les variantes Mini Spike 2 (avant 2WD Slim, avant 4W
 ## Accueil de présentation et aide — 7 novembre 2026
 - Enrichissement de la page d'accueil avec une présentation des points forts et des accès directs au garage, aux pistes, aux setups, à la bibliothèque matériel, aux outils et à l'aide.
 - Ajout d'une page « Aide & tutoriels » avec un parcours de démarrage en cinq étapes, des raccourcis vers les fonctions et une FAQ sur les données, les sauvegardes, le transfert, les références manquantes et l'installation.
+
+
+## Inventaire matériel enrichi — 7 novembre 2026
+- Ajout d'un tableau de bord d'inventaire : références possédées, quantité totale et références en stock faible ou nul.
+- Les références ajoutées depuis le catalogue démarrent à une unité ; la quantité peut être modifiée directement depuis chaque fiche avec les boutons + / − ou la saisie numérique.
+- Statuts automatiques : épuisé (0), stock faible (1 à 2), en stock (plus de 2), avec filtre dédié.
+- Extension des catégories de saisie manuelle aux inserts, huiles de différentiel et graisses.
+- Les quantités restent incluses dans les sauvegardes et exports JSON existants.
