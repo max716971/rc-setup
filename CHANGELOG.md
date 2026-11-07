@@ -25,3 +25,8 @@ Pour revenir en arrière, restaurer cette branche vers `main`. Les données pers
 - Les sauvegardes automatiques IndexedDB restent sur le navigateur et l'appareil concernés.
 - Le calculateur ne peut donner le rapport total que si le rapport interne exact du châssis est renseigné.
 - Les conseils du diagnostic sont des pistes de test génériques : modifier un seul paramètre à la fois et vérifier le résultat sur la piste.
+
+
+## Complément Schumacher — pneus TT 1/10
+
+Bibliothèque enrichie avec les variantes Mini Spike 2 (avant 2WD Slim, avant 4WD et arrière), ainsi que les modèles avant 2WD et leurs gommes documentées : Mini Pin, Stagger Rib, Cut Stagger, Cut Stagger Low Profile, 2 Row Stud, Mini Dart, Slim Rib Spike, Honeycomb, Fusion Slim et Splinter. Les profils et les positions sont affichés dans le nom et la compatibilité. Les références pré-collées Fusion Slim et Splinter sont également distinguées.
