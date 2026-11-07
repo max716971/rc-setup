@@ -5977,25 +5977,59 @@ function printSetupDetails(){
   const source=document.getElementById('setupDetails');
   if(!source)return;
   const printable=source.cloneNode(true);
-  printable.querySelectorAll('.item-actions,.restore-version').forEach(node=>node.remove());
+  printable.querySelectorAll('.item-actions,.restore-version,.button,.toast').forEach(node=>node.remove());
   const heading=printable.querySelector('h2')?.textContent?.trim()||'Fiche RC SETUP';
+  const subtitle=printable.querySelector('.dialog-subtitle')?.textContent?.trim()||'Fiche de réglages et de suivi';
+  const now=new Date();
+  const dateLabel=now.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  const styles=`
+    :root{color-scheme:light;--ink:#17243a;--muted:#63718a;--line:#dce3ec;--accent:#587b28;--pale:#f2f6eb}
+    *{box-sizing:border-box}
+    html{background:#e9edf2}
+    body{max-width:980px;margin:24px auto;padding:0 30px 35px;color:var(--ink);background:#fff;font:10.5pt/1.52 Arial,Helvetica,sans-serif}
+    .print-masthead{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 0 17px;border-bottom:3px solid var(--accent)}
+    .print-brand{display:flex;align-items:center;gap:12px}
+    .print-mark{display:grid;place-items:center;width:43px;height:43px;border-radius:12px;background:#17243a;color:#d6f0a8;font-size:17px;font-weight:900;letter-spacing:-1px}
+    .print-brand small{display:block;color:var(--muted);font-size:8pt;font-weight:700;letter-spacing:2px}
+    .print-brand strong{display:block;font-size:19pt;letter-spacing:-.8px}
+    .print-meta{text-align:right;color:var(--muted);font-size:8.5pt}
+    .print-title{margin:23px 0 5px;font-size:22pt;line-height:1.15;letter-spacing:-.6px}
+    .print-subtitle{margin:0 0 21px;color:var(--muted);font-size:10pt}
+    .kicker{display:inline-block;margin:0 0 7px;padding:4px 8px;border-radius:5px;background:var(--pale);color:var(--accent);font-size:8pt;letter-spacing:1.5px;font-weight:800}
+    h1{font-size:22pt}h2{margin:10px 0;font-size:16pt;line-height:1.25}h3{margin:0 0 12px;padding:0 0 8px;border-bottom:1px solid var(--line);font-size:11.5pt;color:#263750}
+    p{margin:7px 0}
+    .detail-group{margin:15px 0;padding:15px 17px;border:1px solid var(--line);border-radius:10px;background:#fff;break-inside:avoid;page-break-inside:avoid}
+    dl{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin:0}
+    dl>div{display:grid;grid-template-columns:minmax(105px,.85fr) 1.15fr;gap:9px;align-items:start;padding:7px 0;border-bottom:1px solid #edf0f4;break-inside:avoid}
+    dt{color:var(--muted);font-size:9pt}dd{margin:0;color:var(--ink);font-weight:700;overflow-wrap:anywhere}
+    .setup-gallery,.car-photo-gallery,.car-detail-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+    .setup-gallery img,.car-photo-gallery img,.car-detail-photos img{display:block;width:100%;max-width:100%;max-height:190px;aspect-ratio:4/3;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#f7f8fa}
+    .history-entry{padding:8px 0;border-bottom:1px solid var(--line)}
+    .compare-table{display:block;width:100%}
+    .compare-row{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:12px;padding:9px 10px;border-bottom:1px solid var(--line);break-inside:avoid}
+    .compare-row:nth-child(odd):not(.compare-head){background:#f7f9fb}
+    .compare-head{background:#edf2e6;color:#263750;font-weight:800;border-radius:6px}
+    .dialog-subtitle{color:var(--muted)}
+    .print-footer{display:flex;justify-content:space-between;gap:15px;margin-top:25px;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:8pt}
+    .item-sub,.muted{color:var(--muted)}
+    button,a.button{display:none!important}
+    @page{size:A4;margin:13mm}
+    @media print{
+      html{background:#fff}body{max-width:none;margin:0;padding:0}
+      .detail-group{break-inside:avoid;page-break-inside:avoid}
+      h3{break-after:avoid}
+      .print-footer{position:fixed;bottom:0;left:0;right:0}
+      *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    }
+    @media(max-width:650px){body{padding:0 16px}.print-meta{font-size:7pt}dl{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr 1fr 1fr}}
+  `;
   const printWindow=window.open('','_blank');
   if(!printWindow){showToast('Autorise les fenêtres pop-up pour imprimer la fiche.');return;}
-  const styles=`
-    *{box-sizing:border-box}body{margin:0;padding:24px;color:#172033;background:#fff;font:14px/1.45 Arial,sans-serif}
-    h1{font-size:23px;margin:0 0 6px}h2{font-size:19px;margin:8px 0}h3{font-size:15px;margin:0 0 10px;border-bottom:1px solid #ccd3dd;padding-bottom:6px}
-    .kicker{font-size:10px;letter-spacing:2px;color:#53627a;font-weight:bold}.dialog-subtitle{color:#53627a;margin:0 0 18px}
-    .detail-group{break-inside:avoid;margin:18px 0;padding:12px 14px;border:1px solid #dce1e8;border-radius:8px}
-    dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:7px 18px}dl>div{display:grid;grid-template-columns:minmax(110px, .8fr) 1.2fr;gap:8px;border-bottom:1px solid #edf0f4;padding:4px 0}
-    dt{color:#53627a}dd{margin:0;font-weight:600;overflow-wrap:anywhere}.setup-gallery{display:flex;flex-wrap:wrap;gap:10px}.setup-gallery img{max-width:180px;max-height:140px;object-fit:contain}
-    .history-entry{padding:5px 0}.compare-table{display:block}.compare-row{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:10px;padding:7px;border-bottom:1px solid #e5e9ef}.compare-head{font-weight:bold;background:#f0f3f7}
-    @page{size:auto;margin:12mm}@media print{body{padding:0}.detail-group{break-inside:avoid}}
-  `;
   printWindow.document.open();
-  printWindow.document.write('<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>'+escapeHtml(heading)+'</title><style>'+styles+'</style></head><body><h1>RC SETUP</h1>'+printable.innerHTML+'</body></html>');
+  printWindow.document.write('<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(heading)+' — RC SETUP</title><style>'+styles+'</style></head><body><header class="print-masthead"><div class="print-brand"><span class="print-mark">RC</span><span><small>GARAGE NUMÉRIQUE</small><strong>SETUP.</strong></span></div><div class="print-meta">FICHE TECHNIQUE<br>Éditée le '+escapeHtml(dateLabel)+'</div></header><main><h1 class="print-title">'+escapeHtml(heading)+'</h1><p class="print-subtitle">'+escapeHtml(subtitle)+'</p>'+printable.innerHTML+'</main><footer class="print-footer"><span>RC SETUP · Carnet de réglages radio-commandés</span><span>Document personnel · '+escapeHtml(dateLabel)+'</span></footer></body></html>');
   printWindow.document.close();
   printWindow.focus();
-  setTimeout(()=>{printWindow.print();},350);
+  setTimeout(()=>{printWindow.print();},500);
 }
 
 function compareSetups(){
