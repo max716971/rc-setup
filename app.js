@@ -5957,7 +5957,14 @@ function compareSetups(){
 }
 
 
-function parsePositiveNumber(value){const n=Number(String(value||'').replace(',','.'));return Number.isFinite(n)&&n>0?n:null;}
+
+function setTracksideMode(enabled){
+  document.body.classList.toggle('trackside-mode',enabled);
+  const button=document.getElementById('tracksideModeButton');
+  if(button){button.setAttribute('aria-pressed',String(enabled));button.textContent=enabled?'Quitter mode piste':'Mode piste';}
+  try{localStorage.setItem('rc-setup-trackside-mode',enabled?'1':'0');}catch{}
+}
+\nfunction parsePositiveNumber(value){const n=Number(String(value||'').replace(',','.'));return Number.isFinite(n)&&n>0?n:null;}
 function calculateGearing(){
   const pinion=parsePositiveNumber(document.getElementById('calcPinion')?.value),spur=parsePositiveNumber(document.getElementById('calcSpur')?.value),internal=parsePositiveNumber(document.getElementById('calcInternal')?.value),diameter=parsePositiveNumber(document.getElementById('calcDiameter')?.value);
   const result=document.getElementById('gearingResult');if(!result)return;
@@ -6204,7 +6211,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=73').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=74').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
@@ -6235,7 +6242,7 @@ document.getElementById('setupForm').elements.namedItem('carId').addEventListene
 ['frontDiffType','centerDiffType','rearDiffType','slipperPresence'].forEach(name=>document.getElementById('setupForm').elements.namedItem(name).addEventListener('change',updateVehicleSpecificFields));
 document.getElementById('setupSearch')?.addEventListener('input',renderSetups);
 ['setupCarFilter','setupTrackFilter','setupSurfaceFilter','setupGripFilter','setupDateFrom','setupDateTo'].forEach(id=>document.getElementById(id)?.addEventListener('change',renderSetups));
-document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
+document.getElementById('tracksideModeButton')?.addEventListener('click',()=>{const enabled=!document.body.classList.contains('trackside-mode');setTracksideMode(enabled);if(enabled)setView('setups');});\ntry{setTracksideMode(localStorage.getItem('rc-setup-trackside-mode')==='1');}catch{}\ndocument.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
 document.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);
 document.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
