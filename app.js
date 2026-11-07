@@ -4,7 +4,15 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Vintage",
-    "name": "RC10 Original",
+    "name": "RC10 Original (1984)",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 TQ10 Graphite",
     "scale": "1/10",
     "drive": "2WD",
     "type": "Buggy"
@@ -20,7 +28,39 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Vintage",
+    "name": "RC10 Championship Edition (1990, pré-Stealth)",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 Team Car (1990)",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 Championship Edition (1992, Stealth)",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
     "name": "RC10 Worlds Car",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 Classic (re-release)",
     "scale": "1/10",
     "drive": "2WD",
     "type": "Buggy"
@@ -44,7 +84,7 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Vintage",
-    "name": "RC10 B4 / B4.1 / B4.2",
+    "name": "RC10 B3 Factory Team",
     "scale": "1/10",
     "drive": "2WD",
     "type": "Buggy"
@@ -52,7 +92,239 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Vintage",
-    "name": "RC10 B44 / B44.1 / B44.2 / B44.3",
+    "name": "RC10 B4",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B4 Factory Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B4 RTR / SE / RS",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B4.1",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B4.1 Factory Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B4.2 Factory Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B4.2 RS",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B5 Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B5M Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B5M Factory Lite",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B5M Champions Edition",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6 Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6D Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6 Club Racer",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6.1 Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6.1D Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6.1 Factory Lite",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6.1DL Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6.2 Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B6.2D Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B6.3 Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B6.3D Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B6.4 Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B6.4D Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B6.4CC Collector's Clear Edition",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B7 Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B7D Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B7.1 Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B7.1D Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B44 Factory Team",
     "scale": "1/10",
     "drive": "4WD",
     "type": "Buggy"
@@ -60,7 +332,111 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Vintage",
-    "name": "RC10 T4",
+    "name": "RC10 B44.1 Factory Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B44.2 Factory Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B44.3 Factory Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B64 Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10 B64D Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B74 Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B74.1 Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B74.2 Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B74.2D Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B74.2 CE",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B74.2D CE",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B84.1 Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10 B84.1D Team",
+    "scale": "1/10",
+    "drive": "4WD",
+    "type": "Buggy"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10T",
     "scale": "1/10",
     "drive": "2WD",
     "type": "Truck"
@@ -68,63 +444,55 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Vintage",
-    "name": "RC10 B5 / B5M",
+    "name": "RC10T2",
     "scale": "1/10",
     "drive": "2WD",
-    "type": "Buggy"
+    "type": "Truck"
   },
   {
     "brand": "Team Associated",
     "era": "Vintage",
-    "name": "RC10 B6 / B6.1 / B6.2",
+    "name": "RC10T3",
     "scale": "1/10",
     "drive": "2WD",
-    "type": "Buggy"
+    "type": "Truck"
   },
   {
     "brand": "Team Associated",
     "era": "Vintage",
-    "name": "RC10 B64 / B64D",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "Team Associated",
-    "era": "Moderne",
-    "name": "RC10 B6.3 / B6.4",
+    "name": "RC10T3 Factory Team",
     "scale": "1/10",
     "drive": "2WD",
-    "type": "Buggy"
+    "type": "Truck"
   },
   {
     "brand": "Team Associated",
-    "era": "Moderne",
-    "name": "RC10 B74 / B74.1 / B74.2",
-    "scale": "1/10",
-    "drive": "4WD",
-    "type": "Buggy"
-  },
-  {
-    "brand": "Team Associated",
-    "era": "Moderne",
-    "name": "RC10 B7 / B7D",
+    "era": "Vintage",
+    "name": "RC10T4",
     "scale": "1/10",
     "drive": "2WD",
-    "type": "Buggy"
+    "type": "Truck"
   },
   {
     "brand": "Team Associated",
-    "era": "Moderne",
-    "name": "RC10 B7.1 / B7.1D",
+    "era": "Vintage",
+    "name": "RC10T4.1",
     "scale": "1/10",
     "drive": "2WD",
-    "type": "Buggy"
+    "type": "Truck"
   },
   {
     "brand": "Team Associated",
-    "era": "Moderne",
-    "name": "RC10 T6 / T6.1",
+    "era": "Vintage",
+    "name": "RC10T4.2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "RC10T5M",
     "scale": "1/10",
     "drive": "2WD",
     "type": "Truck"
@@ -132,23 +500,71 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Moderne",
-    "name": "RC8B / RC8B4",
-    "scale": "1/8",
-    "drive": "4WD",
-    "type": "Buggy"
+    "name": "RC10T6",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
   },
   {
     "brand": "Team Associated",
     "era": "Moderne",
-    "name": "RC8T",
-    "scale": "1/8",
-    "drive": "4WD",
-    "type": "Truggy"
+    "name": "RC10T6.1",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
   },
   {
     "brand": "Team Associated",
     "era": "Moderne",
-    "name": "RC10SC / SC10",
+    "name": "RC10T6.2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10T6.3",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "RC10T6.4",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Truck"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "SC10",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "SC10.2",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "SC10.3",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "SC10.4",
     "scale": "1/10",
     "drive": "2WD",
     "type": "Short Course"
@@ -156,10 +572,50 @@ const CAR_CATALOG = [
   {
     "brand": "Team Associated",
     "era": "Moderne",
-    "name": "RC10T4 / T5 / T6",
+    "name": "SC10B",
     "scale": "1/10",
     "drive": "2WD",
-    "type": "Truck"
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Moderne",
+    "name": "SC10B RS RTR",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "SC10.2 Factory Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "SC10.3 Factory Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "SC10.4 Factory Team",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
+  },
+  {
+    "brand": "Team Associated",
+    "era": "Vintage",
+    "name": "SC10.4 RTR",
+    "scale": "1/10",
+    "drive": "2WD",
+    "type": "Short Course"
   },
   {
     "brand": "Schumacher",
