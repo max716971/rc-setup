@@ -6138,6 +6138,7 @@ function formValues(form, names) {
 function getCatalogFilters() {
   return {
     brand: document.getElementById('carCatalogBrandPicker')?.dataset.selectedBrand || '',
+    drive: document.getElementById('carCatalogDrive')?.value || '',
     era: document.getElementById('carCatalogEra')?.value || '',
     query: (document.getElementById('carCatalogSearch')?.value || '').trim().toLocaleLowerCase('fr')
   };
@@ -6174,11 +6175,11 @@ function addCatalogCarByIndex(index) {
   showToast(model.name + ' ajouté au garage.');
 }
 function updateCarCatalogOptions() {
-  const { brand, era, query } = getCatalogFilters();
+  const { brand, drive, era, query } = getCatalogFilters();
   const select = document.getElementById('carCatalogModel');
   if (!select) return;
   const filtered = CAR_CATALOG.map((model, index) => ({ model, index })).filter(({model}) =>
-    (!brand || model.brand === brand) && (!era || model.era === era) &&
+    (!brand || model.brand === brand) && (!drive || normalizeDriveType(model.drive) === drive) && (!era || model.era === era) &&
     (!query || (model.name + ' ' + model.brand + ' ' + model.type + ' ' + model.scale).toLocaleLowerCase('fr').includes(query))
   );
   select.innerHTML = '<option value="">Choisir un modèle…</option>' + filtered.map(({model,index}) =>
@@ -6566,6 +6567,7 @@ document.getElementById('clearCarCatalogBrand')?.addEventListener('click',()=>{
   if(picker)picker.dataset.selectedBrand='';
   updateCarCatalogOptions();
 });
+document.getElementById('carCatalogDrive').addEventListener('change', updateCarCatalogOptions);
 document.getElementById('carCatalogEra').addEventListener('change', updateCarCatalogOptions);
 document.getElementById('carCatalogSearch').addEventListener('input', updateCarCatalogOptions);
 document.getElementById('addCatalogCar').addEventListener('click', handleCarCatalogAdd);
