@@ -5936,15 +5936,22 @@ function openSetupEditor(id,duplicate=false){
 }
 function updateVehicleSpecificFields(){
   const form=document.getElementById('setupForm'),car=getCarById(form.elements.namedItem('carId')?.value);
-  const diffPositions=['front','center','rear'];
-  diffPositions.forEach(position=>{
-    const type=String(form.elements.namedItem(position+'DiffType')?.value||'').toLowerCase();
+  const count=car?getCarDifferentialCount(car):0;
+  const available=count===1?['rear']:count===2?['front','rear']:count===3?['front','center','rear']:[];
+  ['front','center','rear'].forEach(position=>{
+    const card=form.querySelector('.transmission-diff-'+position);
+    const enabled=available.includes(position);
+    if(card)card.classList.toggle('vehicle-field-hidden',!enabled);
+    const typeField=form.elements.namedItem(position+'DiffType');
+    if(!enabled&&typeField)typeField.value='Absent';
+    const type=String(typeField?.value||'').toLowerCase();
     form.querySelectorAll('.'+position+'-diff-gear-field').forEach(label=>label.classList.toggle('vehicle-field-hidden',type!=='à pignons'));
     form.querySelectorAll('.'+position+'-diff-ball-field').forEach(label=>label.classList.toggle('vehicle-field-hidden',type!=='à billes'));
   });
   const slipperPresence=String(form.elements.namedItem('slipperPresence')?.value||'').toLowerCase();
   form.querySelectorAll('.slipper-setting-field').forEach(label=>label.classList.toggle('vehicle-field-hidden',slipperPresence!=='présent'));
-  const hint=document.getElementById('vehicleSetupHint');if(hint)hint.textContent=car?[car.brand||'',car.name,car.drive||'architecture non précisée'].filter(Boolean).join(' · ')+' · Choisis uniquement les différentiels et équipements présents sur cette voiture.':'Sélectionne une voiture pour adapter les réglages à son architecture.';
+  const hint=document.getElementById('vehicleSetupHint');
+  if(hint)hint.textContent=car?[car.brand||'',car.name,car.drive||'architecture non précisée'].filter(Boolean).join(' · ')+' · '+count+' différentiel'+(count>1?'s':'')+' configuré'+(count>1?'s':'')+'. Modifiable dans le Garage.':'Sélectionne une voiture pour afficher ses différentiels.';
 }
 function parseLapTime(value){const text=String(value||'').trim().replace(',','.');if(!text)return null;if(text.includes(':')){const p=text.split(':').map(Number);if(p.length===2&&p.every(Number.isFinite))return p[0]*60+p[1];}const n=Number(text);return Number.isFinite(n)&&n>0?n:null;}
 function renderPerformanceTrend(){
@@ -6049,15 +6056,26 @@ function handleCarCatalogAdd() {
   if (selected === '' || selected == null) { showToast('Choisis d’abord un modèle.'); return; }
   const model = CAR_CATALOG[Number(selected)];
   if (!model) return;
-  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: model.drive, type: model.type, era: model.era, photos: [], createdAt: new Date().toISOString() });
+  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: model.drive, type: model.type, era: model.era, diffCount: inferDifferentialCount(model), photos: [], createdAt: new Date().toISOString() });
   saveState(); renderAll();
   document.getElementById('carCatalogModel').value = '';
   showToast(model.name + ' ajouté au garage.');
 }
+function inferDifferentialCount(car) {
+  const drive=String(car?.drive||'').toLocaleLowerCase('fr');
+  if (/2wd|4x2|propulsion|traction avant/.test(drive)) return 1;
+  if (/1\s*\/\s*8/.test(String(car?.scale||''))) return 3;
+  if (/4wd|4x4/.test(drive)) return 2;
+  return 1;
+}
+function getCarDifferentialCount(car) {
+  const count=Number(car?.diffCount);
+  return Number.isInteger(count)&&count>=1&&count<=3?count:inferDifferentialCount(car);
+}
 function openCarEditor(id) {
   const car=getCarById(id);if(!car)return;
   const form=document.getElementById('carForm');editingCarId=id;
-  for(const name of ['name','brand','scale','drive','notes']){const field=form.elements.namedItem(name);if(field)field.value=car[name]||'';}
+  for(const name of ['name','brand','scale','drive','notes']){const field=form.elements.namedItem(name);if(field)field.value=car[name]||'';}const diffField=form.elements.namedItem('diffCount');if(diffField)diffField.value=car.diffCount?String(car.diffCount):'auto';
   pendingCarPhotos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
   renderCarPhotoPreviews();
   form.querySelector('h2').textContent='Modifier la voiture';
@@ -6073,8 +6091,9 @@ function resetCarEditor() {
 }
 function handleCarSubmit(event) {
   event.preventDefault();
-  const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'notes']);
+  const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'diffCount', 'notes']);
   if (!data.name) return;
+  data.diffCount=data.diffCount==='auto'?inferDifferentialCount(data):Math.min(3,Math.max(1,Number(data.diffCount)||inferDifferentialCount(data)));
   if(editingCarId){
     const car=getCarById(editingCarId);if(!car){showToast('Voiture introuvable.');return;}
     const previous={...car};Object.assign(car,data,{photos:[...pendingCarPhotos],updatedAt:new Date().toISOString()});
@@ -6331,7 +6350,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=83').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=84').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
