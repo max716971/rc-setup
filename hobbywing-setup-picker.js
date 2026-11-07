@@ -1,26 +1,24 @@
 (() => {
-  // Add searchable library dropdowns to setup motor/ESC inputs; keep text fields editable.
+  // Add editable library pickers for Hobbywing motor and ESC choices in setup section 04.
   const STORAGE_KEY = 'rc-setup-materials-v1';
   const form = document.getElementById('setupForm');
   if (!form) return;
-  const escape = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
   let items = [];
-  try { const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); items = Array.isArray(parsed) ? parsed : []; } catch {}
-  const specs = [['escModel','Variateur (ESC)','Choisir un variateur Hobbywing…'],['esc','Variateur (ESC)','Choisir un variateur Hobbywing…']];
-  for (const [fieldName, category, placeholder] of specs) {
+  try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); items = Array.isArray(data) ? data : []; } catch {}
+  const config = [['motor','Moteur','Choisir un moteur Hobbywing…'],['escModel','Variateur (ESC)','Choisir un variateur Hobbywing…'],['esc','Variateur (ESC)','Choisir un variateur Hobbywing…']];
+  config.forEach(([fieldName, category, placeholder]) => {
     const input = form.elements.namedItem(fieldName);
-    if (!input || input.dataset.hobbywingPicker === 'true') continue;
+    if (!input || input.dataset.hobbywingPicker === 'true') return;
     input.dataset.hobbywingPicker = 'true';
-    const picker = document.createElement('label');
-    picker.className = 'setup-library-picker';
-    picker.textContent = 'Bibliothèque Hobbywing';
+    const picker = document.createElement('label'); picker.className = 'setup-library-picker'; picker.textContent = 'Bibliothèque Hobbywing';
     const select = document.createElement('select');
-    select.innerHTML = `<option value="">${placeholder}</option>` + items.filter(item => item.brand === 'Hobbywing' && item.category === category).map(item => {
-      const text = `${item.name} — réf. ${item.reference}`;
-      return `<option value="${escape(text)}">${escape(text)}</option>`;
+    const list = items.filter(item => item.brand === 'Hobbywing' && item.category === category);
+    select.innerHTML = `<option value="">${placeholder}</option>` + list.map(item => {
+      const label = `${item.name} — réf. ${item.reference}`;
+      return `<option value="${esc(label)}">${esc(label)}</option>`;
     }).join('');
     select.addEventListener('change', () => { if (select.value) input.value = select.value; });
-    picker.append(select);
-    input.closest('label')?.before(picker);
-  }
+    picker.append(select); input.closest('label')?.before(picker);
+  });
 })();
