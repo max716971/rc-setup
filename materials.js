@@ -855,7 +855,7 @@
     'Pro-Line': 'https://images.seeklogo.com/logo-png/22/1/pro-line-logo-png_seeklogo-226869.png',
     'Reedy': brandWordmark('REEDY', '#dc2b30', '#171717'),
     'Tamiya': 'https://www.most-models.com/files/tamiya-modelbouw.png',
-    'TLR': brandWordmark('TLR', '#dc2b30', '#171717')
+    'TLR': 'https://cdn.houseofrc.com/storage/images/360/conversions/tlr-preview.jpg'
   };
   const root = document.getElementById('materialsApp');
   if (!root) return;
