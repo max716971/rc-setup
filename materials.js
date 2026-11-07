@@ -891,12 +891,30 @@
     savedItems.unshift({ id: `custom-${Date.now()}-${Math.random().toString(16).slice(2,7)}`, brand: d.brand.trim(), category: d.category, name: d.name.trim(), reference: d.reference.trim(), quantity: Math.max(0, Math.floor(Number(d.quantity)||0)), compatibility: d.compatibility.trim(), detail: d.detail.trim(), url: d.url.trim() });
     if (persist()) { activeTab = 'mine'; render(); window.dispatchEvent(new Event('rc-materials-updated')); }
   }
-  // Une référence Team Associated identifie une seule pièce : fusionne les doublons B7/B7.1.
+  // Une référence Team Associated identifie une seule pièce : conserve la fiche B7 vérifiée et fusionne les doublons.
   const b7SpringRefs = new Set(['91940','91941','91942','91943','91944','91945','91946','91947','91948','91949','91950','91951']);
-  const preferredB7Springs = new Map(catalog.filter(item => item.brand === 'Team Associated' && b7SpringRefs.has(item.reference) && item.name.includes('RC10B7 / B7.1') && !item.name.includes('Team Kit')).map(item => [item.reference,item]));
+  const canonicalB7Springs = new Map(catalog.filter(item => item.brand === 'Team Associated' && b7SpringRefs.has(item.reference) && item.name.startsWith('RC10B7 —')).map(item => [item.reference,item]));
   for (let i = catalog.length - 1; i >= 0; i--) {
     const item = catalog[i];
-    if (item.brand === 'Team Associated' && b7SpringRefs.has(item.reference) && preferredB7Springs.get(item.reference) !== item) catalog.splice(i,1);
+    if (item.brand === 'Team Associated' && b7SpringRefs.has(item.reference) && canonicalB7Springs.get(item.reference) !== item) {
+      if (item.reference === '91946' && item.name.includes('RC10B7.1 Team Kit')) {
+        const canonical = canonicalB7Springs.get('91946');
+        if (canonical) canonical.compatibility = 'RC10B7 et RC10B7.1 Team Kit Carpet — 1/10 Buggy — 13 mm — avant';
+      }
+      catalog.splice(i,1);
+    }
+  }
+  const rearB7OneSpring = catalog.find(item => item.brand === 'Team Associated' && item.reference === '91961');
+  if (rearB7OneSpring) {
+    rearB7OneSpring.name = 'RC10B7.1 — Arrière — Noir (1.7 lb/in)';
+    rearB7OneSpring.compatibility = 'RC10B7.1 — 1/10 Buggy 2WD — 13 mm — arrière';
+    rearB7OneSpring.detail = 'Ressort arrière 13 mm. Couleur : Noir. Dureté : 1.7 lb/in. Référence fabricant : 91961.';
+  }
+  const rearTruckSpring = catalog.find(item => item.brand === 'Team Associated' && item.reference === '91957');
+  if (rearTruckSpring) {
+    rearTruckSpring.name = 'RC10T84 — Arrière — Rouge (2.4 lb/in)';
+    rearTruckSpring.compatibility = 'RC10T84 — 1/10 Truck — 13 mm — arrière';
+    rearTruckSpring.detail = 'Ressort arrière 13 mm. Couleur : Rouge. Dureté : 2.4 lb/in. Référence fabricant : 91957. Compatibilité : RC10T84 Team.';
   }
   catalog.forEach((item) => { item.id = `${item.brand}|${item.reference}|${item.name}`; });
   render();
