@@ -175,7 +175,6 @@
       url: 'https://xtr-rc.com/en/232-greases-lubricants'
     })),
     { brand: 'XTR Racing', category: 'Huile moteur', name: 'Huile After Run XTR', reference: 'XTR-0234 — 80 ml', detail: 'Huile de conservation après utilisation pour moteurs thermiques.', url: 'https://www.rcnest.it/en/15-oli' },
-    { brand: 'XTR Racing', category: 'Huile filtre à air', name: 'Huile XTR pour filtre à air mousse', reference: 'ACE-01 — 100 ml', detail: 'Huile adhésive pour filtre à air mousse de moteur thermique.', url: 'https://www.rcnest.it/en/15-oli' },
     { brand: 'XTR Racing', category: 'Huile roulements', name: 'Huile XTR Long Life pour roulements', reference: 'XTR-0253 — 20 ml', detail: 'Lubrifiant longue durée pour roulements.', url: 'https://www.rcnest.it/en/15-oli' },
         { brand: '1UP Racing', category: 'Graisse', name: 'Graisse RC', reference: 'Référence à confirmer', detail: 'Gamme 1UP Racing ; choisir le produit selon l’application.', url: 'https://1upracing.com/' },
     { brand: 'SRT', category: 'Servo', name: 'Servo SRT', reference: 'Modèle à préciser', detail: 'Catalogue SRT : choisir couple, vitesse, tension et dimensions selon le véhicule.', url: 'https://www.srt-rc.com/' },
@@ -304,7 +303,7 @@
     ['differentials','Huile différentiel|Graisse'], ['centerDiff','Huile différentiel|Graisse'],
     ['motor','Moteur'], ['escModel','Variateur (ESC)'], ['servoSteering','Servo'],
     ['txModel','Radio / récepteur'], ['rxModel','Radio / récepteur'],
-    ['lubricants','Graisse|Huile moteur|Huile filtre à air|Huile roulements']
+    ['lubricants','Graisse|Huile moteur|Huile roulements']
   ];
   for (const [fieldName, categories] of pickerMap) {
     const input = setupForm.elements.namedItem(fieldName);
