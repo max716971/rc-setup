@@ -28,28 +28,70 @@
     
     { brand: 'Hobbywing', category: 'Programmation', name: 'LCD Program Box Pro', reference: '30502002', detail: 'Boîtier de programmation pour matériels compatibles Hobbywing.', url: 'https://www.hobbywing.com/en/rc-systems' },
 
-    // Pneus Schumacher TT 1/10 — position explicitement indiquée d'après les références catalogue.
+    // Pneus Schumacher TT 1/10 — modèles, position, profil et gomme.
     ...[
-      ['Mini Dart','U6825','Avant 4WD','Jaune'],['Mini Dart','U6826','Arrière 2WD/4WD','Jaune'],
-      ['Mini Dart','U6828','Avant 4WD','Bleu'],['Mini Dart','U6829','Arrière 2WD/4WD','Bleu'],
-      ['Mini Dart','U6831','Avant 4WD','Silver'],['Mini Dart','U6832','Arrière 2WD/4WD','Silver'],
-      ['Cactus','U6838','Arrière 2WD/4WD','Jaune'],['Cactus','U6840','Avant 4WD','Jaune'],
-      ['Cactus','U6842','Arrière 2WD/4WD','Silver'],['Cactus','U6843','Avant 4WD','Silver'],
-      ['Cactus','U6844','Arrière 2WD/4WD','Bleu'],['Cactus','U6845','Avant 4WD','Bleu'],
-      ['Wide Stagger Rib','U6810','Avant 4WD','Jaune'],['Wide Stagger Rib','U6811','Avant 4WD','Silver'],
-      ['Wide Stagger Rib','U6846','Avant 4WD','Bleu'],
-      ['Mini Pin 1','U6817','Arrière 2WD/4WD','Jaune'],['Mini Pin 1','U6819','Arrière 2WD/4WD','Bleu'],
-      ['Mini Pin 1','U6820','Arrière 2WD/4WD','Silver'],
-      ['Mini Pin 2','U6805','Arrière 2WD/4WD','Silver'],
-      ['Mini Pin 2','U6821','Avant 4WD','Jaune']
-    ].map(([name, reference, position, compound]) => ({
+      // Mini Spike 2 : avant 2WD slim, avant 4WD et arrière.
+      ['Mini Spike 2','U6549','Avant 2WD','Bleu','Slim'],
+      ['Mini Spike 2','U6550','Avant 2WD','Vert','Slim'],
+      ['Mini Spike 2','U6581','Avant 2WD','Jaune','Slim'],
+      ['Mini Spike 2','U6761','Avant 2WD','Silver','Slim'],
+      ['Mini Spike 2','U6515','Avant 4WD','Vert','Standard'],
+      ['Mini Spike 2','U6517','Avant 4WD','Bleu','Standard'],
+      ['Mini Spike 2','U6557','Avant 4WD','Jaune','Standard'],
+      ['Mini Spike 2','U6762','Avant 4WD','Silver','Standard'],
+      ['Mini Spike 2','U6516','Arrière 2WD/4WD','Vert','Standard'],
+      ['Mini Spike 2','U6518','Arrière 2WD/4WD','Bleu','Standard'],
+      ['Mini Spike 2','U6558','Arrière 2WD/4WD','Jaune','Standard'],
+      ['Mini Spike 2','U6763','Arrière 2WD/4WD','Silver','Standard'],
+
+      // Pneus avant 2WD slim et medium : toutes les gommes documentées.
+      ['2 Row Stud','T654','Avant 2WD medium','Jaune','Slim / medium'],
+      ['Mini Pin','U6609','Avant 2WD','Jaune','Slim'],
+      ['Mini Pin','U6779','Avant 2WD','Silver','Slim'],
+      ['Stagger Rib','U6592','Avant 2WD','Jaune','Slim'],
+      ['Cut Stagger','U6759','Avant 2WD','Jaune','Slim'],
+      ['Cut Stagger','U6765','Avant 2WD','Vert','Slim'],
+      ['Cut Stagger Low Profile','U6770','Avant 2WD','Jaune','Low Profile'],
+      ['Cut Stagger Low Profile','U6771','Avant 2WD','Vert','Low Profile'],
+      ['Cut Stagger Low Profile','U6775','Avant 2WD','Silver','Low Profile'],
+      ['Cut Stagger Low Profile','U6776','Avant 2WD','Bleu','Low Profile'],
+      ['Mini Dart','U6824','Avant 2WD','Jaune','Slim'],
+      ['Mini Dart','U6827','Avant 2WD','Bleu','Slim'],
+      ['Mini Dart','U6830','Avant 2WD','Silver','Slim'],
+      ['Slim Rib Spike','U6847','Avant 2WD','Jaune','Slim'],
+      ['Slim Rib Spike','U6848','Avant 2WD','Bleu','Slim'],
+      ['Honeycomb','U6859','Avant 2WD','Jaune','Standard'],
+      ['Fusion Slim','U6901','Avant 2WD','Jaune','Slim'],
+      ['Fusion Slim','U6902','Avant 2WD','Silver','Slim'],
+      ['Fusion Slim','U6903','Avant 2WD','Bleu','Slim'],
+      ['Splinter','U6906','Avant 2WD','Jaune','Slim ultra-low'],
+      ['Splinter','U6907','Avant 2WD','Bleu','Slim ultra-low'],
+      ['Splinter','U6908','Avant 2WD','Silver','Slim ultra-low'],
+
+      // Variantes avant 4WD / arrière déjà présentes dans la bibliothèque.
+      ['Mini Dart','U6825','Avant 4WD','Jaune','Standard'],['Mini Dart','U6826','Arrière 2WD/4WD','Jaune','Standard'],
+      ['Mini Dart','U6828','Avant 4WD','Bleu','Standard'],['Mini Dart','U6829','Arrière 2WD/4WD','Bleu','Standard'],
+      ['Mini Dart','U6831','Avant 4WD','Silver','Standard'],['Mini Dart','U6832','Arrière 2WD/4WD','Silver','Standard'],
+      ['Cactus','U6838','Arrière 2WD/4WD','Jaune','Standard'],['Cactus','U6840','Avant 4WD','Jaune','Standard'],
+      ['Cactus','U6842','Arrière 2WD/4WD','Silver','Standard'],['Cactus','U6843','Avant 4WD','Silver','Standard'],
+      ['Cactus','U6844','Arrière 2WD/4WD','Bleu','Standard'],['Cactus','U6845','Avant 4WD','Bleu','Standard'],
+      ['Wide Stagger Rib','U6810','Avant 4WD','Jaune','Wide'],
+      ['Wide Stagger Rib','U6811','Avant 4WD','Silver','Wide'],
+      ['Wide Stagger Rib','U6846','Avant 4WD','Bleu','Wide'],
+      ['Mini Pin 1','U6817','Arrière 2WD/4WD','Jaune','Standard'],
+      ['Mini Pin 1','U6819','Arrière 2WD/4WD','Bleu','Standard'],
+      ['Mini Pin 1','U6820','Arrière 2WD/4WD','Silver','Standard'],
+      ['Mini Pin 2','U6803','Arrière 2WD/4WD','Bleu','Standard'],
+      ['Mini Pin 2','U6804','Arrière 2WD/4WD','Jaune','Standard'],
+      ['Mini Pin 2','U6805','Arrière 2WD/4WD','Silver','Standard'],
+      ['Mini Pin 2','U6821','Avant 4WD','Jaune','Standard']
+    ].map(([name, reference, position, compound, profile]) => ({
       brand: 'Schumacher', category: 'Pneus / roues',
-      name: name + ' — ' + position + ' — ' + compound,
+      name: name + ' — ' + position + ' — ' + compound + ' — ' + profile,
       reference, compatibility: position,
-      detail: 'Paire de pneus TT 1/10. Position : ' + position + '. Gomme : ' + compound + '.',
+      detail: 'Paire de pneus TT 1/10. Position : ' + position + '. Gomme : ' + compound + '. Profil : ' + profile + '.',
       url: 'https://www.racing-cars.com/wheels-tyres'
     })),
-
     // Pneus TT 1/10 HUDY — références catalogue, position et gomme distinctes.
     ...[
       ['Pneu 2WD avant Carpet 101','812101','Avant 2WD','Carpet','Standard'],
