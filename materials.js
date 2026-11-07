@@ -238,7 +238,21 @@
       reference, compatibility:position, detail:'Pneu buggy TT 1/10 VP-Pro. Choisir la version avec jante ou sans jante selon la référence complète.',
       url:'https://www.vp-racing.com/products/vppro/tires/1-10-buggy'
     })),
-    { brand:'Matrix Racing', category:'Pneus / roues', name:'Gamme pneus buggy 1/10 Matrix Racing', reference:'Modèle et gomme à préciser', compatibility:'TT 1/10 — position à préciser', detail:'Entrée de marque. Sélectionner le profil, la position et la gomme exacts avant achat ; aucune référence SKU ajoutée sans vérification.', url:'https://www.matrixracingproducts.com/' },
+    ...[
+      ['Carpet','MX-FC001','Avant 2WD','Super Soft'],['Carpet','MX-FC002','Avant 2WD','Soft'],['Carpet','MX-FC003','Avant 2WD','Medium'],
+      ['Carpet','MX-RC001','Arrière 2WD/4WD','Super Soft'],['Carpet','MX-RC002','Arrière 2WD/4WD','Soft'],['Carpet','MX-RC003','Arrière 2WD/4WD','Medium'],
+      ['Dirt Clay','MX-FD001','Avant 2WD','Super Soft'],['Dirt Clay','MX-FD002','Avant 2WD','Soft'],['Dirt Clay','MX-FD003','Avant 2WD','Medium'],
+      ['Dirt Clay','MX-FD004','Avant 4WD','Super Soft'],['Dirt Clay','MX-FD005','Avant 4WD','Soft'],['Dirt Clay','MX-FD006','Avant 4WD','Medium'],
+      ['Dirt Clay','MX-RD001','Arrière 2WD/4WD','Super Soft'],['Dirt Clay','MX-RD002','Arrière 2WD/4WD','Soft'],['Dirt Clay','MX-RD003','Arrière 2WD/4WD','Medium']
+    ].map(([surface,reference,position,compound]) => ({
+      brand:'Matrix Racing', category:'Pneus / roues',
+      name:'Pneu buggy 1/10 '+surface+' — '+position+' — '+compound,
+      reference, compatibility:position,
+      detail:'Pneu Matrix Racing TT 1/10. Version avec insert selon les références catalogue.',
+      url:'https://www.mkracing.eu/matrix-racing-tires-fr-6673/'
+    })),
+    { brand:'Matrix Racing', category:'Insert pneu', name:'Insert closed-cell Matrix Dirt avant 1/10', reference:'MX-IN002', compatibility:'Avant buggy 1/10', detail:'Insert mousse closed-cell Matrix pour pneus Dirt buggy 1/10.', url:'https://www.mkracing.eu/matrix-racing-tires-fr-6673/' },
+    { brand:'Matrix Racing', category:'Insert pneu', name:'Insert closed-cell Matrix Dirt arrière 1/10', reference:'MX-IN001', compatibility:'Arrière buggy 1/10', detail:'Insert mousse closed-cell Matrix pour pneus Dirt buggy 1/10.', url:'https://www.mkracing.eu/matrix-racing-tires-fr-6673/' },
 
     ...[
       ['Insert mousse buggy JConcepts 1/10','JConcepts','JConcepts','Choisir le profil et la densité adaptés au pneu.'],
