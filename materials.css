@@ -35,3 +35,6 @@
 
 #setupForm .setup-library-picker{margin-top:7px;padding:10px 11px;background:rgba(116,217,232,.045);border-color:rgba(116,217,232,.22)}
 #setupForm .setup-library-picker span{line-height:1.35}
+
+.material-filter-row{grid-template-columns:2fr 1fr 1fr 1fr}
+@media(max-width:760px){.material-filter-row{grid-template-columns:1fr 1fr}.material-filter-row input{grid-column:1/-1}}
