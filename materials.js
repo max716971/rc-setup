@@ -254,15 +254,6 @@
     { brand:'Matrix Racing', category:'Insert pneu', name:'Insert closed-cell Matrix Dirt avant 1/10', reference:'MX-IN002', compatibility:'Avant buggy 1/10', detail:'Insert mousse closed-cell Matrix pour pneus Dirt buggy 1/10.', url:'https://www.mkracing.eu/matrix-racing-tires-fr-6673/' },
     { brand:'Matrix Racing', category:'Insert pneu', name:'Insert closed-cell Matrix Dirt arrière 1/10', reference:'MX-IN001', compatibility:'Arrière buggy 1/10', detail:'Insert mousse closed-cell Matrix pour pneus Dirt buggy 1/10.', url:'https://www.mkracing.eu/matrix-racing-tires-fr-6673/' },
 
-    ...[
-      ['Insert mousse buggy JConcepts 1/10','JConcepts','JConcepts','Choisir le profil et la densité adaptés au pneu.'],
-      ['Insert mousse buggy Pro-Line 1/10','Pro-Line','Pro-Line','Choisir le profil et la densité adaptés au pneu.']
-    ].map(([name,brand,product,detail]) => ({
-      brand, category:'Insert pneu', name, reference:'Modèle à préciser',
-      detail:product+' : insert à sélectionner selon le pneu, la jante et la surface. '+detail,
-      url:brand==='JConcepts'?'https://jconcepts.net/':'https://www.prolineracing.com/'
-    })),
-
     // Huiles Yokomo — viscosités constructeur exprimées en indice Yokomo, pas en CST.
     ...['475','575','600'].map(value => ({
       brand:'Yokomo', category:'Huile amortisseur', name:'Super Blend Shock Oil #'+value,
@@ -280,15 +271,6 @@
       detail:'Référence de ressort Yokomo issue des tableaux de ressorts TT 1/10 ; vérifier la famille de châssis avant montage.',
       url:'https://www.sodialed.com/rc-setup-tips/yokomo-1-10-off-road-car-shock-spring-list'
     })),
-    ...[
-      ['TLR143005','Blanc','2.7 lb/in'],['TLR143006','Vert','3.0 lb/in'],['TLR143007','Orange','3.6 lb/in'],['TLR143008','Silver','4.0 lb/in']
-    ].map(([reference,colour,rate]) => ({
-      brand:'TLR', category:'Ressort', name:'Ressort amortisseur TLR — '+colour+' — '+rate,
-      reference, compatibility:'Losi LMT / TLR Tuned 4x4 (pas buggy 1/10 standard)',
-      detail:'Ressort TLR vendu par 4. Compatibilité LMT ; ne pas considérer comme ressort universel de buggy TT 1/10.',
-      url:'https://www.tlracing.com/new-tlr-rc-parts/'
-    })),
-
     // Graisses HUDY, Team Associated et Tamiya.
     ...[
       ['106210','Graphite Grease'],['106211','Diff Grease'],['106212','Super Differential Grease'],['106213','Joint Grease']
@@ -316,12 +298,93 @@
     { brand:'Tekin', category:'Variateur (ESC)', name:'RS GEN3 1/10', reference:'TT1156', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
     { brand:'Tekin', category:'Variateur (ESC)', name:'RS SPEC GEN3 1/10', reference:'TT1157', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
     { brand:'Tekin', category:'Variateur (ESC)', name:'RSX PRO 1/10', reference:'TT1159', detail:'Variateur brushless/brushed sensored 1/10.', url:'https://store.teamtekin.com/brushless-escs/' },
-    { brand:'LRP', category:'Variateur (ESC)', name:'Variateurs brushless LRP 1/10', reference:'Modèle à préciser', detail:'Gamme LRP de speed controllers. Ajouter la référence exacte selon génération et catégorie.', url:'https://www.lrp.cc/en/products/' },
-
     // Servos de direction.
     { brand:'Sanwa', category:'Servo', name:'PGS-CL II', reference:'107A54514B', detail:'Servo programmable low-profile, compatible CODE10 dont MT-5 ; 16,6 kg·cm à 7,4 V.', url:'https://www.sanwa-denshi.co.jp/rc/car/servo/pgs-cl%E2%85%A1.html' },
     { brand:'Futaba', category:'Servo', name:'S9470SV', reference:'01000837', detail:'Servo numérique surface ; vérifier dimensions, tension et mode de transmission requis.', url:'https://futaba.fr/5-servos' },
-    { brand:'Power HD', category:'Servo', name:'Servo Power HD pour buggy 1/10', reference:'Modèle à préciser', detail:'Choisir le modèle selon couple, vitesse, tension et encombrement du châssis.', url:'https://www.powerhd.com.tw/' },
+
+
+    // Compléments détaillés : modèles 1/10 identifiés, références fabricant et variantes séparées.
+    // TLR silicone shock oils : grades WT proposés dans la gamme 60 ml ; SKU individuel non affiché.
+    ...['17.5','20','22.5','25','27.5','30','32.5','35','37.5','40','45','50','55','60','70','80','90'].map(wt => ({
+      brand:'TLR', category:'Huile amortisseur',
+      name:'Silicone Shock Oil — '+wt+' WT — 60 ml',
+      reference:wt+' WT / 60 ml',
+      detail:'Huile silicone TLR pour amortisseurs. Grade WT distinct ; le WT n’est pas strictement interchangeable entre fabricants.',
+      url:'https://www.rcteam.com/en/collections/shock-absorber-oil'
+    })),
+
+    // Team Associated / Factory Team : viscosités connues, sans inventer de SKU pour les autres grades.
+    ...['20','25','30','35','40','45','50','60','70','80'].map(wt => ({
+      brand:'Team Associated', category:'Huile amortisseur',
+      name:'Factory Team Silicone Shock Oil — '+wt+' WT',
+      reference:wt==='35'?'5435':wt+' WT — référence fabricant à confirmer',
+      detail:'Huile silicone Factory Team pour amortisseurs. Vérifier la référence de flacon selon le grade.',
+      url:'https://www.associatedelectrics.com/teamassociated/parts/fluids/'
+    })),
+
+    // Tekin Redline GEN4 SPEC-R : bobinages 1/10 stock clairement identifiés.
+    ...[
+      ['17.5','TT2762'],['13.5','TT2763'],['10.5','TT2765']
+    ].map(([turn,reference]) => ({
+      brand:'Tekin', category:'Moteur', name:'Redline SPEC-R GEN4 — '+turn+'T 540',
+      reference, compatibility:'Buggy 1/10 / Touring 1/10 selon bobinage',
+      detail:'Moteur brushless sensored Tekin SPEC-R GEN4. Bobinage et référence fabricant distincts.',
+      url:'https://www.teamtekin.com/specr.html'
+    })),
+
+    // Tekin Redline GEN3 : gamme complète de bobinages répertoriés par le fabricant.
+    ...[
+      ['25.5','TT2701'],['21.5','TT2703'],['17.5','TT2705'],['13.5','TT2707'],
+      ['10.5','TT2708'],['9.5','TT2709'],['8.5','TT2710'],['7.5','TT2711'],
+      ['6.5','TT2712'],['5.5','TT2713'],['5.0','TT2714'],['4.5','TT2715'],
+      ['3.5','TT2716'],['2.5','TT2717']
+    ].map(([turn,reference]) => ({
+      brand:'Tekin', category:'Moteur', name:'Redline GEN3 — '+turn+'T 540',
+      reference, compatibility:'Moteur brushless sensored 1/10',
+      detail:'Moteur Tekin Redline GEN3 ; bobinage et référence fabricant.',
+      url:'https://www.teamtekin.com/redline_gen3.html'
+    })),
+
+    // Variateurs Tekin : modèles précis, pas de fiche générique.
+    { brand:'Tekin', category:'Variateur (ESC)', name:'RS GEN3 ESC', reference:'TT1156', detail:'Variateur compétition brushless/brushed sensored 1/10, BEC 6.0/7.4 V.', url:'https://www.teamtekin.com/rs.html' },
+    { brand:'Tekin', category:'Variateur (ESC)', name:'RS GEN3 SPEC ESC', reference:'TT1157', detail:'Variateur stock 1/10 SPEC, mode blinky, prévu pour moteur 13.5T et plus.', url:'https://www.teamtekin.com/rs_spec.html' },
+    { brand:'Tekin', category:'Variateur (ESC)', name:'RS PRO Black Edition', reference:'TT1158', detail:'Variateur compétition Tekin RS PRO Black Edition ; vérifier configuration et application.', url:'https://www.teamtekin.com/rspro.html' },
+    { brand:'Tekin', category:'Variateur (ESC)', name:'RSX PRO', reference:'TT1159', detail:'Variateur brushless compétition 1/10, destiné notamment aux configurations modified.', url:'https://www.teamtekin.com/product10.html' },
+
+    // Variateurs LRP avec référence exacte.
+    { brand:'LRP', category:'Variateur (ESC)', name:'Flow X Offroad', reference:'500003', detail:'Variateur compétition brushless sensored 1/10, version Offroad.', url:'https://www.lrp.cc/en/service/setup-sheets/' },
+    { brand:'LRP', category:'Variateur (ESC)', name:'Flow X TC Spec', reference:'500004', detail:'Variateur compétition brushless sensored 1/10, version Touring Car.', url:'https://www.lrp.cc/en/product/500004/' },
+    { brand:'LRP', category:'Variateur (ESC)', name:'Flow X StockSpec', reference:'500005', detail:'Variateur compétition brushless sensored 1/10, logiciel StockSpec.', url:'https://www.lrp.cc/en/product/500005/' },
+    { brand:'LRP', category:'Variateur (ESC)', name:'Spin Super Brushless', reference:'80230', detail:'Variateur brushless sensored polyvalent 1/10, 2S à 4S LiPo.', url:'https://www.lrp.cc/en/product/80230/' },
+    { brand:'LRP', category:'Variateur (ESC)', name:'Nexxt 4X Sensorless', reference:'86500', detail:'Variateur sensorless 1/10 à partir de 7.5T ; non compatible avec moteurs 1/10 à stack LRP.', url:'https://www.lrp.cc/en/product/86500/' },
+
+    // Moteurs LRP Dynamic10 : chaque KV et référence constitue une fiche distincte.
+    { brand:'LRP', category:'Moteur', name:'Dynamic10 BL 3700 kV', reference:'53540', detail:'Moteur brushless 540/550, 4 pôles, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53540/' },
+    { brand:'LRP', category:'Moteur', name:'Dynamic10 BL 3800 kV', reference:'53430', detail:'Moteur brushless 540/550, 4 pôles, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53430/' },
+    { brand:'LRP', category:'Moteur', name:'Dynamic10 BL 4800 kV', reference:'53440', detail:'Moteur brushless 540/550, 4 pôles, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53440/' },
+    { brand:'LRP', category:'Moteur', name:'Dynamic10L BL 4700 kV', reference:'53550', detail:'Moteur brushless 540/550 long, 4 pôles, sensored/sensorless.', url:'https://www.lrp.cc/en/product/53550/' },
+
+    // Hobbywing : déclinaisons supplémentaires de la gamme compétition V10 G4.
+    ...[
+      ['3.5T','30401157'],['4.0T','30401158'],['6.5T','30401163'],
+      ['7.5T','30401165'],['8.5T','30401167'],['10.5T','30401171'],
+      ['13.5T','30401175']
+    ].map(([turn,reference]) => ({
+      brand:'Hobbywing', category:'Moteur', name:'XeRun V10 G4 — '+turn,
+      reference, compatibility:'Moteur brushless sensored 1/10',
+      detail:'Moteur compétition Hobbywing XeRun V10 G4 ; bobinage distinct. Vérifier la révision et le rotor.',
+      url:'https://www.hobbywing.com/goods.php?id=718&pid=1'
+    })),
+
+    // Reedy : variantes stock courantes de la gamme Sonic 540-M4, références individuelles.
+    ...[
+      ['21.5','27432'],['17.5','27433'],['13.5','27434'],['10.5','27435']
+    ].map(([turn,reference]) => ({
+      brand:'Reedy', category:'Moteur', name:'Sonic 540-M4 — '+turn+'T',
+      reference, compatibility:'Moteur brushless sensored 1/10',
+      detail:'Moteur Reedy Sonic 540-M4 ; bobinage distinct pour catégories stock.',
+      url:'https://apps.associatedelectrics.com/aereferencelibrary/pages/reedy_motors.html'
+    })),
 
   ];
   const root = document.getElementById('materialsApp');
