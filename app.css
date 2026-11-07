@@ -614,3 +614,56 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
 .track-entity-card .item-actions{grid-column:2;width:auto;display:flex;flex-wrap:wrap;align-items:center}
 
 .trend-filter-label{display:flex;align-items:center;gap:10px;max-width:360px;margin:0 0 8px;color:var(--muted);font-size:12px}.trend-filter-label select{flex:1;min-width:0}.trend-details{display:grid;gap:0;margin:8px 0 12px;border-top:1px solid var(--line)}.trend-detail-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 3px;border-bottom:1px solid var(--line);font-size:12px}.trend-detail-row>span{display:grid;gap:3px;min-width:0}.trend-detail-row small{color:var(--muted);font-size:10px}.trend-detail-row>strong{white-space:nowrap;font-variant-numeric:tabular-nums}
+
+
+/* Accueil : distinguer l'atelier (espaces principaux) des outils d'analyse */
+#dashboardView .welcome-features{
+  border-left:4px solid #c52b32;
+  background:linear-gradient(120deg,rgba(197,43,50,.09),rgba(24,35,49,.98) 34%,rgba(16,24,33,.98));
+}
+#dashboardView .welcome-heading{max-width:680px;margin-bottom:23px}
+#dashboardView .welcome-heading h2{font-size:clamp(27px,4vw,39px);line-height:1.08;letter-spacing:-.055em}
+#dashboardView .welcome-heading .kicker{color:#ff858b}
+#dashboardView .feature-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#dashboardView .feature-card{min-height:190px;padding:19px;align-items:flex-start;text-align:left}
+#dashboardView .feature-icon{width:48px;height:48px;font-size:24px;border:1px solid rgba(255,133,139,.22)}
+#dashboardView .feature-card strong{font-size:14px}
+#dashboardView .feature-card>span:not(.feature-icon){font-size:11px;line-height:1.65}
+#dashboardView .home-capabilities{
+  overflow:visible;padding:8px 0 0;border:0;border-radius:0;background:transparent;box-shadow:none;
+}
+#dashboardView .home-capabilities-heading{max-width:720px;margin:0 0 20px;padding-left:17px;border-left:2px solid #c52b32}
+#dashboardView .home-capabilities-heading .kicker{color:#aebbc8;letter-spacing:.2em}
+#dashboardView .home-capabilities-heading h2{font-size:clamp(24px,3.5vw,33px);line-height:1.12}
+#dashboardView .home-capabilities-heading p{max-width:600px}
+#dashboardView .capability-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+#dashboardView .capability-card{
+  display:grid;grid-template-columns:40px minmax(0,1fr);grid-template-rows:1fr auto;align-items:start;
+  min-height:150px;padding:14px;border:1px solid rgba(174,187,200,.14);border-radius:13px;
+  background:rgba(255,255,255,.018);box-shadow:none;
+}
+#dashboardView .capability-card:after{display:none}
+#dashboardView .capability-card>span{grid-row:1 / span 2;width:34px;height:34px;border-radius:10px;font-size:16px}
+#dashboardView .capability-card>div{min-width:0}
+#dashboardView .capability-card strong{font-size:12px}
+#dashboardView .capability-card p{font-size:10px;line-height:1.55}
+#dashboardView .capability-card button{grid-column:2;justify-self:start;margin-top:8px}
+@media(max-width:700px){
+ #dashboardView .welcome-features{border-left-width:3px}
+ #dashboardView .welcome-heading{margin-bottom:16px}
+ #dashboardView .welcome-heading h2{font-size:27px}
+ #dashboardView .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #dashboardView .feature-card{min-height:178px;padding:12px}
+ #dashboardView .feature-icon{width:37px;height:37px;font-size:19px}
+ #dashboardView .feature-card strong{font-size:11px}
+ #dashboardView .feature-card>span:not(.feature-icon){font-size:9.5px}
+ #dashboardView .home-capabilities{padding-top:4px}
+ #dashboardView .home-capabilities-heading{margin-bottom:14px}
+ #dashboardView .home-capabilities-heading h2{font-size:25px}
+ #dashboardView .capability-grid{grid-template-columns:1fr 1fr;gap:7px}
+ #dashboardView .capability-card{grid-template-columns:30px minmax(0,1fr);min-height:145px;padding:10px;gap:7px}
+ #dashboardView .capability-card>span{width:28px;height:28px;font-size:14px}
+ #dashboardView .capability-card strong{font-size:10.5px}
+ #dashboardView .capability-card p{font-size:9px}
+ #dashboardView .capability-card button{font-size:8.5px}
+}
