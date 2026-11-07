@@ -122,3 +122,7 @@
 
 /* Pro-Line : logo davantage agrandi dans la vignette, sans modifier sa taille */
 .material-brand-tile[data-brand="Pro-Line"] .material-brand-logo{transform:scale(1.42);}
+
+/* Logos ajustés : WS Line est un marquage imprimé sur le moteur fourni par Wartelle. */
+.material-brand-tile[data-brand="WS Line"] .material-brand-logo{transform:scale(1.55);}
+.material-brand-tile[data-brand="Reedy"] .material-brand-logo{transform:scale(1.18);}
