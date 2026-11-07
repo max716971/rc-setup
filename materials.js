@@ -268,6 +268,33 @@
       detail:'Huile silicone amortisseur Yokomo. L’indice Yokomo n’est pas une conversion directe en WT/CST.',
       url:'https://teamyokomo.com/parts/YS-600B/'
     })),
+    // Yokomo — viscosités supplémentaires de la gamme Super Blend Shock Oil.
+    ...[
+      ['YS-300B','300'],['YS-350B','350'],['YS-375B','375'],['YS-400B','400'],['YS-425B','425'],
+      ['YS-450B','450'],['YS-500B','500'],['YS-525B','525'],['YS-550B','550']
+    ].map(([reference,grade])=>({
+      brand:'Yokomo',category:'Huile amortisseur',name:'Super Blend Shock Oil #'+grade+' — 35 cc',
+      reference,detail:'Huile silicone Yokomo pour amortisseurs ; indice de viscosité constructeur #'+grade+'.',
+      url:'https://teamyokomo.com/downloadfiles/%2102%21MANUAL/%2105%21ON-ROAD_KIT/MS2.0_Instruction_Manual.pdf'
+    })),
+    // Ressorts TLR 1/10 — familles 12 mm Low Frequency et 13 mm G3, références et taux fabricant.
+    ...[
+      ['TLR233046','Avant','Argent','3.18','12'],['TLR233047','Avant','Vert','3.38','12'],['TLR233048','Avant','Bleu','3.53','12'],
+      ['TLR233049','Avant','Noir','3.68','12'],['TLR233050','Avant','Marron','3.85','12'],['TLR233051','Avant','Violet','4.03','12'],
+      ['TLR233052','Avant','Bleu ciel','4.23','12'],['TLR233053','Avant','Jaune','4.45','12'],['TLR233054','Avant','Or','4.70','12'],
+      ['TLR233055','Arrière','Gris','1.96','12'],['TLR233056','Arrière','Blanc','2.02','12'],['TLR233057','Arrière','Jaune','2.06','12'],
+      ['TLR233058','Arrière','Rose','2.11','12'],['TLR233059','Arrière','Rouge','2.16','12'],
+      ['TLR-1188','Arrière','Jaune','2.10','13'],['TLR-1189','Arrière','Orange','1.98','13'],['TLR-1190','Arrière','Vert','2.22','13'],
+      ['TLR-1191','Arrière','Bleu','2.37','13'],['TLR-1202','Arrière','Rouge','1.87','13'],['TLR-1208','Arrière','Violet','2.54','13'],
+      ['TLR-1199','Avant','Rouge','3.56','13'],['TLR-1200','Avant','Marron','3.39','13'],['TLR-1203','Avant','Violet','4.75','13'],
+      ['TLR-1204','Avant','Jaune','3.95','13'],['TLR-1205','Avant','Orange','3.75','13'],['TLR-1206','Avant','Bleu','4.45','13'],
+      ['TLR-1207','Avant','Vert','4.19','13']
+    ].map(([reference,position,color,rate,diameter])=>({
+      brand:'TLR',category:'Ressort',name:'TLR 22 — '+position+' — '+color+' ('+rate+' lb/in)',
+      reference,compatibility:'TLR 22 / 22X — ressort '+diameter+' mm — '+position.toLowerCase(),
+      detail:'Ressort TLR '+diameter+' mm '+position.toLowerCase()+'. Couleur : '+color+'. Taux : '+rate+' lb/in.',
+      url:diameter==='12'?'https://www.tlracing.com/on/demandware.static/-/Sites-horizon-master/default/dw6b76f28c/Manuals/TLR03022-Parts-MULTI.pdf':'https://hobbydex.com/rc/releases/tlr/tlr-1233/'
+    })),
     // Ressorts Yokomo TT 1/10 — références de gammes RPU/Yatabe ; compatibilité à contrôler selon châssis.
     ...[
       ['Avant','YS-A750','Orange'],['Avant','YS-A775','Green'],['Avant','YS-A800','Pink'],['Avant','YS-A850','Red'],['Avant','YS-A875','Yellow'],['Avant','YS-A900','Gold'],
@@ -298,6 +325,8 @@
 
 
     // Compléments détaillés : modèles 1/10 identifiés, références fabricant et variantes séparées.
+    { brand:'TLR', category:'Graisse', name:'Silicone Differential Grease 8cc', reference:'TLR2952', detail:'Graisse silicone pour différentiel TLR.', url:'https://hobbydex.com/rc/releases/tlr/tlr-1233/' },
+    { brand:'TLR', category:'Graisse', name:'High-Pressure Black Grease 8cc', reference:'TLR77000', detail:'Graisse noire haute pression TLR.', url:'https://hobbydex.com/rc/releases/tlr/tlr-1233/' },
     // TLR silicone shock oils : grades WT proposés dans la gamme 60 ml ; SKU individuel non affiché.
     ...['17.5','20','22.5','25','27.5','30','32.5','35','37.5','40','45','50','55','60','70','80','90'].map(wt => ({
       brand:'TLR', category:'Huile amortisseur',
@@ -446,6 +475,10 @@
     // Tamiya — huiles de différentiel officielles.
     { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #500000', reference:'54418', detail:'Huile silicone de différentiel 500 000 ; flacon 30 ml.', url:'https://www.tamiya.com/english/products/54418/index.html' },
     { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #1000000', reference:'54419', detail:'Huile silicone de différentiel 1 000 000 ; flacon 30 ml.', url:'https://www.tamiya.com/english/products/54419/index.html' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Oil #700 — usage différentiel', reference:'54715', detail:'Huile silicone Tamiya utilisable dans les différentiels selon le fabricant (grades #700 à #1000).', url:'https://www.tamiya.com/english/products/54715/index.html' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Oil #800 — usage différentiel', reference:'54716', detail:'Huile silicone Tamiya utilisable dans les différentiels selon le fabricant (grades #700 à #1000).', url:'https://www.tamiya.com/english/products/54716/index.html' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Oil #900 — usage différentiel', reference:'54717', detail:'Huile silicone Tamiya utilisable dans les différentiels selon le fabricant (grades #700 à #1000).', url:'https://www.tamiya.com/english/products/54717/index.html' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Oil #1000 — usage différentiel', reference:'54718', detail:'Huile silicone Tamiya utilisable dans les différentiels selon le fabricant (grades #700 à #1000).', url:'https://www.tamiya.com/english/products/54718/index.html' },
     { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #4000', reference:'22006', detail:'Huile silicone de différentiel 4 000 cSt.', url:'https://www.rcteam.com/collections/accessoires-et-pieces-huiles-graisses-colles-huile-et-graisse-differentiel-huile-de-differentiel' },
     { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #5000', reference:'22007', detail:'Huile silicone de différentiel 5 000 cSt.', url:'https://www.rcteam.com/collections/accessoires-et-pieces-huiles-graisses-colles-huile-et-graisse-differentiel-huile-de-differentiel' },
     // WS Line — références de modèles et codes produit relevés sur les fiches détaillées.
@@ -532,6 +565,15 @@
     {brand:'OPTIMA',category:'Ressort',name:'Ressorts internes amortisseurs additionnels 1/10',reference:'POR2-115',compatibility:'Buggy 1/10 — ressorts internes d’amortisseurs',detail:'Kit de ressorts internes OPTIMA destiné à limiter le roulis et le tangage. Taux individuels non communiqués dans la fiche consultée.',url:'https://6mik-racing.com/optima-add-110-springs/'},
     // Tamiya — huiles silicone d’amortisseur et références supplémentaires d’huile de différentiel.
     { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #500', reference:'54712', detail:'Huile silicone d’amortisseur, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54712/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #250', reference:'54707', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54707/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #300', reference:'54708', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54708/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #350', reference:'54709', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54709/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #400', reference:'54710', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54710/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #450', reference:'54711', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54711/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #550', reference:'54713', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54713/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #700', reference:'54715', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54715/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #800', reference:'54716', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54716/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #1000', reference:'54718', detail:'Huile silicone d’amortisseur Tamiya, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54718/index.html' },
     { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #600', reference:'54714', detail:'Huile silicone d’amortisseur, grade #600.', url:'https://www.tamiya.com/english/products/54714/index.html' },
     { brand:'Tamiya', category:'Huile amortisseur', name:'Damper Oil #900', reference:'54717', detail:'Huile silicone d’amortisseur, grade #900.', url:'https://www.tamiya.com/english/products/54717/index.html' },
     { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #100000', reference:'54294', detail:'Huile silicone de différentiel haute viscosité, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54294/index.html' },
@@ -596,7 +638,7 @@
     { brand:'Yokomo', category:'Graisse', name:'Seal Grease', reference:'CS-SLGA', detail:'Graisse Yokomo pour joints toriques et joints d’étanchéité.', url:'https://hobbydex.com/rc/releases/yokomo/so1-0/' },
     // Pro-Line — inserts 1/10 buggy.
     { brand:'Pro-Line', category:'Insert pneu', name:'V2 Closed Cell Rear Foam 1/10 Buggy', reference:'6185-04', compatibility:'Arrière 2WD/4WD', detail:'Insert arrière cellule fermée V2 pour pneus buggy 2.2 pouces ; paire.', url:'https://www.jetmodel.it/prodotto/proline-closed-cell-v2-inserti/' },
-    { brand:'Pro-Line', category:'Insert pneu', name:'Closed Cell 4WD Front Inserts 1/10 Buggy', reference:'6185-02', compatibility:'Avant 4WD', detail:'Insert avant cellule fermée pour buggy 1/10 4WD.', url:'https://www.rc-passion.com/pneu-insert-jante-6mik-proline-procircuit-aka-grp-hobbytech-traxxas/' },
+    { brand:'Pro-Line', category:'Insert pneu', name:'Closed Cell 4WD Front Inserts 1/10 Buggy', reference:'6185-02', compatibility:'Avant 4WD', detail:'Insert avant cellule fermée pour buggy 1/10 4WD.', url:'https://www.prolineracing.com/' },
     { brand:'Pro-Line', category:'Insert pneu', name:'Closed Cell 2WD Front Foam Inserts 1/10 Buggy', reference:'6185-03', compatibility:'Avant 2WD', detail:'Insert avant cellule fermée pour buggy 1/10 2WD.', url:'https://www.cml-racing.com/gb/pneus/3891-proline-1-10-closed-2wd-front-foam-inserts-2-proline-pl6185-03-675118156590.html' },
     { brand:'Pro-Line', category:'Insert pneu', name:'Open Cell Medium Rear Foam 1/10 Buggy', reference:'6365-00', compatibility:'Arrière 2WD/4WD', detail:'Insert arrière mousse ouverte medium pour buggy 1/10.', url:'https://teams.prolineracing.com/Images/pricelist.pdf' },
 
