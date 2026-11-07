@@ -290,3 +290,9 @@ select { color-scheme: dark; } textarea { min-height: 90px; resize: vertical; li
   .transmission-diff-fields { grid-template-columns:1fr; gap:10px; }
   .transmission-diff-heading { margin-bottom:12px; }
 }
+
+/* Outils de calcul et carnet de test */
+.tool-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tool-result{margin-top:14px;padding:15px;border:1px solid rgba(116,217,232,.2);border-radius:13px;background:rgba(116,217,232,.045);color:var(--text);font-size:13px;line-height:1.65}
+.tool-result ol{margin:9px 0;padding-left:21px}.tool-result li{margin:6px 0}
+@media(max-width:700px){.tool-form-grid{grid-template-columns:1fr}}
