@@ -603,3 +603,6 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
 /* Identité visuelle RC SETUP */
 .brand-logo{display:block;width:46px;height:46px;flex:0 0 46px;object-fit:cover;border:1px solid rgba(174,187,200,.55);border-radius:13px;box-shadow:0 5px 16px rgba(0,0,0,.28)}
 @media(max-width:700px){.brand-logo{width:40px;height:40px;flex-basis:40px;border-radius:11px}}
+
+/* Onglets de la fiche voiture */
+.car-editor-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 12px;padding-bottom:9px;border-bottom:1px solid var(--line)}.car-editor-tab{border:1px solid var(--line);border-radius:10px;padding:9px 14px;background:rgba(255,255,255,.035);color:var(--muted);font:inherit;font-size:.88rem;font-weight:700}.car-editor-tab.active{background:rgba(197,43,50,.14);border-color:rgba(197,43,50,.55);color:var(--text)}.car-editor-panel{min-width:0}.car-history-editor{margin:8px 0 18px;padding:16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}.car-history-editor .form-section{margin:0 0 12px}.car-editor-history-list{margin:12px 0 16px}.car-editor-history-list:empty{display:none}.car-editor-history-list>strong{font-size:.85rem}.car-editor-history-list .car-parts-history{margin-top:8px}.car-detail-section>.item-sub{margin:0 0 10px}
