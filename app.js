@@ -5776,6 +5776,8 @@ const installButton = document.getElementById('installButton');
 let deferredPrompt = null;
 let toastTimer;
 let pendingPhotos = [];
+let pendingCarPhotos = [];
+let editingCarId = null;
 let editingSetupId = null;
 let editingTrackId = null;
 let setupDraftSource = null;
@@ -5852,11 +5854,14 @@ function renderCars() {
   if (!state.cars.length) { container.append(emptyState()); return; }
   state.cars.forEach((car) => {
     const item = document.createElement('article');
-    item.className = 'list-item entity-card';
-    item.innerHTML = `<div class="item-avatar car-avatar">🚗</div><div class="item-main"><h3>${escapeHtml(car.name)}</h3><p class="item-sub">${escapeHtml(car.brand || 'Marque / modèle non renseigné')} ${car.scale ? `· ${escapeHtml(car.scale)}` : ''}${car.drive ? ` · ${escapeHtml(car.drive)}` : ''}</p>${car.notes ? `<p class="item-detail">${escapeHtml(car.notes)}</p>` : ''}</div><button class="icon-button danger-action delete-car" data-id="${escapeHtml(car.id)}" aria-label="Supprimer ${escapeHtml(car.name)}" type="button">×</button>`;
+    item.className = 'list-item entity-card car-entity-card';
+    const photos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
+    const gallery=photos.length?`<div class="car-photo-gallery">${photos.map((photo,index)=>`<a href="${photo}" target="_blank" rel="noopener" aria-label="Ouvrir la photo ${index+1} de ${escapeHtml(car.name)}"><img src="${photo}" alt="${escapeHtml(car.name)} — photo ${index+1}" loading="lazy"></a>`).join('')}</div>`:'<div class="car-photo-empty">Aucune photo ajoutée</div>';
+    item.innerHTML = `<div class="item-avatar car-avatar">🚗</div><div class="item-main"><h3>${escapeHtml(car.name)}</h3><p class="item-sub">${escapeHtml(car.brand || 'Marque / modèle non renseigné')} ${car.scale ? `· ${escapeHtml(car.scale)}` : ''}${car.drive ? ` · ${escapeHtml(car.drive)}` : ''}</p>${car.notes ? `<p class="item-detail">${escapeHtml(car.notes)}</p>` : ''}${gallery}<div class="car-card-actions"><button class="button button-soft edit-car" data-id="${escapeHtml(car.id)}" type="button">Modifier / photos</button><button class="button button-quiet danger-action delete-car" data-id="${escapeHtml(car.id)}" type="button">Supprimer</button></div></div>`;
     container.append(item);
   });
   container.querySelectorAll('.delete-car').forEach((button) => button.addEventListener('click', () => removeCar(button.dataset.id)));
+  container.querySelectorAll('.edit-car').forEach((button) => button.addEventListener('click', () => openCarEditor(button.dataset.id)));
 }
 
 function renderTracks() {
@@ -6044,17 +6049,43 @@ function handleCarCatalogAdd() {
   if (selected === '' || selected == null) { showToast('Choisis d’abord un modèle.'); return; }
   const model = CAR_CATALOG[Number(selected)];
   if (!model) return;
-  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: model.drive, type: model.type, era: model.era, createdAt: new Date().toISOString() });
+  state.cars.unshift({ id: uid('car'), name: model.name, brand: model.brand, scale: model.scale, drive: model.drive, type: model.type, era: model.era, photos: [], createdAt: new Date().toISOString() });
   saveState(); renderAll();
   document.getElementById('carCatalogModel').value = '';
   showToast(model.name + ' ajouté au garage.');
+}
+function openCarEditor(id) {
+  const car=getCarById(id);if(!car)return;
+  const form=document.getElementById('carForm');editingCarId=id;
+  for(const name of ['name','brand','scale','drive','notes']){const field=form.elements.namedItem(name);if(field)field.value=car[name]||'';}
+  pendingCarPhotos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
+  renderCarPhotoPreviews();
+  form.querySelector('h2').textContent='Modifier la voiture';
+  form.querySelector('button[type="submit"]').textContent='Enregistrer les modifications';
+  form.classList.remove('hidden');form.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function resetCarEditor() {
+  editingCarId=null;pendingCarPhotos=[];
+  const form=document.getElementById('carForm');if(!form)return;
+  const heading=form.querySelector('h2');if(heading)heading.textContent='Ajouter une autre voiture';
+  const submit=form.querySelector('button[type="submit"]');if(submit)submit.textContent='Enregistrer';
+  renderCarPhotoPreviews();
 }
 function handleCarSubmit(event) {
   event.preventDefault();
   const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'notes']);
   if (!data.name) return;
-  state.cars.unshift({ id: uid('car'), ...data, createdAt: new Date().toISOString() });
-  saveState(); renderAll(); event.target.reset(); event.target.classList.add('hidden'); showToast('Voiture personnalisée ajoutée au garage.');
+  if(editingCarId){
+    const car=getCarById(editingCarId);if(!car){showToast('Voiture introuvable.');return;}
+    const previous={...car};Object.assign(car,data,{photos:[...pendingCarPhotos],updatedAt:new Date().toISOString()});
+    if(!saveState()){Object.assign(car,previous);return;}
+    showToast('Voiture et photos mises à jour.');
+  }else{
+    state.cars.unshift({ id: uid('car'), ...data, photos:[...pendingCarPhotos], createdAt: new Date().toISOString() });
+    if(!saveState()){state.cars.shift();return;}
+    showToast('Voiture personnalisée ajoutée au garage.');
+  }
+  editingCarId=null;pendingCarPhotos=[];renderCarPhotoPreviews();renderAll();event.target.reset();event.target.classList.add('hidden');resetCarEditor();
 }
 function openTrackEditor(id) {
   const track = getTrackById(id);
@@ -6151,6 +6182,27 @@ async function handlePhotoSelection(event) {
     } catch (error) {
       showToast(error.message || 'Impossible de charger cette photo.');
     }
+  }
+}
+function renderCarPhotoPreviews() {
+  const container=document.getElementById('carPhotoPreview');if(!container)return;
+  container.replaceChildren();
+  pendingCarPhotos.forEach((photo,index)=>{
+    const tile=document.createElement('div');tile.className='photo-preview-tile';
+    tile.innerHTML=`<img src="${photo}" alt="Aperçu de la photo ${index+1} de la voiture"><button type="button" class="photo-remove" aria-label="Retirer la photo ${index+1}">×</button>`;
+    tile.querySelector('.photo-remove').addEventListener('click',()=>{pendingCarPhotos.splice(index,1);renderCarPhotoPreviews();});
+    container.append(tile);
+  });
+  const count=document.getElementById('carPhotoCount');if(count)count.textContent=`${pendingCarPhotos.length}/3 photos`;
+}
+async function handleCarPhotoSelection(event) {
+  const files=Array.from(event.target.files||[]);event.target.value='';
+  const available=3-pendingCarPhotos.length;
+  if(available<=0){showToast('Maximum 3 photos par voiture.');return;}
+  if(files.length>available)showToast('Maximum 3 photos par voiture : seules les premières seront ajoutées.');
+  for(const file of files.slice(0,available)){
+    try{pendingCarPhotos.push(await compressPhoto(file));renderCarPhotoPreviews();}
+    catch(error){showToast(error.message||'Impossible de charger cette photo.');}
   }
 }
 
@@ -6279,7 +6331,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=82').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=83').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
@@ -6300,6 +6352,8 @@ document.querySelectorAll('[data-open-form]').forEach((button) => button.addEven
 }));
 document.querySelectorAll('[data-go-view]').forEach((button) => button.addEventListener('click', (event) => { event.preventDefault(); setView(button.dataset.goView); }));
 document.getElementById('carForm').addEventListener('submit', handleCarSubmit);
+document.getElementById('carPhotosInput')?.addEventListener('change',handleCarPhotoSelection);
+document.getElementById('carForm').addEventListener('reset',()=>{editingCarId=null;pendingCarPhotos=[];setTimeout(()=>{resetCarEditor();document.getElementById('carForm')?.classList.add('hidden');},0);});
 document.getElementById('carCatalogBrand').addEventListener('change', updateCarCatalogOptions);
 document.getElementById('carCatalogEra').addEventListener('change', updateCarCatalogOptions);
 document.getElementById('carCatalogSearch').addEventListener('input', updateCarCatalogOptions);
