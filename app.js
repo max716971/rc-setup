@@ -5990,21 +5990,8 @@ function printSetupDetails(){
   const meta=subtitle.split('·').map(value=>value.trim()).filter(Boolean);
   const sectionMarkup=sections.map((section,index)=>{
     const clone=section.cloneNode(true);
-    // Le PDF reprend strictement l'ordre de la fiche Setup : huile, piston, ressort,
-    // d'abord à l'avant puis à l'arrière.
-    if((clone.querySelector('h3')?.textContent||'').toLowerCase().includes('suspension')){
-      const dl=clone.querySelector('dl');
-      if(dl){
-        const order=['huile amortisseur avant','piston amortisseur avant','ressort avant','coupelle sous amortisseur avant','tour d’amortisseur avant','position amortisseur avant','huile amortisseur arrière','piston amortisseur arrière','ressort arrière','coupelle sous amortisseur arrière','tour d’amortisseur arrière','position amortisseur arrière'];
-        const rows=[...dl.children];
-        rows.sort((a,b)=>{
-          const label=node=>(node.querySelector('dt')?.textContent||'').trim().toLocaleLowerCase('fr');
-          const ai=order.indexOf(label(a)),bi=order.indexOf(label(b));
-          return (ai<0?999:ai)-(bi<0?999:bi);
-        });
-        rows.forEach(row=>dl.appendChild(row));
-      }
-    }
+    // Ne pas retrier les champs : la fiche Setup définit déjà l'ordre exact.
+    // Les six paramètres avant restent groupés, puis les six paramètres arrière.
     clone.classList.add('print-section');
     clone.dataset.section=String(index+1).padStart(2,'0');
     if(clone.querySelector('.setup-gallery'))clone.classList.add('print-photo-section');
