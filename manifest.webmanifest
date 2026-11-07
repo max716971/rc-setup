@@ -4,14 +4,14 @@
   "description": "Carnet de réglages radio-commandés pour iPhone.",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#070b14",
-  "theme_color": "#111827",
+  "background_color": "#101821",
+  "theme_color": "#c52b32",
   "lang": "fr",
   "icons": [
     {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "assets/rc-setup-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]

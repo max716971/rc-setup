@@ -599,3 +599,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
 .toast{border-color:rgba(197,43,50,.35)}
 .brand-tile.selected,.material-brand-tile.selected,.car-catalog-result:hover{border-color:#c52b32;background:rgba(197,43,50,.12)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Identité visuelle RC SETUP */
+.brand-logo{display:block;width:46px;height:46px;flex:0 0 46px;object-fit:cover;border:1px solid rgba(174,187,200,.55);border-radius:13px;box-shadow:0 5px 16px rgba(0,0,0,.28)}
+@media(max-width:700px){.brand-logo{width:40px;height:40px;flex-basis:40px;border-radius:11px}}
