@@ -25,3 +25,6 @@
 .setup-library-picker { display: grid; gap: 5px; margin: 0 0 7px; color: var(--dim); font-size: 10px; font-weight: 600; }
 .setup-library-picker select { min-height: 37px; padding: 8px 10px; font-size: 11px; }
 @media (max-width: 700px) { .material-filter-row, .material-form-grid, .material-grid { grid-template-columns: 1fr; } .material-wide { grid-column: auto; } .material-add-row { justify-content: stretch; } .material-add-row .button { width: 100%; } .material-tabs { display: grid; grid-template-columns: 1fr 1fr; } }
+
+.setup-library-picker input { min-height: 37px; padding: 8px 10px; font-size: 11px; }
+.setup-library-picker select { width: 100%; }
