@@ -28,3 +28,7 @@
 
 .setup-library-picker input { min-height: 37px; padding: 8px 10px; font-size: 11px; }
 .setup-library-picker select { width: 100%; }
+
+#setupForm .setup-library-picker{display:grid;grid-template-columns:1fr;gap:6px;width:100%;padding:9px;border:1px solid rgba(116,217,232,.14);border-radius:12px;background:rgba(116,217,232,.035)}
+#setupForm .setup-library-picker span{color:var(--cyan);font-size:10px;font-weight:750}
+#setupForm .setup-library-picker input,#setupForm .setup-library-picker select{min-height:40px}
