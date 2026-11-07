@@ -1,5 +1,5 @@
 (() => {
-  // RSRC-listed XRT silicone oils. Shock oils and differential oils are separate categories.
+  // RSRC XRT silicone oils. Shock oils and differential oils are separate categories.
   const STORAGE_KEY = 'rc-setup-materials-v1';
   const seedKey = 'rc-setup-rsrc-xrt-oils-v2';
   const xrtProducts = [
