@@ -5848,6 +5848,13 @@ function renderDashboard() {
   renderPerformanceTrend();
 }
 
+function carEquipmentMarkup(car) {
+  const fields=[['Moteur','engineEquipment'],['Variateur / ESC','escEquipment'],['Servo','servoEquipment'],['Pneus','tiresEquipment'],['Amortisseurs','shocksEquipment']];
+  const setups=state.setups.filter(setup=>setup.carId===car.id).sort((a,b)=>new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0));
+  const history=Array.isArray(car.partsHistory)?[...car.partsHistory].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))):[];
+  const photos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
+  return `<div class="car-detail-grid"><section><h4>Équipements</h4><dl class="car-equipment-list">${fields.map(([label,key])=>`<div><dt>${label}</dt><dd>${escapeHtml(car[key]||'Non renseigné')}</dd></div>`).join('')}</dl><p class="item-sub">${escapeHtml(car.type||'Type non renseigné')} · ${escapeHtml(car.scale||'Échelle non renseignée')} · ${escapeHtml(car.drive||'Transmission non renseignée')}</p></section><section><h4>Setups associés (${setups.length})</h4>${setups.length? `<ul class="car-setup-links">${setups.map(setup=>`<li><button type="button" class="text-button open-car-setup" data-id="${escapeHtml(setup.id)}">${escapeHtml(setup.setupName||setup.sessionDate||'Setup')} — ${escapeHtml(getTrackById(setup.trackId)?.name||'Piste non renseignée')}</button></li>`).join('')}</ul>`:'<p class="item-sub">Aucun setup associé pour le moment.</p>'}</section></div><section class="car-detail-section"><h4>Photos de la voiture (${photos.length}/3)</h4>${photos.length?`<div class="car-detail-photos">${photos.map((photo,index)=>`<a href="${photo}" target="_blank" rel="noopener"><img src="${photo}" alt="Photo ${index+1} de ${escapeHtml(car.name)}" loading="lazy"></a>`).join('')}</div>`:'<p class="item-sub">Ajoute jusqu’à trois photos depuis Modifier.</p>'}</section><section class="car-detail-section"><h4>Historique des pièces et modifications</h4>${history.length?`<ol class="car-parts-history">${history.map(entry=>`<li><strong>${escapeHtml(entry.part||'Modification')}</strong><span>${escapeHtml(entry.action||'Modifiée')} · ${escapeHtml(entry.date||'Date inconnue')}</span>${entry.notes?`<p>${escapeHtml(entry.notes)}</p>`:''}</li>`).join('')}</ol>`:'<p class="item-sub">Aucune pièce enregistrée. Les changements d’équipements seront ajoutés automatiquement à l’historique.</p>'}</section></div>`;
+}
 function renderCars() {
   const container = document.getElementById('carsList');
   container.replaceChildren();
@@ -5855,13 +5862,18 @@ function renderCars() {
   state.cars.forEach((car) => {
     const item = document.createElement('article');
     item.className = 'list-item entity-card car-entity-card';
-    const photos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
-    const avatar=photos[0]?`<a class="item-avatar car-avatar car-avatar-photo" href="${photos[0]}" target="_blank" rel="noopener" aria-label="Ouvrir la photo principale de ${escapeHtml(car.name)}"><img src="${photos[0]}" alt="${escapeHtml(car.name)}" loading="lazy"></a>`:'<div class="item-avatar car-avatar">🚗</div>';
-    item.innerHTML = `${avatar}<div class="item-main"><h3>${escapeHtml(car.name)}</h3><p class="item-sub">${escapeHtml(car.brand || 'Marque / modèle non renseigné')} ${car.scale ? `· ${escapeHtml(car.scale)}` : ''}${car.drive ? ` · ${escapeHtml(car.drive)}` : ''}</p>${car.notes ? `<p class="item-detail">${escapeHtml(car.notes)}</p>` : ''}<div class="car-card-actions"><button class="button button-soft edit-car" data-id="${escapeHtml(car.id)}" type="button">Modifier / photos</button><button class="button button-quiet danger-action delete-car" data-id="${escapeHtml(car.id)}" type="button">Supprimer</button></div></div>`;
+    const setups=state.setups.filter(setup=>setup.carId===car.id).length;
+    const itemType=car.type?escapeHtml(car.type):'Type non renseigné';
+    item.innerHTML = `<div class="item-avatar car-avatar">🚗</div><div class="item-main"><h3>${escapeHtml(car.name)}</h3><p class="item-sub">${escapeHtml(car.brand || 'Marque / modèle non renseigné')} · ${escapeHtml(car.scale || 'Échelle non renseignée')} · ${escapeHtml(car.drive || 'Transmission non renseignée')} · ${itemType}</p><p class="item-detail">${setups} setup(s) associé(s) · ${Array.isArray(car.photos)?Math.min(3,car.photos.length):0}/3 photos</p>${car.notes ? `<p class="item-detail">${escapeHtml(car.notes)}</p>` : ''}<div class="car-card-actions"><button class="button button-soft view-car-details" data-id="${escapeHtml(car.id)}" type="button" aria-expanded="false">Fiche détaillée</button><button class="button button-soft edit-car" data-id="${escapeHtml(car.id)}" type="button">Modifier</button><button class="button button-quiet danger-action delete-car" data-id="${escapeHtml(car.id)}" type="button">Supprimer</button></div><div class="car-detail-panel hidden" id="car-detail-${escapeHtml(car.id)}">${carEquipmentMarkup(car)}</div></div>`;
     container.append(item);
   });
   container.querySelectorAll('.delete-car').forEach((button) => button.addEventListener('click', () => removeCar(button.dataset.id)));
   container.querySelectorAll('.edit-car').forEach((button) => button.addEventListener('click', () => openCarEditor(button.dataset.id)));
+  container.querySelectorAll('.view-car-details').forEach(button=>button.addEventListener('click',()=>{
+    const panel=document.getElementById('car-detail-'+button.dataset.id);if(!panel)return;
+    const opening=panel.classList.contains('hidden');panel.classList.toggle('hidden',!opening);button.setAttribute('aria-expanded',String(opening));button.textContent=opening?'Masquer la fiche':'Fiche détaillée';
+  }));
+  container.querySelectorAll('.open-car-setup').forEach(button=>button.addEventListener('click',()=>showSetup(button.dataset.id)));
 }
 
 function renderTracks() {
@@ -6107,7 +6119,7 @@ function getCarDifferentialCount(car) {
 function openCarEditor(id) {
   const car=getCarById(id);if(!car)return;
   const form=document.getElementById('carForm');editingCarId=id;
-  for(const name of ['name','brand','scale','drive','notes']){const field=form.elements.namedItem(name);if(field)field.value=name==='drive'?normalizeDriveType(car[name]):(car[name]||'');}const diffField=form.elements.namedItem('diffCount');if(diffField)diffField.value=car.diffCount?String(car.diffCount):'auto';
+  for(const name of ['name','brand','scale','drive','type','notes','engineEquipment','escEquipment','servoEquipment','tiresEquipment','shocksEquipment']){const field=form.elements.namedItem(name);if(field)field.value=name==='drive'?normalizeDriveType(car[name]):(car[name]||'');}const diffField=form.elements.namedItem('diffCount');if(diffField)diffField.value=car.diffCount?String(car.diffCount):'auto';
   pendingCarPhotos=Array.isArray(car.photos)?car.photos.slice(0,3):[];
   renderCarPhotoPreviews();
   form.querySelector('h2').textContent='Modifier la voiture';
@@ -6123,16 +6135,27 @@ function resetCarEditor() {
 }
 function handleCarSubmit(event) {
   event.preventDefault();
-  const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'diffCount', 'notes']);
+  const data = formValues(event.target, ['name', 'brand', 'scale', 'drive', 'type', 'diffCount', 'notes', 'engineEquipment', 'escEquipment', 'servoEquipment', 'tiresEquipment', 'shocksEquipment', 'historyPart', 'historyAction', 'historyNotes', 'historyDate']);
   if (!data.name) return;
   data.drive=normalizeDriveType(data.drive);data.diffCount=data.diffCount==='auto'?inferDifferentialCount(data):Math.min(3,Math.max(1,Number(data.diffCount)||inferDifferentialCount(data)));
   if(editingCarId){
     const car=getCarById(editingCarId);if(!car){showToast('Voiture introuvable.');return;}
-    const previous={...car};Object.assign(car,data,{photos:[...pendingCarPhotos],updatedAt:new Date().toISOString()});
+    const previous={...car};
+    const now=new Date().toISOString(), history=[...(car.partsHistory||[])];
+    for(const [key,label] of [['engineEquipment','Moteur'],['escEquipment','Variateur / ESC'],['servoEquipment','Servo'],['tiresEquipment','Pneus'],['shocksEquipment','Amortisseurs']]){
+      const before=String(car[key]||'').trim(),after=String(data[key]||'').trim();
+      if(before!==after&&(before||after))history.unshift({date:now.slice(0,10),part:label,action:before?'Remplacement / modification':'Ajout',notes:`${before||'Non renseigné'} → ${after||'Retiré'}`});
+    }
+    if(data.historyPart.trim())history.unshift({date:data.historyDate||now.slice(0,10),part:data.historyPart.trim(),action:data.historyAction||'Remplacement',notes:data.historyNotes.trim()});
+    delete data.historyPart;delete data.historyAction;delete data.historyNotes;delete data.historyDate;
+    Object.assign(car,data,{partsHistory:history.slice(0,100),photos:[...pendingCarPhotos],updatedAt:now});
     if(!saveState()){Object.assign(car,previous);return;}
-    showToast('Voiture et photos mises à jour.');
+    showToast('Fiche voiture, équipements et historique mis à jour.');
   }else{
-    state.cars.unshift({ id: uid('car'), ...data, photos:[...pendingCarPhotos], createdAt: new Date().toISOString() });
+    const now=new Date().toISOString(),partsHistory=[];
+    if(data.historyPart.trim())partsHistory.push({date:data.historyDate||now.slice(0,10),part:data.historyPart.trim(),action:data.historyAction||'Ajout',notes:data.historyNotes.trim()});
+    delete data.historyPart;delete data.historyAction;delete data.historyNotes;delete data.historyDate;
+    state.cars.unshift({ id: uid('car'), ...data, partsHistory, photos:[...pendingCarPhotos], createdAt: now });
     if(!saveState()){state.cars.shift();return;}
     showToast('Voiture personnalisée ajoutée au garage.');
   }
@@ -6265,6 +6288,11 @@ function handleSetupSubmit(event){
   editingSetupId=null;setupDraftSource=null;pendingPhotos=[];renderPhotoPreviews();renderAll();event.target.reset();event.target.classList.add('hidden');event.target.querySelector('button[type="submit"]').textContent='Enregistrer le setup';
 }
 
+function showCarSetups(id) {
+  setView('setups');
+  const filter=document.getElementById('setupCarFilter');
+  if(filter){filter.value=id;renderSetups();}
+}
 function removeCar(id) {
   const car = getCarById(id);
   if (!car || !confirm(`Supprimer « ${car.name} » et les setups associés ?`)) return;
