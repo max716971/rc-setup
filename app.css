@@ -401,3 +401,22 @@ select { color-scheme: dark; } textarea { min-height: 90px; resize: vertical; li
 @media(max-width:850px){.help-quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.help-setup-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.hero{min-height:330px}.hero-copy{width:100%}.hero-art{right:-8%;top:95px;width:210px;opacity:.24}.home-quick-actions{grid-template-columns:1fr}.quick-action-heading{grid-column:auto}.quick-action{padding:12px}.help-hero{align-items:flex-start}.help-hero-mark{flex-basis:75px;width:75px;height:75px;border-radius:20px;font-size:28px}.help-quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.help-setup-grid,.help-feature-list{grid-template-columns:1fr}.help-section{padding:16px}.help-guide-row{grid-template-columns:31px minmax(0,1fr);gap:10px}.help-guide-number{width:30px;height:30px}.feature-card{min-height:170px}}
 @media(max-width:430px){.help-hero-mark{display:none}.help-quick-grid{gap:7px}.help-quick-card{min-height:125px;padding:11px}.stats-grid{gap:8px}.stat-card{min-height:120px;padding:13px}.stat-card strong{font-size:27px}}
+
+/* Accueil : présentation complète des possibilités */
+.home-capabilities{margin:22px 0 26px;padding:25px;border:1px solid rgba(197,243,107,.2);border-radius:22px;background:linear-gradient(145deg,rgba(25,38,56,.92),rgba(12,19,31,.94))}
+.home-capabilities-heading{max-width:760px;margin-bottom:19px}
+.home-capabilities-heading h2{margin:7px 0;font-size:clamp(22px,3vw,30px);letter-spacing:-.04em}
+.home-capabilities-heading p{color:var(--muted);font-size:12px;line-height:1.7}
+.capability-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.capability-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-height:190px;padding:16px;border:1px solid rgba(165,180,203,.15);border-radius:15px;background:rgba(255,255,255,.025)}
+.capability-card>span{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:rgba(197,243,107,.1);color:var(--accent);font-size:11px;font-weight:850}
+.capability-card strong{font-size:13px;color:var(--text)}
+.capability-card p{margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.65}
+.capability-card button{margin-top:auto;padding:0;border:0;background:none;color:var(--accent);font-size:11px;font-weight:800;cursor:pointer}
+.pdf-action-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 18px;padding:15px 17px;border:1px solid rgba(197,243,107,.36);border-radius:14px;background:linear-gradient(110deg,rgba(197,243,107,.12),rgba(116,217,232,.06))}
+.pdf-action-banner>div{display:grid;gap:4px}
+.pdf-action-banner strong{font-size:13px;color:var(--text)}
+.pdf-action-banner span{font-size:11px;color:var(--muted)}
+.pdf-main-button{flex:0 0 auto;min-height:44px;padding:0 19px;font-weight:850;box-shadow:0 7px 22px rgba(0,0,0,.22)}
+@media(max-width:850px){.capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.home-capabilities{padding:16px}.capability-grid{grid-template-columns:1fr}.capability-card{min-height:0}.pdf-action-banner{align-items:stretch;flex-direction:column}.pdf-main-button{width:100%}}
