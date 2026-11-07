@@ -41,6 +41,104 @@
       url: 'https://www.racing-cars.com/wheels-tyres'
     })),
 
+    // Pneus TT 1/10 HUDY — références catalogue, position et gomme distinctes.
+    ...[
+      ['Pneu 2WD avant Carpet 101','812101','Avant 2WD','Carpet','Standard'],
+      ['Pneu 2WD avant Carpet 102','812102-M','Avant 2WD','Carpet','Medium'],
+      ['Pneu 2WD avant Astro 101A','812201-S','Avant 2WD','Astro','Soft'],
+      ['Pneu 2WD avant Astro 101A','812201-M','Avant 2WD','Astro','Medium'],
+      ['Pneu 4WD avant Carpet 101','814101','Avant 4WD','Carpet','Standard'],
+      ['Pneu 4WD avant Carpet 102','814102-M','Avant 4WD','Carpet','Medium'],
+      ['Pneu 4WD avant Astro 101A','814201-S','Avant 4WD','Astro','Soft'],
+      ['Pneu 4WD avant Astro 101A','814201-M','Avant 4WD','Astro','Medium'],
+      ['Pneu arrière Carpet 101','816101','Arrière 2WD/4WD','Carpet','Standard'],
+      ['Pneu arrière Carpet 102','816102-M','Arrière 2WD/4WD','Carpet','Medium'],
+      ['Pneu arrière Astro 201','816201-S','Arrière 2WD/4WD','Astro','Soft'],
+      ['Pneu arrière Astro 201','816201-M','Arrière 2WD/4WD','Astro','Medium'],
+      ['Pneu 2WD avant Dirt 302','812302D-S','Avant 2WD','Dirt','Soft'],
+      ['Pneu 2WD avant Dirt 302','812302D-M','Avant 2WD','Dirt','Medium'],
+      ['Pneu 4WD avant Dirt 301','814301D-S','Avant 4WD','Dirt','Soft'],
+      ['Pneu 4WD avant Dirt 301','814301D-M','Avant 4WD','Dirt','Medium'],
+      ['Pneu arrière Dirt 301','816301D-S','Arrière 2WD/4WD','Dirt','Soft'],
+      ['Pneu arrière Dirt 301','816301D-M','Arrière 2WD/4WD','Dirt','Medium']
+    ].map(([name,reference,position,surface,compound]) => ({
+      brand:'HUDY', category:'Pneus / roues', name:name+' — '+position+' — '+surface+' — '+compound,
+      reference, compatibility:position, detail:'Pneu TT 1/10 HUDY. Position : '+position+'. Surface : '+surface+'. Gomme : '+compound+'.',
+      url:'https://www.hudy-shop.net/142-tires-and-wheels'
+    })),
+
+    // Jetko TT 1/10 — pneus seuls uniquement ; les versions montées collées ont des SKU différents.
+    ...[
+      ['Arena','JK2001E','Avant 2WD','EOS jaune'],['Arena','JK2001CM','Avant 2WD','Medium'],['Arena','JK2001CS','Avant 2WD','Soft'],['Arena','JK2001CSS','Avant 2WD','Super Soft'],
+      ['Arena','JK2003E','Arrière 2WD/4WD','EOS jaune'],
+      ['Challenger','JK2002E','Avant 4WD','EOS jaune'],['Challenger','JK2002CM','Avant 4WD','Medium EOS'],['Challenger','JK2002CS','Avant 4WD','Soft'],['Challenger','JK2002CSS','Avant 4WD','Super Soft'],
+      ['Challenger','JK2004E','Arrière 2WD/4WD','EOS jaune'],['Challenger','JK2004CM','Arrière 2WD/4WD','Medium EOS'],['Challenger','JK2004CS','Arrière 2WD/4WD','Soft'],['Challenger','JK2004CSS','Arrière 2WD/4WD','Super Soft'],
+      ['Desirer','JK2008SS','Avant 2WD','Super Soft'],['Desirer','JK2008US','Avant 2WD','Ultra Soft'],
+      ['Desirer','JK2009US','Avant 4WD','Ultra Soft'],['Desirer','JK2010SS','Arrière 2WD/4WD','Super Soft'],['Desirer','JK2010US','Arrière 2WD/4WD','Ultra Soft']
+    ].map(([name,reference,position,compound]) => ({
+      brand:'Jetko', category:'Pneus / roues', name:name+' — '+position+' — '+compound,
+      reference, compatibility:position, detail:'Pneu buggy TT 1/10 Jetko. Position : '+position+'. Gomme : '+compound+'. Vérifier insert et version montée ou non.',
+      url:'https://rc.kyosho.com/en/jetko-tire/tire/1-10.html'
+    })),
+
+    // Hot Race TT 1/10 — gammes terre et moquette/astro.
+    ...[
+      ['Bangkok','HR-003-0122','Avant 4WD','Terre','Soft'],['Bangkok','HR-003-0132','Avant 4WD','Terre','Medium'],['Bangkok','HR-003-0142','Avant 4WD','Terre','Hard'],['Bangkok','HR-003-0152','Avant 4WD','Terre','Clay'],
+      ['Bangkok','HR-003-0012','Arrière 2WD/4WD','Terre','Super Soft'],['Bangkok','HR-003-0022','Arrière 2WD/4WD','Terre','Soft'],['Bangkok','HR-003-0032','Arrière 2WD/4WD','Terre','Medium'],['Bangkok','HR-003-0042','Arrière 2WD/4WD','Terre','Hard'],['Bangkok','HR-003-0052','Arrière 2WD/4WD','Terre','Clay'],
+      ['Sahara','HR-003-1112','Avant 4WD','Terre','Super Soft'],['Sahara','HR-003-1122','Avant 4WD','Terre','Soft'],['Sahara','HR-003-1132','Avant 4WD','Terre','Medium'],['Sahara','HR-003-1142','Avant 4WD','Terre','Hard'],['Sahara','HR-003-1152','Avant 4WD','Terre','Clay'],
+      ['Sahara','HR-003-1012','Arrière 2WD/4WD','Terre','Super Soft'],['Sahara','HR-003-1022','Arrière 2WD/4WD','Terre','Soft'],['Sahara','HR-003-1032','Arrière 2WD/4WD','Terre','Medium'],['Sahara','HR-003-1042','Arrière 2WD/4WD','Terre','Hard'],['Sahara','HR-003-1052','Arrière 2WD/4WD','Terre','Clay'],
+      ['Carpet LP','HR-003-0412','Avant 4WD','Carpet / Astro','Soft'],['Carpet LP','HR-003-0452','Avant 4WD','Carpet / Astro','Medium'],['Carpet LP','HR-003-0462','Avant 4WD','Carpet / Astro','Hard'],
+      ['Carpet LP','HR-003-0432','Avant 2WD','Carpet / Astro','Medium'],['Carpet LP','HR-003-0442','Avant 2WD','Carpet / Astro','Hard'],
+      ['Carpet LP','HR-003-2211','Avant 2WD/4WD','Carpet / Astro','White'],['Carpet LP','HR-003-2111','Arrière 2WD/4WD','Carpet / Astro','White'],
+      ['V1','HR-003-0712','Arrière 2WD/4WD','Carpet / Astro','Soft'],['V1','HR-003-0622','Arrière 2WD/4WD','Carpet / Astro','Medium Soft'],['V1','HR-003-0722','Arrière 2WD/4WD','Carpet / Astro','Medium'],
+      ['V2','HR-003-0652','Arrière 2WD/4WD','Carpet / Astro','Soft'],['V2','HR-003-0662','Arrière 2WD/4WD','Carpet / Astro','Medium Soft']
+    ].map(([name,reference,position,surface,compound]) => ({
+      brand:'Hot Race Tires', category:'Pneus / roues', name:name+' — '+position+' — '+surface+' — '+compound,
+      reference, compatibility:position, detail:'Pneu TT 1/10 Hot Race. Position : '+position+'. Surface : '+surface+'. Gomme : '+compound+'.',
+      url:'https://www.sodialed.com/rc-setup-tips/1-10-off-road-race-tire-chart'
+    })),
+
+    // JConcepts TT 1/10 — références individuelles et gommes fabricant.
+    ...[
+      ['Dirt Webs','JCO3077-02','Avant 2WD','Terre','Green'],['Dirt Webs','JCO3077-01','Avant 2WD','Terre','Blue'],['Dirt Webs','JCO3077-03','Avant 2WD','Terre','Aqua A2'],['Dirt Webs','JCO3077-06','Avant 2WD','Terre','Silver'],
+      ['Double Bar','JCO4141-02','Avant 2WD','Terre','Green'],['Double Bar','JCO4141-01','Avant 2WD','Terre','Blue'],['Double Bar','JCO4141-03','Avant 2WD','Terre','Aqua A2'],['Double Bar','JCO4141-06','Avant 2WD','Terre','Silver'],
+      ['Double Bar','JCO4140-02','Arrière 2WD/4WD','Terre','Green'],['Double Bar','JCO4140-01','Arrière 2WD/4WD','Terre','Blue'],['Double Bar','JCO4140-03','Arrière 2WD/4WD','Terre','Aqua A2'],['Double Bar','JCO4140-06','Arrière 2WD/4WD','Terre','Silver'],
+      ['Ellipse','JCO3197-02','Avant 2WD','Terre','Green'],['Ellipse','JCO3197-01','Avant 2WD','Terre','Blue'],['Ellipse','JCO3197-03','Avant 2WD','Terre','Aqua A2'],['Ellipse','JCO3197-06','Avant 2WD','Terre','Silver'],
+      ['Ellipse','JCO3198-02','Avant 4WD','Terre','Green'],['Ellipse','JCO3198-01','Avant 4WD','Terre','Blue'],['Ellipse','JCO3198-03','Avant 4WD','Terre','Aqua A2'],['Ellipse','JCO3198-06','Avant 4WD','Terre','Silver'],
+      ['Ellipse','JCO3196-02','Arrière 2WD/4WD','Terre','Green'],['Ellipse','JCO3196-01','Arrière 2WD/4WD','Terre','Blue'],['Ellipse','JCO3196-03','Arrière 2WD/4WD','Terre','Aqua A2'],['Ellipse','JCO3196-06','Arrière 2WD/4WD','Terre','Silver'],
+      ['Goose Bumps','JCO3018-02','Arrière 2WD/4WD','Terre','Green'],['Double Dees V2','JCO3160-02','Avant 2WD','Terre','Green'],['Double Dees V2','JCO3160-01','Avant 2WD','Terre','Blue'],
+      ['Double Dees V2','JCO3161-02','Avant 4WD','Terre','Green'],['Double Dees V2','JCO3161-01','Avant 4WD','Terre','Blue'],['Double Dees V2','JCO3159-02','Arrière 2WD/4WD','Terre','Green'],['Double Dees V2','JCO3159-01','Arrière 2WD/4WD','Terre','Blue'],
+      ['Fuzz Bite LP','JCO3165-010','Avant 2WD','Carpet / Astro','Pink'],['Fuzz Bite LP','JCO3108-010','Avant 4WD','Carpet / Astro','Pink'],['Fuzz Bite LP','JCO3152-010','Arrière 2WD/4WD','Carpet / Astro','Pink'],['Fuzz Bite LP','JCO3152-012','Arrière 2WD/4WD','Carpet / Astro','Brown'],['Fuzz Bite LP','JCO3152-011','Arrière 2WD/4WD','Carpet / Astro','Purple'],
+      ['Pin Swag','JCO3182-010','Avant 4WD','Carpet / Astro','Pink'],['Pin Swag','JCO3180-010','Arrière 2WD/4WD','Carpet / Astro','Pink'],['Pin Swag Slim','JCO3181-010','Avant 2WD','Carpet / Astro','Pink'],['Pin Swag Slim','JCO3181-012','Avant 2WD','Carpet / Astro','Brown'],['Pin Swag Slim','JCO3181-011','Avant 2WD','Carpet / Astro','Purple'],
+      ['3DP','JCO4174-010','Avant 2WD','Carpet / Astro','Pink'],['3DP','JCO4174-012','Avant 2WD','Carpet / Astro','Brown'],['3DP','JCO4174-011','Avant 2WD','Carpet / Astro','Purple'],['3DP','JCO4169-010','Arrière 2WD/4WD','Carpet / Astro','Pink'],['3DP','JCO4169-012','Arrière 2WD/4WD','Carpet / Astro','Brown'],['3DP','JCO4169-011','Arrière 2WD/4WD','Carpet / Astro','Purple']
+    ].map(([name,reference,position,surface,compound]) => ({
+      brand:'JConcepts', category:'Pneus / roues', name:name+' — '+position+' — '+surface+' — '+compound,
+      reference, compatibility:position, detail:'Pneu buggy TT 1/10 JConcepts. Position : '+position+'. Surface : '+surface+'. Gomme : '+compound+'.',
+      url:'https://jconcepts.net/product_index.asp?page=2'
+    })),
+
+    // Pro-Line TT 1/10 — gamme terre et carpet/astro.
+    ...[
+      ['Electron 2.0','PRO8321-203','Avant 2WD','Terre','S3'],['Electron 2.0','PRO8320-203','Avant 4WD','Terre','S3'],['Electron 2.0','PRO8322-203','Arrière 2WD/4WD','Terre','S3'],
+      ['Electron 2.0','PRO8321-17','Avant 2WD','Terre / Clay','MC'],['Electron 2.0','PRO8320-17','Avant 4WD','Terre / Clay','MC'],['Electron 2.0','PRO8322-17','Arrière 2WD/4WD','Terre / Clay','MC'],
+      ['Hole Shot 3.0','PRO8291-02','Avant 4WD','Terre','M3'],['Hole Shot 3.0','PRO8291-03','Avant 4WD','Terre','M4'],
+      ['Hole Shot 3.0','PRO8290-02','Avant 2WD','Terre','M3'],['Hole Shot 3.0','PRO8290-03','Avant 2WD','Terre','M4'],
+      ['Hole Shot 3.0','PRO8282-02','Arrière 2WD/4WD','Terre','M3'],['Hole Shot 3.0','PRO8282-03','Arrière 2WD/4WD','Terre','M4'],
+      ['Blockade','PRO8252-02','Avant 4WD','Terre','M3'],['Blockade','PRO8231-02','Arrière 2WD/4WD','Terre','M3'],
+      ['Fugitive','PRO8295-203','Avant 2WD','Terre','S3'],['Fugitive','PRO8296-203','Avant 4WD','Terre','S3'],['Fugitive','PRO8296-03','Avant 4WD','Terre','M4'],
+      ['Positron','PRO8256-204','Arrière 2WD/4WD','Terre','S4'],['Positron','PRO8256-17','Arrière 2WD/4WD','Terre / Clay','MC'],
+      ['Harpoon','PRO8306-303','Avant 2WD','Carpet / Astro','CR3'],['Harpoon','PRO8306-304','Avant 2WD','Carpet / Astro','CR4'],
+      ['Harpoon','PRO8307-303','Avant 4WD','Carpet / Astro','CR3'],['Harpoon','PRO8307-304','Avant 4WD','Carpet / Astro','CR4'],['Harpoon','PRO8305-304','Arrière 2WD/4WD','Carpet / Astro','CR4'],
+      ['Prism','PRO8278-303','Avant 2WD','Carpet / Astro','CR3'],['Prism','PRO8278-304','Avant 2WD','Carpet / Astro','CR4'],
+      ['Prism 2.0','PRO8284-303','Avant 4WD','Carpet / Astro','CR3'],['Prism 2.0','PRO8284-304','Avant 4WD','Carpet / Astro','CR4'],
+      ['Prism 2.0','PRO8277-303','Arrière 2WD/4WD','Carpet / Astro','CR3'],['Prism 2.0','PRO8277-304','Arrière 2WD/4WD','Carpet / Astro','CR4'],
+      ['Pyramid','PRO8267-303','Arrière 2WD/4WD','Astro','CR3'],['Pyramid','PRO8267-103','Arrière 2WD/4WD','Astro','Z3']
+    ].map(([name,reference,position,surface,compound]) => ({
+      brand:'Pro-Line', category:'Pneus / roues', name:name+' — '+position+' — '+surface+' — '+compound,
+      reference, compatibility:position, detail:'Pneu buggy TT 1/10 Pro-Line. Position : '+position+'. Surface : '+surface+'. Gomme : '+compound+'.',
+      url:'https://www.prolineracing.com/'
+    })),
+
     // Bibliothèque complémentaire demandée : entrées de gamme sans SKU inventé.
     // Ajouter la référence exacte du flacon lorsque le fabricant/revendeur la confirme.
     // XTR Racing — huiles silicone et graisses. Viscosités/formats relevés sur les catalogues XTR/RSRC.
