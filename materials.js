@@ -844,10 +844,11 @@
     return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
   }
   const MATERIAL_BRAND_LOGOS = {
-    
-    'Kyosho': 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Kyosho_corp_logo.png',
+    'Fan RC': 'https://www.gofasthobbies.com/cdn/shop/collections/Fan_RC.jpg?v=1706054433&width=1500',
+    'Kyosho': 'https://cdn.brandfetch.io/idXDBNlT9W/w/568/h/133/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1792896373403',
+    'PR Racing': 'https://i0.wp.com/circusrc.com/CRC/wp-content/uploads/2019/09/PR-Racing.jpg?fit=1024%2C512&ssl=1',
     'Mugen Seiki': 'https://www.autocollant-tuning.com/3061-product_main/sticker-et-autocollant-mugen-seiki.jpg',
-    'PR Racing': 'https://www.pr-rc.com/images/aa_03.jpg',
+
     'Team Losi': 'https://images.seeklogo.com/logo-png/32/1/team-losi-racing-logo-png_seeklogo-324214.png',
     'Traxxas': 'https://www.kindpng.com/picc/m/72-728397_traxxas-logo-png-transparent-png.png',
     'Hobbywing': 'https://www.hobbywingdirect.com/cdn/shop/files/HW3x6-Viewing-only_3c0904dc-0c98-46e5-8dd3-f2d44df564c8_1600x.jpg?v=1697845198',
