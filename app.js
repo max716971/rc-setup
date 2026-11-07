@@ -1710,7 +1710,7 @@ const CAR_CATALOG = [
     "era": "Moderne",
     "name": "22S",
     "scale": "1/10",
-    "drive": "4WD",
+    "drive": "2WD",
     "type": "Buggy"
   },
   {
