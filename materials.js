@@ -3,6 +3,15 @@
   const catalog = [
     // Hobbywing RC car ESCs and motors. Variants/bobinages are separated where a manufacturer SKU is known.
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro Legacy', reference: '30112800', detail: 'ESC brushless sensored. Vérifier révision et compatibilité constructeur.', url: 'https://www.hobbywing.com/en/rc-systems' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro G3', reference: '30112619', detail: 'Variateur compétition 1/10 brushless sensored, génération G3.', url: 'https://www.hobbywing.com/en/products?id=23' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro G3X', reference: '30112620', detail: 'Version G3X du variateur compétition XR10 Pro.', url: 'https://www.hobbywing.com/en/products?id=23' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro DR', reference: '30112621', detail: 'Version dédiée Drag Racing du XR10 Pro.', url: 'https://www.hobbywing.com/en/products?id=23' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro WP', reference: '30112618', detail: 'Version waterproof du XR10 Pro pour compétition 1/10.', url: 'https://www.hobbywing.com/en/products?id=23' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Stock Spec G2 2S', reference: '30112402', detail: 'Variateur Stock Spec sensored 1/10, génération G2, alimentation 2S.', url: 'https://www.hobbywing.com/en/products?id=23' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Stock Spec 1S', reference: '30112751', detail: 'Version Stock Spec 1S pour compétition 1/10.', url: 'https://www.hobbywing.com/en/products?id=23' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Justock G3S', reference: '30112005', detail: 'Variateur sensored 60 A, 2S, pour 1/10 et 1/12.', url: 'https://www.hobbywing.com/en/products?id=23' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Justock G3 Handout', reference: '30112004', detail: 'Version Handout du Justock G3, référence dédiée.', url: 'https://www.hobbywing.com/en/products?id=23' },
+    { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Stock Spec', reference: '30112401', detail: 'Version Stock Spec 2S d’origine, 80 A.', url: 'https://www.hobbywing.com/en/products/xerun-xr10-stock-spec48.html' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR10 Pro G2S', reference: '30112609', detail: 'ESC compétition 1/10. Vérifier révision et compatibilité moteur.', url: 'https://www.hobbywing.com/goods.php?id=716&pid=1' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XR10 Justock G3', reference: '30112003', detail: 'ESC stock 1/10 ; vérifier version et règlement de course.', url: 'https://www.hobbywing.com/goods.php?id=726&pid=1' },
     { brand: 'Hobbywing', category: 'Variateur (ESC)', name: 'XeRun XR8 Plus G2S', reference: '30113305', detail: 'ESC compétition 1/8 ; vérifier génération et connecteurs.', url: 'https://www.hobbywing.com/goods.php?id=750&pid=0' },
