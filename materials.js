@@ -331,7 +331,7 @@
       url:'https://www.rcteam.com/en/collections/shock-absorber-oil'
     })),
 
-    // Team Associated Factory Team : seule la référence 5435 (35 wt) est renseignée plus haut.\n\n    // Tekin Redline GEN4 SPEC-R : bobinages 1/10 stock clairement identifiés.
+    // Tekin Redline GEN4 SPEC-R : bobinages 1/10 stock clairement identifiés.
     ...[
       ['17.5','TT2762'],['13.5','TT2763'],['10.5','TT2765']
     ].map(([turn,reference]) => ({
@@ -470,6 +470,8 @@
     // Tamiya — huiles de différentiel officielles.
     { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #500000', reference:'54418', detail:'Huile silicone de différentiel 500 000 ; flacon 30 ml.', url:'https://www.tamiya.com/english/products/54418/index.html' },
     { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #1000000', reference:'54419', detail:'Huile silicone de différentiel 1 000 000 ; flacon 30 ml.', url:'https://www.tamiya.com/english/products/54419/index.html' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #4000', reference:'22006', detail:'Huile silicone de différentiel 4 000 cSt.', url:'https://www.rcteam.com/collections/accessoires-et-pieces-huiles-graisses-colles-huile-et-graisse-differentiel-huile-de-differentiel' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #5000', reference:'22007', detail:'Huile silicone de différentiel 5 000 cSt.', url:'https://www.rcteam.com/collections/accessoires-et-pieces-huiles-graisses-colles-huile-et-graisse-differentiel-huile-de-differentiel' },
     // WS Line — références de modèles et codes produit relevés sur les fiches détaillées.
     { brand:'WS Line', category:'Servo', name:'Servo brushless low profile WS-3LP', reference:'WS-3LP', detail:'Servo low profile brushless HV, 25 dents ; 20 kg·cm à 6 V, 26 kg·cm à 7,4 V, 30 kg·cm à 8,4 V.', url:'https://www.wartelle-shop.com/servo-brushless-low-profil-ws-3lp-ws-line-c2x40885683' },
     { brand:'WS Line', category:'Moteur', name:'Moteur brushless 1/10 V2 — bobinage au choix', reference:'WS1005', detail:'Moteur 1/10 avec timing ajustable et double prise capteur ; bobinage à sélectionner sur la fiche.', url:'https://www.wartelle-shop.com/moteur-brushless-1-10eme-v2-ws-line-c2x32540276' },
@@ -514,6 +516,18 @@
       brand:'Team Associated', category:'Huile amortisseur', name:'Factory Team Silicone Shock Oil — '+grade,
       reference, detail:'Huile silicone d’amortisseur Team Associated, flacon 2 oz.', url:'https://www.associatedelectrics.com/teamassociated/parts/fluids/'
     })),
+    // Team Associated Factory Team — gamme officielle d'huiles de différentiel.
+    ...[
+      ['5450','1 000'],['5451','2 000'],['5452','3 000'],['5444','4 000'],['5453','5 000'],
+      ['5446','6 000'],['5454','7 000'],['5445','8 000'],['5449','9 000'],['5455','10 000'],
+      ['5466','12 500'],['5447','15 000'],['5467','17 500'],['5456','20 000'],['5457','30 000'],
+      ['5468','40 000'],['5458','60 000'],['5448','80 000'],['5459','100 000'],['5461','200 000'],
+      ['5462','300 000'],['5464','400 000'],['5463','500 000'],['5465','1 000 000']
+    ].map(([reference,grade])=>({
+      brand:'Team Associated',category:'Huile différentiel',name:'Factory Team Silicone Diff Fluid — '+grade+' cSt',
+      reference,detail:'Huile silicone de différentiel Team Associated, viscosité '+grade+' cSt.',
+      url:'https://60years.associatedelectrics.com/parts/factoryteam/fluids/diff_fluid/'
+    })),
     { brand:'Team Associated', category:'Graisse', name:'Stealth Black Grease 4cc', reference:'6588', detail:'Graisse noire pour entretien et étanchéité du différentiel.', url:'https://www.senditrc.com/brand/associated/cleaners-adhesives-and-lubricants' },
     { brand:'Team Associated', category:'Graisse', name:'Stealth Diff Lube 4cc', reference:'6591', detail:'Lubrifiant pour différentiel à billes / transmission selon manuel du véhicule.', url:'https://www.senditrc.com/brand/associated/cleaners-adhesives-and-lubricants' },
     { brand:'Team Associated', category:'Graisse', name:'Silicone Grease 4cc', reference:'6636', detail:'Graisse silicone Team Associated.', url:'https://www.senditrc.com/brand/associated/cleaners-adhesives-and-lubricants' },
@@ -521,7 +535,25 @@
     // 6MIK / OPTIMA — graisses identifiées par références et huile de différentiel OPTIMA.
     { brand:'6MIK', category:'Graisse', name:'Graisse Blue spéciale joints toriques 35 g', reference:'H009', detail:'Graisse bleue 6MIK pour joints toriques.', url:'https://www.evocrc.com/308_6mik' },
     { brand:'6MIK', category:'Graisse', name:'Graisse haute température anti-grippage 35 g', reference:'H008', detail:'Graisse haute température 6MIK.', url:'https://www.evocrc.com/308_6mik' },
-    { brand:'OPTIMA', category:'Huile différentiel', name:'Huile silicone OPTIMA pour différentiel — grade CST au choix', reference:'HO1000', detail:'Référence de base HO1000 ; viscosités disponibles de 1 000 à 300 000 cSt selon déclinaison.', url:'https://www.rcteam.com/products/optima-huile-silicone-pour-differentiel' },
+        // OPTIMA (gamme 6MIK) — huiles et ressorts 1/10 référencés.
+    ...['10','12.5','15','17.5','20','22.5','25','27.5','30','32.5','35','37.5','40','42.5','45','47.5','50','52.5','55','57.5','60','62.5','65','67.5','70','72.5','75','80','85','90','95'].map(wt=>({
+      brand:'OPTIMA',category:'Huile amortisseur',name:'Huile silicone OPTIMA amortisseur — '+wt+' WT',
+      reference:'HO125 — variante '+wt+' WT',
+      detail:'Huile silicone OPTIMA 100 ml. Variante de viscosité sélectionnable ; double indication WT/CST.',
+      url:'https://www.rcteam.com/products/optima-huile-silicone-pour-amortisseur'
+    })),
+    ...[
+      ['1000','1 000'],['2000','2 000'],['3000','3 000'],['4000','4 000'],['5000','5 000'],['6000','6 000'],
+      ['7000','7 000'],['8000','8 000'],['9000','9 000'],['10000','10 000'],['12500','12 500'],['15000','15 000'],
+      ['20000','20 000'],['25000','25 000'],['30000','30 000'],['40000','40 000'],['50000','50 000'],
+      ['80000','80 000'],['100000','100 000'],['120000','120 000'],['150000','150 000'],['200000','200 000'],['300000','300 000']
+    ].map(([cst,grade])=>({
+      brand:'OPTIMA',category:'Huile différentiel',name:'Huile silicone OPTIMA différentiel — '+grade+' cSt',
+      reference:'HO1000 — variante '+grade+' cSt',
+      detail:'Huile silicone OPTIMA 100 ml. Variante de viscosité sélectionnable ; double indication WT/CST.',
+      url:'https://www.rcteam.com/products/optima-huile-silicone-pour-differentiel'
+    })),
+    {brand:'OPTIMA',category:'Ressort',name:'Ressorts internes amortisseurs additionnels 1/10',reference:'POR2-115',compatibility:'Buggy 1/10 — ressorts internes d’amortisseurs',detail:'Kit de ressorts internes OPTIMA destiné à limiter le roulis et le tangage. Taux individuels non communiqués dans la fiche consultée.',url:'https://6mik-racing.com/optima-add-110-springs/'},
     // Tamiya — huiles silicone d’amortisseur et références supplémentaires d’huile de différentiel.
     { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #500', reference:'54712', detail:'Huile silicone d’amortisseur, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54712/index.html' },
     { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #600', reference:'54714', detail:'Huile silicone d’amortisseur, grade #600.', url:'https://www.tamiya.com/english/products/54714/index.html' },
