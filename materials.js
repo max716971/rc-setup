@@ -15,8 +15,8 @@
     { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4 5.5T', reference: '30401161', detail: 'Moteur compétition 1/10 ; vérifier variante et compatibilité ESC.', url: 'https://www.hobbywing.com/goods.php?id=718&pid=1' },
     { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun 4268SD G3 1900KV', reference: '30402653', detail: 'Moteur brushless 1/8 ; contrôler KV et compatibilité véhicule.', url: 'https://www.hobbywing.com/goods.php?id=699&pid=1' },
     { brand: 'Hobbywing', category: 'Moteur', name: 'Justock G2.1 10.5T', reference: '30408010', detail: 'Moteur stock 1/10 ; vérifier la combinaison ESC/moteur.', url: 'https://www.hobbywing.com/goods.php?id=719&pid=1' },
-    { brand: 'Hobbywing', category: 'Moteur', name: 'XeRun V10 G4R', reference: 'Bobinage à préciser', detail: 'La référence varie selon le bobinage ; vérifier la fiche constructeur.', url: 'https://www.hobbywing.com/en/rc-systems' },
-    { brand: 'Hobbywing', category: 'Moteur', name: 'EzRun 3660 / 3665 G3', reference: 'KV à préciser', detail: 'Choisir taille et KV selon le véhicule.', url: 'https://www.hobbywing.com/en/rc-systems' },
+    
+    
     { brand: 'Hobbywing', category: 'Programmation', name: 'LCD Program Box Pro', reference: '30502002', detail: 'Boîtier de programmation pour matériels compatibles Hobbywing.', url: 'https://www.hobbywing.com/en/rc-systems' },
 
     // Pneus Schumacher TT 1/10 — position explicitement indiquée d'après les références catalogue.
@@ -513,8 +513,37 @@
     { brand:'Futaba', category:'Servo', name:'S-C400', reference:'S-C400', detail:'Servo pour voitures électriques 1/10 buggy et touring selon catalogue Futaba.', url:'https://www.rc.futaba.co.jp/products/servo_car/' },
 
 
+    // Team Associated — huiles d'amortisseurs et graisses avec références constructeur.
+    ...[
+      ['5420','10 wt'],['5427','15 wt'],['5421','20 wt'],['5424','22.5 wt'],['5428','25 wt'],
+      ['5426','27.5 wt'],['5422','30 wt'],['5432','32.5 wt'],['5429','35 wt'],['5433','37.5 wt'],
+      ['5423','40 wt'],['5434','42.5 wt'],['5430','45 wt'],['5438','47.5 wt'],['5435','50 wt'],
+      ['5431','55 wt'],['5436','60 wt'],['5437','70 wt'],['5425','80 wt']
+    ].filter(([reference]) => !['5435'].includes(reference)).map(([reference,grade]) => ({
+      brand:'Team Associated', category:'Huile amortisseur', name:'Factory Team Silicone Shock Oil — '+grade,
+      reference, detail:'Huile silicone d’amortisseur Team Associated, flacon 2 oz.', url:'https://www.associatedelectrics.com/teamassociated/parts/fluids/'
+    })),
+    { brand:'Team Associated', category:'Graisse', name:'Stealth Black Grease 4cc', reference:'6588', detail:'Graisse noire pour entretien et étanchéité du différentiel.', url:'https://www.senditrc.com/brand/associated/cleaners-adhesives-and-lubricants' },
+    { brand:'Team Associated', category:'Graisse', name:'Stealth Diff Lube 4cc', reference:'6591', detail:'Lubrifiant pour différentiel à billes / transmission selon manuel du véhicule.', url:'https://www.senditrc.com/brand/associated/cleaners-adhesives-and-lubricants' },
+    { brand:'Team Associated', category:'Graisse', name:'Silicone Grease 4cc', reference:'6636', detail:'Graisse silicone Team Associated.', url:'https://www.senditrc.com/brand/associated/cleaners-adhesives-and-lubricants' },
+    { brand:'Team Associated', category:'Graisse', name:'Factory Team Green Slime Shock Lube', reference:'1105', detail:'Lubrifiant pour joints et pièces internes d’amortisseurs.', url:'https://www.senditrc.com/brand/associated/cleaners-adhesives-and-lubricants' },
+    // 6MIK / OPTIMA — graisses identifiées par références et huile de différentiel OPTIMA.
+    { brand:'6MIK', category:'Graisse', name:'Graisse Blue spéciale joints toriques 35 g', reference:'H009', detail:'Graisse bleue 6MIK pour joints toriques.', url:'https://www.evocrc.com/308_6mik' },
+    { brand:'6MIK', category:'Graisse', name:'Graisse haute température anti-grippage 35 g', reference:'H008', detail:'Graisse haute température 6MIK.', url:'https://www.evocrc.com/308_6mik' },
+    { brand:'OPTIMA', category:'Huile différentiel', name:'Huile silicone OPTIMA pour différentiel — grade CST au choix', reference:'HO1000', detail:'Référence de base HO1000 ; viscosités disponibles de 1 000 à 300 000 cSt selon déclinaison.', url:'https://www.rcteam.com/products/optima-huile-silicone-pour-differentiel' },
+    // Tamiya — huiles silicone d’amortisseur et références supplémentaires d’huile de différentiel.
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #500', reference:'54712', detail:'Huile silicone d’amortisseur, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54712/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Silicone Oil #600', reference:'54714', detail:'Huile silicone d’amortisseur, grade #600.', url:'https://www.tamiya.com/english/products/54714/index.html' },
+    { brand:'Tamiya', category:'Huile amortisseur', name:'Damper Oil #900', reference:'54717', detail:'Huile silicone d’amortisseur, grade #900.', url:'https://www.tamiya.com/english/products/54717/index.html' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #100000', reference:'54294', detail:'Huile silicone de différentiel haute viscosité, flacon 40 ml.', url:'https://www.tamiya.com/english/products/54294/index.html' },
+    { brand:'Tamiya', category:'Huile différentiel', name:'Silicone Diff Oil #300000', reference:'54988', detail:'Huile silicone de différentiel, grade 300 000 cSt, flacon 30 ml.', url:'https://hobbydex.com/rc/categories/oil-grease/tamiya/' },
+    { brand:'Tamiya', category:'Graisse', name:'Molybdenum Grease', reference:'87022', detail:'Graisse au molybdène Tamiya.', url:'https://hobbydex.com/rc/categories/oil-grease/tamiya/' },
+    { brand:'Tamiya', category:'Graisse', name:'Ceramic Grease', reference:'87025', detail:'Graisse céramique Tamiya.', url:'https://hobbydex.com/rc/categories/oil-grease/tamiya/' },
+    { brand:'Tamiya', category:'Graisse', name:'Cera-Grease HG', reference:'87099', detail:'Graisse haute performance Tamiya.', url:'https://hobbydex.com/rc/categories/oil-grease/tamiya/' },
+
+
   ];
-  const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS'];
+  const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA'];
   const root = document.getElementById('materialsApp');
   if (!root) return;
   let activeTab = 'catalog';
