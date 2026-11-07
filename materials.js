@@ -911,16 +911,19 @@
       const current = select.value;
       const fieldName = select.dataset.libraryField || '';
       const carSelect = document.querySelector('#setupForm select[name="carId"]');
+      const hasSelectedCar = Boolean(carSelect?.value);
       const drive = carSelect?.selectedOptions?.[0]?.dataset?.drive || '';
       const items = allMaterials().filter((item) => {
         if (!categories.includes(item.category)) return false;
-        if (fieldName === 'frontTires') {
+        // Sans voiture sélectionnée, afficher tout le catalogue de pneus dans les deux menus.
+        // Dès qu'une voiture est choisie, appliquer les compatibilités avant/arrière et 2WD/4WD.
+        if (hasSelectedCar && fieldName === 'frontTires') {
           const compatibility = String(item.compatibility || '').trim().toLocaleLowerCase('fr');
           if (drive === '2WD' && compatibility && !compatibility.startsWith('avant 2wd')) return false;
           if (drive === '4WD' && compatibility && !compatibility.startsWith('avant 4wd')) return false;
           if (!drive && compatibility && !compatibility.startsWith('avant')) return false;
         }
-        if (fieldName === 'rearTires' && String(item.compatibility || '').trim().toLocaleLowerCase('fr').startsWith('avant')) return false;
+        if (hasSelectedCar && fieldName === 'rearTires' && String(item.compatibility || '').trim().toLocaleLowerCase('fr').startsWith('avant')) return false;
         return !query || [item.brand,item.name,item.reference,item.detail,item.compatibility].join(' ').toLocaleLowerCase('fr').includes(query);
       });
       select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(item.category)} · ${esc(materialLabel(item))}</option>`).join('');
