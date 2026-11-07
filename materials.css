@@ -59,3 +59,18 @@
 .material-brand-tile[data-brand="Hot Race Tires"] .material-brand-logo{width:100%;height:48px;max-width:150px;object-fit:cover;object-position:center}
 .material-brand-tile.has-logo-loaded .brand-logo-mark{display:none}
 .material-brand-name{display:block;line-height:1.25;text-align:center}
+
+
+/* Agrandissement ciblé des logos demandés dans le filtre des marques */
+.material-brand-tile[data-brand="Futaba"],
+.material-brand-tile[data-brand="HUDY"],
+.material-brand-tile[data-brand="Sanwa"],
+.material-brand-tile[data-brand="Savöx"],
+.material-brand-tile[data-brand="Schumacher"],
+.material-brand-tile[data-brand="Yokomo"]{min-height:108px;padding:8px 6px;gap:5px}
+.material-brand-tile[data-brand="Futaba"] .material-brand-logo,
+.material-brand-tile[data-brand="HUDY"] .material-brand-logo,
+.material-brand-tile[data-brand="Sanwa"] .material-brand-logo,
+.material-brand-tile[data-brand="Savöx"] .material-brand-logo,
+.material-brand-tile[data-brand="Schumacher"] .material-brand-logo,
+.material-brand-tile[data-brand="Yokomo"] .material-brand-logo{height:56px;max-width:160px;object-fit:contain}
