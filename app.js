@@ -5768,7 +5768,7 @@ const SETUP_FIELDS = [
   'frontTires', 'rearTires', 'inserts', 'frontInserts', 'rearInserts', 'tireTreatment', 'tireCondition',
   'frontShocks', 'frontPiston', 'frontSpring', 'frontShockCupPosition', 'rearShocks', 'rearPiston', 'rearSpring', 'rearShockCupPosition', 'springs', 'frontRideHeight', 'rearRideHeight', 'rideHeight', 'frontCamber', 'rearCamber', 'frontToe', 'rearToe', 'frontCaster', 'ackermann', 'frontAntiRollBar', 'rearAntiRollBar', 'frontDroop', 'rearDroop', 'camber', 'toe', 'casterAckermann', 'antiRollBars', 'droop', 'stopsDiaphragms', 'photoNotes', 'frontShockTower', 'rearShockTower', 'frontShockPosition', 'rearShockPosition', 'frontArmPosition', 'rearArmPosition',
   'gearing', 'diffType', 'diffGearOil', 'diffBallGrease', 'differentials', 'frontDiffType', 'centerDiffType', 'rearDiffType', 'frontDiffOil', 'centerDiffOil', 'rearDiffOil', 'frontDiffGrease', 'centerDiffGrease', 'rearDiffGrease', 'frontBallDiffTightness', 'centerBallDiffTightness', 'rearBallDiffTightness', 'slipperPresence', 'slipper', 'ballDiff', 'motor', 'esc', 'servoSteering', 'brakes', 'radio',
-  'escModel', 'escMode', 'escMotorTiming', 'escBoost', 'escTurbo', 'escTurboDelay', 'escTiming', 'escPunch', 'escBrake', 'escDragBrake', 'escBrakeFrequency', 'escThrottleFrequency', 'escNeutralRange', 'escCutoff', 'escBec', 'escThermal', 'escReverse', 'escBrakeRate', 'escThrottleRate', 'electronicsNotes', 'esc', 'radio', 'radioSteeringDualRate', 'radioSteeringExpo', 'radioEPA', 'radioSteeringTrim', 'radioSubtrim', 'radioSteeringReverse', 'radioThrottleExpo', 'radioThrottleEPA', 'radioThrottleTrim', 'radioThrottleReverse', 'radioBrakeEPA', 'radioBrakeExpo', 'radioFailsafe', 'radioTrim', 'txModel', 'rxModel', 'lapTime', 'rating', 'notes'
+  'escModel', 'escMode', 'escMotorTiming', 'escBoost', 'escTurbo', 'escTurboDelay', 'escTiming', 'escPunch', 'escBrake', 'escDragBrake', 'escBrakeFrequency', 'escThrottleFrequency', 'escNeutralRange', 'escCutoff', 'escBec', 'escThermal', 'escReverse', 'escBrakeRate', 'escThrottleRate', 'electronicsNotes', 'esc', 'radio', 'radioSteeringDualRate', 'radioSteeringExpo', 'radioEPA', 'radioSteeringTrim', 'radioSubtrim', 'radioSteeringReverse', 'radioThrottleExpo', 'radioThrottleEPA', 'radioThrottleTrim', 'radioThrottleReverse', 'radioBrakeEPA', 'radioBrakeExpo', 'radioFailsafe', 'radioTrim', 'txModel', 'rxModel', 'lapTime', 'rating', 'notes', 'runLaps', 'averageLapTime', 'lapConsistency', 'cornerEntry', 'cornerMid', 'cornerExit', 'tractionLevel', 'stabilityLevel', 'testedChanges', 'testConclusion', 'nextTest'
 ];
 
 const state = loadState();
@@ -5880,7 +5880,7 @@ function renderSetups() {
   const from=document.getElementById('setupDateFrom')?.value||'',to=document.getElementById('setupDateTo')?.value||'';
   const filtered=[...state.setups].filter(setup=>{
     const car=getCarById(setup.carId),track=getTrackById(setup.trackId),date=setup.sessionDate||String(setup.createdAt||'').slice(0,10);
-    const hay=[car?.name,track?.name,track?.surface,setup.weather,setup.goal,setup.notes,setup.frontTires,setup.rearTires].join(' ').toLocaleLowerCase('fr');
+    const hay=[car?.name,track?.name,track?.surface,setup.weather,setup.goal,setup.notes,setup.frontTires,setup.rearTires,setup.testedChanges,setup.testConclusion,setup.nextTest].join(' ').toLocaleLowerCase('fr');
     return (!query||hay.includes(query))&&(!carFilter||setup.carId===carFilter)&&(!trackFilter||setup.trackId===trackFilter)&&(!surfaceFilter||track?.surface===surfaceFilter)&&(!gripFilter||String(setup.weather||'').toLocaleLowerCase('fr').includes(gripFilter.toLocaleLowerCase('fr')))&&(!from||date>=from)&&(!to||date<=to);
   }).sort((a,b)=>Number(Boolean(b.favorite))-Number(Boolean(a.favorite))||new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0));
   if(!filtered.length){const empty=emptyState();empty.querySelector('span:last-child').textContent=state.setups.length?'Aucun setup ne correspond à ces filtres.':'Ajoute une première fiche pour commencer.';container.append(empty);return;}
@@ -5956,7 +5956,34 @@ function compareSetups(){
   document.getElementById('setupDialog').showModal();
 }
 
-function formatDate(value) {
+
+function parsePositiveNumber(value){const n=Number(String(value||'').replace(',','.'));return Number.isFinite(n)&&n>0?n:null;}
+function calculateGearing(){
+  const pinion=parsePositiveNumber(document.getElementById('calcPinion')?.value),spur=parsePositiveNumber(document.getElementById('calcSpur')?.value),internal=parsePositiveNumber(document.getElementById('calcInternal')?.value),diameter=parsePositiveNumber(document.getElementById('calcDiameter')?.value);
+  const result=document.getElementById('gearingResult');if(!result)return;
+  if(!pinion||!spur){result.textContent='Renseigne le nombre de dents du pignon et de la couronne.';return;}
+  const ratio=spur/pinion,final=internal?ratio*internal:null,rollout=diameter?Math.PI*diameter/ratio:null;
+  result.innerHTML='<strong>Rapport externe : '+ratio.toFixed(3)+'</strong>'+(final?'<br>Rapport total : '+final.toFixed(3):'')+(rollout?'<br>Développement théorique : '+rollout.toFixed(1)+' mm par tour moteur (diamètre de roue renseigné).':'')+'<p class="item-sub">Un rapport externe plus élevé tire plus court. Le rapport total nécessite le rapport interne exact du véhicule.</p>';
+}
+function runSetupDiagnosis(){
+  const symptom=document.getElementById('diagnosisSymptom')?.value,grip=document.getElementById('diagnosisGrip')?.value,drive=document.getElementById('diagnosisDrive')?.value;
+  const output=document.getElementById('diagnosisResult');if(!output)return;
+  if(!symptom){output.textContent='Choisis le comportement à corriger pour afficher des pistes de réglage.';return;}
+  const advice={
+    understeer_entry:['Vérifie d’abord le train avant : pneus avant, pincement/ouverture, chasse et liberté de direction.','Teste une seule modification à la fois, par exemple un peu plus de pincement avant ou un avant légèrement plus souple.'],
+    understeer_mid:['Contrôle le roulis et le grip latéral : ressorts, huile/pistons, hauteur de caisse et différentiel avant si présent.','Évite de modifier simultanément les deux trains ; note le ressenti au milieu du virage.'],
+    understeer_exit:['Contrôle la motricité et la répartition de grip à la remise des gaz.','Adoucis progressivement la commande des gaz à la radio/ESC et vérifie le différentiel ou slipper selon l’architecture.'],
+    oversteer_entry:['Vérifie la stabilité au freinage et au lever de gaz, puis le pincement arrière et l’état des pneus.','Teste une petite augmentation de stabilité arrière avant de toucher à la puissance moteur.'],
+    oversteer_mid:['Vérifie le grip arrière latéral, les pneus, la hauteur arrière et la progressivité de la suspension.','Sur faible grip, privilégie des changements modestes et conserve une motricité régulière.'],
+    oversteer_exit:['Vérifie pneus arrière, slipper/différentiel et progressivité des gaz.','Réduis d’abord l’agressivité de l’accélération (punch, expo gaz) avant de changer plusieurs paramètres mécaniques.'],
+    traction:['Contrôle pneus/inserts, transfert de charge et différentiel ou slipper.','Sur faible grip, évite de rendre l’accélération trop brutale ; compare ensuite un seul réglage de suspension.'],
+    instability:['Contrôle hauteur de caisse, droop, amortisseurs, jeu mécanique et répartition des masses.','Vérifie aussi que les pneus sont propres et adaptés à la surface avant d’intervenir sur la géométrie.']
+  };
+  const lines=advice[symptom]||[];
+  const gripText=grip==='low'?'Contexte faible grip : recherche une voiture progressive et évite les changements extrêmes.':grip==='high'?'Contexte fort grip : vérifie que la voiture ne roule pas excessivement sur ses suspensions.':'Adapte les essais à l’adhérence réelle de la piste.';
+  output.innerHTML='<strong>Pistes à tester — '+(drive==='2wd'?'2WD':drive==='4wd'?'4WD':'architecture non précisée')+'</strong><ol>'+lines.map(x=>'<li>'+x+'</li>').join('')+'</ol><p class="item-sub">'+gripText+'</p><p class="item-sub">Ce sont des pistes de diagnostic, pas une recette universelle : note le réglage de départ et ne change qu’un paramètre à la fois.</p>';
+}
+\nfunction formatDate(value) {
   if (!value) return 'Date non précisée';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return 'Date non précisée';
@@ -6121,6 +6148,7 @@ function showSetup(id) {
   const track = getTrackById(setup.trackId);
   const groups = [
     ['Session', [['Date', setup.sessionDate || formatDate(setup.createdAt)], ['Température', setup.temperature], ['Météo / adhérence', setup.weather], ['Objectif / ressenti', setup.goal], ['Notes de session', setup.sessionNotes]]],
+    ['Carnet de test', [['Nombre de tours', setup.runLaps], ['Meilleur tour', setup.lapTime], ['Moyenne au tour', setup.averageLapTime], ['Régularité', setup.lapConsistency], ['Entrée de virage', setup.cornerEntry], ['Milieu de virage', setup.cornerMid], ['Sortie de virage', setup.cornerExit], ['Motricité', setup.tractionLevel], ['Stabilité', setup.stabilityLevel], ['Modifications testées', setup.testedChanges], ['Bilan du test', setup.testConclusion], ['Prochain essai', setup.nextTest]]],
     ['Pneus & roues', [['Pneus avant', setup.frontTires], ['Pneus arrière', setup.rearTires], ['Inserts avant', setup.frontInserts], ['Inserts arrière', setup.rearInserts], ['Inserts (ancienne fiche)', setup.inserts], ['Traitement pneus', setup.tireTreatment], ['État des pneus', setup.tireCondition], ['Notes pneus & inserts', setup.tiresNotes]]],
     ['Suspension & géométrie', [['Huile amortisseur avant', setup.frontShocks], ['Piston amortisseur avant', setup.frontPiston], ['Ressort avant', setup.frontSpring], ['Huile amortisseur arrière', setup.rearShocks], ['Piston amortisseur arrière', setup.rearPiston], ['Ressort arrière', setup.rearSpring], ['Tour d’amortisseur avant',setup.frontShockTower], ['Position amortisseur avant',setup.frontShockPosition], ['Tour d’amortisseur arrière',setup.rearShockTower], ['Position amortisseur arrière',setup.rearShockPosition], ['Coupelle sous amortisseur avant', setup.frontShockCupPosition], ['Coupelle sous amortisseur arrière', setup.rearShockCupPosition], ['Anciens ressorts (setup existant)', setup.springs], ['Hauteur de caisse avant', setup.frontRideHeight], ['Hauteur de caisse arrière', setup.rearRideHeight], ['Hauteur de caisse (ancienne fiche)', setup.rideHeight], ['Carrossage avant', setup.frontCamber], ['Carrossage arrière', setup.rearCamber], ['Pincement / ouverture avant', setup.frontToe], ['Pincement / ouverture arrière', setup.rearToe], ['Chasse avant', setup.frontCaster], ['Géométrie de direction (Ackermann)', setup.ackermann], ['Barre antiroulis avant', setup.frontAntiRollBar], ['Barre antiroulis arrière', setup.rearAntiRollBar], ['Débattement avant / droop', setup.frontDroop], ['Débattement arrière / droop', setup.rearDroop], ['Carrossage (ancienne fiche)', setup.camber], ['Pincement / ouverture (ancienne fiche)', setup.toe], ['Chasse / Ackermann (ancienne fiche)', setup.casterAckermann], ['Barres antiroulis (ancienne fiche)', setup.antiRollBars], ['Débattement / droop (ancienne fiche)', setup.droop], ['Lest avant', setup.frontBallastWeight], ['Lest arrière', setup.rearBallastWeight], ['Lest latéral', setup.lateralBallastWeight], ['Notes suspension & géométrie', setup.suspensionNotes]]],
     ['Transmission', [['Rapport / pignon-couronne', setup.gearing], ['Différentiel avant – configuration', setup.frontDiffType], ['Différentiel avant – huile', setup.frontDiffOil], ['Différentiel avant – graisse', setup.frontDiffGrease], ['Différentiel avant à billes – serrage', setup.frontBallDiffTightness], ['Différentiel central – configuration', setup.centerDiffType], ['Différentiel central – huile', setup.centerDiffOil], ['Différentiel central – graisse', setup.centerDiffGrease], ['Différentiel central à billes – serrage', setup.centerBallDiffTightness], ['Différentiel arrière – configuration', setup.rearDiffType], ['Différentiel arrière – huile', setup.rearDiffOil], ['Différentiel arrière – graisse', setup.rearDiffGrease], ['Différentiel arrière à billes – serrage', setup.rearBallDiffTightness], ['Slipper', setup.slipperPresence], ['Réglage du slipper – serrage de l’écrou', setup.slipper], ['Ancien type de différentiel', setup.diffType], ['Ancien différentiel à billes – serrage', setup.ballDiff], ['Moteur', setup.motor], ['Notes transmission', setup.transmissionNotes]]],
@@ -6175,7 +6203,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 function registerServiceWorker() {
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=72').catch((error) => console.error('Échec du service worker :', error)));
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=73').catch((error) => console.error('Échec du service worker :', error)));
 }
 function setupInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); deferredPrompt = event; installButton.classList.remove('hidden'); });
@@ -6206,7 +6234,7 @@ document.getElementById('setupForm').elements.namedItem('carId').addEventListene
 ['frontDiffType','centerDiffType','rearDiffType','slipperPresence'].forEach(name=>document.getElementById('setupForm').elements.namedItem(name).addEventListener('change',updateVehicleSpecificFields));
 document.getElementById('setupSearch')?.addEventListener('input',renderSetups);
 ['setupCarFilter','setupTrackFilter','setupSurfaceFilter','setupGripFilter','setupDateFrom','setupDateTo'].forEach(id=>document.getElementById(id)?.addEventListener('change',renderSetups));
-document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
+document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);\ndocument.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);\ndocument.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
 document.getElementById('setupPhotosInput').addEventListener('change', handlePhotoSelection);
 document.getElementById('exportButton').addEventListener('click', exportJson);
 document.getElementById('importInput').addEventListener('change', (event) => { importJson(event.target.files?.[0]); event.target.value = ''; });
