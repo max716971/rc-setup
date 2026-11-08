@@ -6619,7 +6619,7 @@ function assistantRecommendations(setup,symptom,phase,options={}){
  setup=setup||{};
  const car=getCarById(options.carId||setup.carId),track=getTrackById(options.trackId||setup.trackId);
 
- const drivetrain=String(car?.drivetrain||car?.driveType||car?.transmission||'').toLowerCase();
+ const drivetrain=String(car?.drivetrain||car?.driveType||car?.transmission||car?.drive||'').toLowerCase();
  const is4wd=/4wd|4x4|4 roues|quatre roues/.test(drivetrain);
  const surface=setup.surface||track?.surface||'surface non précisée';
  const grip=setup.grip||track?.grip||options.grip||'adhérence non précisée';
@@ -6781,7 +6781,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v232';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v233';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6789,7 +6789,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=126', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=127', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
