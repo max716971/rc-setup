@@ -6711,7 +6711,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v222';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v223';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6719,7 +6719,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=116', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=117', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
@@ -6864,6 +6864,9 @@ setupInstallPrompt();
 window.addEventListener('load', () => {
   const splash = document.getElementById('startupSplash');
   if (!splash) return;
-  window.setTimeout(() => requestAnimationFrame(() => splash.classList.add('is-hidden')), 550);
+  const logo = splash.querySelector('img');
+  const revealApp = () => window.setTimeout(() => splash.classList.add('is-hidden'), 900);
+  if (logo && typeof logo.decode === 'function') logo.decode().catch(() => {}).finally(revealApp);
+  else revealApp();
 });
 
