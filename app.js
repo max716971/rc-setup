@@ -6814,10 +6814,40 @@ async function shareSetupByLink(id){
     else window.prompt('Copie ce lien de partage :',url);
   }catch(error){console.error(error);showToast('Impossible de compresser ce setup pour le partage.');}
 }
+function isInstalledAppMode(){
+  return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;
+}
+function showShareOpenInstructions(){
+  if(document.getElementById('shareOpenHelp'))return;
+  const overlay=document.createElement('div');overlay.id='shareOpenHelp';overlay.className='share-open-overlay';
+  overlay.innerHTML='<section class="share-open-card" role="dialog" aria-modal="true" aria-labelledby="shareOpenTitle"><div class="share-open-logo">RC SETUP</div><span class="kicker">SETUP REÇU</span><h2 id="shareOpenTitle">Ouvre ce lien dans ton application</h2><p>Safari ne transmet pas automatiquement les liens à une application web installée sur l’écran d’accueil de l’iPhone.</p><ol><li>Copie le lien avec le bouton ci-dessous.</li><li>Ferme Safari et lance <strong>RC SETUP</strong> depuis son icône sur l’écran d’accueil.</li><li>Dans <strong>Setups</strong>, utilise « Importer un setup par lien » puis « Coller et importer ».</li></ol><button id="copyIncomingShareLink" class="button button-primary" type="button">Copier le lien d’import</button><button id="closeShareOpenHelp" class="button button-soft" type="button">Fermer</button></section>';
+  document.body.append(overlay);
+  overlay.querySelector('#copyIncomingShareLink').addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(location.href);showToast('Lien copié. Ouvre maintenant RC SETUP depuis son icône.');}
+    catch{window.prompt('Copie ce lien puis ouvre RC SETUP depuis son icône :',location.href);}
+  });
+  overlay.querySelector('#closeShareOpenHelp').addEventListener('click',()=>overlay.remove());
+}
+async function importSharedLinkValue(value){
+  const raw=String(value||'').trim();if(!raw)throw new Error('Lien manquant');
+  let encoded=raw;
+  try{const parsed=new URL(raw,location.origin);encoded=parsed.searchParams.get('share')||parsed.hash.match(/(?:^#|&)share=([^&]+)/)?.[1]||raw;}catch{}
+  const payload=await decodeSharedPayload(encoded);
+  return importSharedPayload(payload);
+}
+async function pasteAndImportSharedLink(){
+  const field=document.getElementById('sharedSetupLinkInput');let value=field?.value||'';
+  if(!value&&navigator.clipboard?.readText){try{value=await navigator.clipboard.readText();}catch{}}
+  if(!value)value=window.prompt('Colle ici le lien de setup reçu :')||'';
+  if(field)field.value=value;
+  try{const imported=await importSharedLinkValue(value);if(imported&&field)field.value='';}
+  catch(error){console.error(error);showToast('Lien invalide. Copie le lien complet reçu et réessaie.');}
+}
 async function processIncomingShareLink(){
   const queryValue=new URLSearchParams(location.search).get('share');
   const hashMatch=location.hash.match(/(?:^#|&)share=([^&]+)/);
   const encoded=queryValue||hashMatch?.[1];if(!encoded)return;
+  if(!isInstalledAppMode()){showShareOpenInstructions();return;}
   try{
     const payload=await decodeSharedPayload(encoded);
     history.replaceState(null,'',location.pathname);
@@ -6871,7 +6901,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=138', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=139', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
@@ -7009,6 +7039,8 @@ document.getElementById('setupPhotosInput').addEventListener('change', handlePho
 document.getElementById('exportButton').addEventListener('click', exportJson);
 document.getElementById('importInput').addEventListener('change', (event) => { importJson(event.target.files?.[0]); event.target.value = ''; });
 document.getElementById('importSetupInput')?.addEventListener('change', (event) => { importSingleSetup(event.target.files?.[0]); event.target.value = ''; });
+document.getElementById('pasteSharedSetupLinkButton')?.addEventListener('click',pasteAndImportSharedLink);
+document.getElementById('importSharedSetupLinkButton')?.addEventListener('click',()=>pasteAndImportSharedLink());
 document.querySelectorAll('form').forEach(form=>form.addEventListener('reset',()=>{const keepOpen=form.id==='setupForm'&&form.dataset.preserveOnReset==='true';form.dataset.preserveOnReset='false';setTimeout(()=>{if(keepOpen){skipSetupReset=false;return;}form.classList.add('hidden');if(form.id==='setupForm'){pendingPhotos=[];editingSetupId=null;setupDraftSource=null;renderPhotoPreviews();const submit=form.querySelector('button[type="submit"]');if(submit)submit.textContent='Enregistrer le setup';}},0);}));
 document.getElementById('setupDialog').addEventListener('click', (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
 
