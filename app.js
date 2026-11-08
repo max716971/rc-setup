@@ -6755,7 +6755,7 @@ function downloadJsonFile(data,filename){
   link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();URL.revokeObjectURL(url);
 }
 function buildSingleSetupPayload(setup,sharedBy,sharedAt){
-  const sharedSetup={...setup,isShared:true,sharedBy,sharedAt},car=getCarById(setup.carId)||null,track=getTrackById(setup.trackId)|| (setup.sharedTrackName?{name:setup.sharedTrackName,surface:setup.sharedTrackSurface||setup.surface||'',grip:setup.sharedTrackGrip||setup.grip||'',location:setup.sharedTrackLocation||'',details:setup.sharedTrackDetails||''}:null);
+  const sharedSetup={...setup,isShared:true,sharedBy,sharedAt,photos:[]},sourceCar=getCarById(setup.carId)||null,car=sourceCar?{...sourceCar,photos:[]}:null,track=getTrackById(setup.trackId)|| (setup.sharedTrackName?{name:setup.sharedTrackName,surface:setup.sharedTrackSurface||setup.surface||'',grip:setup.sharedTrackGrip||setup.grip||'',location:setup.sharedTrackLocation||'',details:setup.sharedTrackDetails||''}:null);
   return {format:'rc-setup-single',version:3,exportedAt:sharedAt,sharedBy,car,track,setup:sharedSetup};
 }
 function base64UrlEncodeUtf8(value){
@@ -6784,11 +6784,7 @@ function shareSetupByLink(id){
   const sharedBy=String(window.prompt('Quel est le nom du pilote propriétaire de ce setup ?',setup.sharedBy||'')||'').trim();
   if(!sharedBy){showToast('Partage annulé : indique le nom du pilote.');return;}
   const sharedAt=new Date().toISOString(),payload=buildSingleSetupPayload(setup,sharedBy,sharedAt);
-  let json=JSON.stringify(payload),encoded=base64UrlEncodeUtf8(json),url=location.origin+location.pathname+'#share='+encoded;
-  if(url.length>7500&&payload.setup.photos?.length){
-    payload.setup={...payload.setup,photos:[]};json=JSON.stringify(payload);encoded=base64UrlEncodeUtf8(json);url=location.origin+location.pathname+'#share='+encoded;
-    showToast('Lien allégé : les photos du setup ne sont pas incluses. Utilise l’export JSON pour les conserver.');
-  }
+  const json=JSON.stringify(payload),encoded=base64UrlEncodeUtf8(json),url=location.origin+location.pathname+'?share='+encoded;
   if(url.length>7500){downloadJsonFile(payload,'rc-setup-partage.json');showToast('Ce setup est trop volumineux pour un lien fiable. Le fichier JSON de secours a été créé.');return;}
   const shareData={title:'Setup RC partagé · '+(setup.setupName||getCarById(setup.carId)?.name||'RC SETUP'),text:'Voici un setup partagé par '+sharedBy+'. Ouvre le lien pour l’enregistrer dans RC SETUP.',url};
   if(navigator.share)navigator.share(shareData).then(()=>showToast('Lien de partage envoyé.')).catch(error=>{if(error?.name==='AbortError')return;if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>showToast('Lien copié. Tu peux maintenant le partager.')).catch(()=>window.prompt('Copie ce lien de partage :',url));else window.prompt('Copie ce lien de partage :',url);});
@@ -6796,9 +6792,14 @@ function shareSetupByLink(id){
   else window.prompt('Copie ce lien de partage :',url);
 }
 function processIncomingShareLink(){
-  const match=location.hash.match(/(?:^#|&)share=([^&]+)/);if(!match)return;
-  try{const payload=JSON.parse(base64UrlDecodeUtf8(match[1]));history.replaceState(null,'',location.pathname+location.search);window.setTimeout(()=>{try{importSharedPayload(payload);}catch(error){console.error(error);showToast('Lien de partage invalide ou incompatible.');}},350);}
-  catch(error){console.error(error);history.replaceState(null,'',location.pathname+location.search);showToast('Lien de partage invalide ou incomplet.');}
+  const queryValue=new URLSearchParams(location.search).get('share');
+  const hashMatch=location.hash.match(/(?:^#|&)share=([^&]+)/);
+  const encoded=queryValue||hashMatch?.[1];if(!encoded)return;
+  try{
+    const payload=JSON.parse(base64UrlDecodeUtf8(encoded));
+    history.replaceState(null,'',location.pathname);
+    window.setTimeout(()=>{try{importSharedPayload(payload);}catch(error){console.error(error);showToast('Lien de partage invalide ou incompatible.');}},500);
+  }catch(error){console.error(error);history.replaceState(null,'',location.pathname);showToast('Lien de partage invalide ou incomplet.');}
 }
 function exportSingleSetup(id){
   const setup=state.setups.find(s=>s.id===id);if(!setup)return;
@@ -6841,7 +6842,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v241';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v242';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6849,7 +6850,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=135', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=136', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
