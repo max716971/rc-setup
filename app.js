@@ -6711,7 +6711,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v215';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v216';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
