@@ -5825,11 +5825,11 @@ function showToast(message) {
 }
 function getCarById(id) { return state.cars.find((car) => car.id === id); }
 function getTrackById(id) { return state.tracks.find((track) => track.id === id); }
-function setView(viewName) {
+function setView(viewName, shouldScroll = true) {
   document.querySelectorAll('.nav-item').forEach((button) => button.classList.toggle('active', button.dataset.view === viewName));
   document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view.id === `${viewName}View`));
   if(viewName==='tools'){populateMaintenanceCars();}
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function emptyState() { return emptyStateTemplate.content.cloneNode(true); }
 
@@ -6856,7 +6856,7 @@ renderBatteries();
 document.getElementById('maintenanceDate').value=new Date().toISOString().slice(0,10);
 updateCarBrandPicker();
 updateVehicleSpecificFields();
-setView('dashboard');
+setView('dashboard', false);
 registerServiceWorker();
 setupInstallPrompt();
 
