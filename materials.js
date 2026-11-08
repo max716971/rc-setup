@@ -1525,5 +1525,5 @@
     setupForm.elements.namedItem('esc').value = escText;
   }, true);
   window.addEventListener('rc-materials-updated', refreshPickers);
-  window.RCSetupMaterials={exportData:()=>savedItems.map(item=>({...item})),getCatalog:()=>catalog.map(item=>({...item})),getAll:()=>allMaterials().map(item=>({...item})),importData:items=>{if(!Array.isArray(items)||items.some(item=>!item||typeof item!=='object'||!item.brand||!item.name||!item.category))return false;const previous=savedItems;savedItems=items.map(item=>({...item}));if(!persist()){savedItems=previous;return false;}render();window.dispatchEvent(new Event('rc-materials-updated'));return true;}};
+  window.RCSetupMaterials={exportData:()=>savedItems.map(item=>({...item})),getCatalog:()=>catalog.map(item=>({...item})),getAll:()=>allMaterials().map(item=>({...item})),importData:items=>{if(!Array.isArray(items)||items.some(item=>!item||typeof item!=='object'||!item.brand||!item.name||!item.category))return false;const previous=savedItems;savedItems=items.map(item=>({...item}));if(!persist()){savedItems=previous;return false;}invalidateMaterialIndex();render();window.dispatchEvent(new Event('rc-materials-updated'));return true;}};
 })();
