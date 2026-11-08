@@ -1186,6 +1186,39 @@
     ...['T-120','T-130','T-180','T-190','T-250','T-300','T-360','T-440'].map(model=>({brand:'Tekin',category:'Servo',name:model,reference:model,detail:'Servo Tekin série '+model+'. Caractéristiques exactes à relever sur la fiche constructeur de cette révision.',url:'https://www.teamtekin.com/servos.html'})),
     ...['RX8','RX8 Gen2','RX8 Gen3','RX4','RSX','RSX PRO','RS GEN3','RS GEN3 SPEC','RS PRO','RS SPEC','FX Series','B1 Series'].map(model=>({brand:'Tekin',category:'Variateur (ESC)',name:model,reference:'',detail:'Famille / génération Tekin identifiée dans le catalogue et les archives constructeur ; SKU non attribué sans preuve.',url:'https://www.teamtekin.com/archive.html'})),
   ];
+
+  // Compléments catalogue vérifiés : Schumacher 1/10, 6MIK 1/10 et Team Associated historique.
+  const supplementalMaterials = [
+    ...[
+      ['Mini Dart','U6824','Avant 2WD','Yellow'],['Mini Dart','U6825','Avant 4WD','Yellow'],['Mini Dart','U6826','Arrière 2WD/4WD','Yellow'],
+      ['Mini Dart','U6827','Avant 2WD','Blue'],['Mini Dart','U6828','Avant 4WD','Blue'],['Mini Dart','U6829','Arrière 2WD/4WD','Blue'],
+      ['Mini Dart','U6830','Avant 2WD','Silver'],['Mini Dart','U6831','Avant 4WD','Silver'],['Mini Dart','U6832','Arrière 2WD/4WD','Silver'],
+      ['Mini Dart pré-collé','U6833','Avant 2WD','Yellow'],['Mini Dart pré-collé','U6834','Avant 4WD','Yellow'],['Mini Dart pré-collé','U6835','Arrière 2WD/4WD','Yellow'],
+      ['Cactus','U6838','Arrière 2WD/4WD','Yellow'],['Cactus','U6840','Avant 4WD','Yellow'],['Cactus','U6842','Arrière 2WD/4WD','Silver'],['Cactus','U6843','Avant 4WD','Silver'],['Cactus','U6844','Arrière 2WD/4WD','Blue'],['Cactus','U6845','Avant 4WD','Blue'],
+      ['Mezzo','U6885','Arrière 2WD/4WD','Yellow'],['Mezzo','U6888','Avant 4WD','Yellow'],['Mezzo pré-collé','U6891','Arrière 2WD/4WD','Yellow'],
+      ['Azami','U6905','Arrière 2WD/4WD','Yellow'],['Splinter','U6906','Avant 2WD','Yellow'],['Shard','U6907','Avant 4WD','Yellow']
+    ].map(([model,reference,position,compound])=>({brand:'Schumacher',category:'Pneus / roues',name:model+' 1/10 — '+position+' — '+compound,reference,compatibility:'Buggy 1/10 — '+position+' — moquette / astro selon gomme',detail:'Pneu Schumacher, gomme '+compound+'. Référence issue des catalogues et listes de pièces Schumacher.',url:'https://www.racing-cars.com/'})),
+    ...[
+      ['Insert mousse avant dur','U6652','Avant 4WD'],['Insert mousse arrière dur','U6653','Arrière 2WD/4WD'],['Insert mousse avant medium','U6733','Avant 4WD'],['Insert mousse arrière medium','U6734','Arrière 2WD/4WD'],['Insert tubby medium avant','U6746','Avant 4WD'],['Insert tubby medium arrière','U6747','Arrière 2WD/4WD']
+    ].map(([name,reference,position])=>({brand:'Schumacher',category:'Insert pneu',name,reference,compatibility:'Buggy 1/10 — '+position,detail:'Insert mousse Schumacher pour pneus buggy 1/10.',url:'https://www.racing-cars.com/'})),
+    ...[
+      ['AXIAL','T113','Avant 2WD','Moquette / astro'],['AXIAL','TM113','Avant 2WD','Moquette / astro'],['AXIAL','TJ113','Avant 2WD','Moquette / astro']
+    ].map(([model,reference,position,surface])=>({brand:'6MIK',category:'Pneus / roues',name:model+' — AXIAL 1/10 — '+position,reference,compatibility:'Buggy 1/10 — '+position+' — '+surface,detail:'Pneu AXIAL 6MIK développé pour l’avant des 2WD modernes ; utilisable avec ou sans mousse interne.',url:'https://6mik-racing.com/axial-tire/'})),
+    ...[
+      ['Insert Wasabi avant 4WD','PM113S','Avant 4WD'],['Insert Wasabi arrière','PM114','Arrière 2WD/4WD'],['Pack pneu + insert Wasabi avant','TM111S','Avant 4WD'],['Pack pneu + insert Wasabi arrière','TM112S','Arrière 2WD/4WD']
+    ].map(([name,reference,position])=>({brand:'6MIK',category:name.startsWith('Insert')?'Insert pneu':'Pneus / roues',name,reference,compatibility:'Buggy 1/10 — '+position+' — moquette',detail:'Référence 6MIK Wasabi. Les références TM111S / TM112S correspondent aux ensembles pneu + mousse ; PM113S / PM114 aux mousses dédiées.',url:'https://6mik-racing.com/wasabi-1-10-tires/'})),
+    ...[
+      ['10','5420'],['15','5427'],['20','5421'],['22.5','5424'],['25','5428'],['27.5','5426'],['30','5422'],['32.5','5432'],['35','5429'],['37.5','5433'],['40','5423'],['42.5','5434'],['45','5430'],['47.5','5438'],['50','5435'],['55','5431'],['60','5436'],['70','5437'],['80','5425']
+    ].map(([weight,reference])=>({brand:'Team Associated',category:'Huile amortisseur',name:'Silicone Shock Fluid '+weight+' wt — 2 oz',reference,compatibility:'Amortisseurs RC Team Associated — viscosité exprimée en wt',detail:'Huile silicone amortisseur Team Associated, flacon 2 oz. Référence catalogue pièces RC10T4.2.',url:'https://www.teamassociated.com/pdf/cars_and_trucks/RC10T4.2/RSRTR/manual_T4.2RS.pdf'})),
+    ...[
+      ['Arrière','6482','Gris','2.33 lb/in'],['Arrière','7434','Bleu','2.55 lb/in'],['Arrière','7435','Or','2.75 lb/in'],['Arrière','7436','Rouge','2.95 lb/in'],
+      ['Arrière','6481','Noir','—'],['Arrière','6480','Vert','—'],['Arrière','6478','Argent','—'],
+      ['Avant','8232','Noir','—'],['Avant','6494','Vert','—'],['Avant','6496','Argent','—']
+    ].map(([position,reference,color,rate])=>({brand:'Team Associated',category:'Ressort',name:'Ressort amortisseur '+position+' — '+color+(rate!=='—'?' ('+rate+')':''),reference,compatibility:'Buggy / truck Team Associated 1/10 — '+position.toLowerCase(),detail:'Ressort Team Associated issu des catalogues de pièces RC10B2 / RC10T4.2. La dureté n’est indiquée que lorsqu’elle est publiée.',url:'https://www.teamassociated.com/pdf/cars_and_trucks/RC10T4.2/RSRTR/manual_T4.2RS.pdf'}))
+  ];
+  for (const item of supplementalMaterials) {
+    if (!catalog.some(existing => existing.brand === item.brand && existing.reference === item.reference && existing.name === item.name)) catalog.push(item);
+  }
   const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA', 'Hobbywing', 'XTR Racing', '6MIK', 'Team Associated', '1UP Racing', 'SRT', 'Power HD', 'Savöx', 'Schumacher'];
   // Wordmarks SVG intégrés : ils ne dépendent d'aucun hébergeur externe et restent visibles hors ligne.
   function brandWordmark(label, color, secondary = '#222222') {
