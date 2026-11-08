@@ -6711,7 +6711,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v221';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v222';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6719,7 +6719,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=115', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=116', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
@@ -6859,4 +6859,11 @@ updateVehicleSpecificFields();
 setView('dashboard', false);
 registerServiceWorker();
 setupInstallPrompt();
+
+// L’écran de lancement reste visible jusqu’au chargement complet de l’application.
+window.addEventListener('load', () => {
+  const splash = document.getElementById('startupSplash');
+  if (!splash) return;
+  window.setTimeout(() => requestAnimationFrame(() => splash.classList.add('is-hidden')), 550);
+});
 
