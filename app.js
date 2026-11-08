@@ -6781,7 +6781,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v233';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v234';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6789,7 +6789,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=127', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=128', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
@@ -6797,9 +6797,20 @@ async function refreshAppWorker() {
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
 
-  // Pas de surcouche de lancement ni de rechargement sur controllerchange :
-  // iOS standalone peut repeindre toute la fenêtre lors de ces transitions.
-  // La vérification se fait en arrière-plan ; le bouton Aide recharge à la demande.
+  // Ne recharger que si une page déjà contrôlée reçoit un nouveau worker.
+  // La première prise de contrôle (installation initiale) ne provoque aucun flash.
+  const hadController = Boolean(navigator.serviceWorker.controller);
+  let reloadingForUpdate = false;
+  if (hadController) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloadingForUpdate) return;
+      reloadingForUpdate = true;
+      window.location.reload();
+    });
+  }
+
+  // À chaque ouverture, vérifier le serveur. Un nouveau worker actif déclenche
+  // controllerchange et recharge alors automatiquement la version actualisée.
   window.addEventListener('load', async () => {
     try {
       await refreshAppWorker();
