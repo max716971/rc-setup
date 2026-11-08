@@ -5852,6 +5852,13 @@ function renderDashboard() {
       const owner=document.createElement('p');owner.className='shared-setup-owner';owner.textContent='Propriétaire : '+(setup.sharedBy||'Pilote inconnu');
       item.querySelector('.item-main')?.append(owner);
     }
+    if(setup.isShared||setup.sharedBy){
+      item.classList.add('shared-setup-card');
+      const tag=item.querySelector('.setup-tag');
+      if(tag){tag.classList.add('shared-setup-tag');tag.textContent='↗ PARTAGÉ · '+(setup.sharedBy||'Pilote inconnu');}
+      const owner=document.createElement('p');owner.className='shared-setup-owner';owner.textContent='Propriétaire : '+(setup.sharedBy||'Pilote inconnu');
+      item.querySelector('.item-main')?.append(owner);
+    }
     container.append(item);
   });
   container.querySelectorAll('.view-setup').forEach(button=>button.addEventListener('click',()=>showSetup(button.dataset.id)));
@@ -6797,7 +6804,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v236';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v237';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6805,7 +6812,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=130', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=131', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
