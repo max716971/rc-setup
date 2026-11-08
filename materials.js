@@ -1263,6 +1263,30 @@
     {brand:'WS Line',category:'Huile amortisseur',name:'Huile silicone amortisseur — flacon 100 ml (grades wt au choix)',reference:'—',detail:'Huile silicone WS-Line pour amortisseurs ; choisir le grade wt dans la liste fournisseur.',url:'https://www.wartelle-shop.com/consommables-ws-line-huiles-graisses-colles-c102x4272956'},
     {brand:'WS Line',category:'Colle',name:'Colle cyano ultra fluide spéciale pneus — 20 g',reference:'WS-CYANO20',detail:'Colle cyanoacrylate WS-Line ultra fluide destinée au collage des pneus.',url:'https://www.wartelle-shop.com/consommables-ws-line-huiles-graisses-colles-c102x4272956'},
     {brand:'WS Line',category:'Frein filet',name:'Frein filet bleu médium — 30 g',reference:'WS-FREINFILET30',detail:'Frein filet bleu de force moyenne WS-Line pour visserie métallique.',url:'https://www.wartelle-shop.com/consommables-ws-line-huiles-graisses-colles-c102x4272956'}
+,
+    // Compléments 6MIK vérifiés : consommables de collage et entretien, sans doublonner les pneus déjà listés.
+    {brand:'6MIK',category:'Colle',name:'Colle cyano spéciale pneus — fluide',reference:'PCPF',detail:'Colle cyanoacrylate fluide 6MIK pour collage des pneus RC.',url:'https://www.evocrc.com/308_6mik'},
+    {brand:'6MIK',category:'Colle',name:'Colle cyano spéciale pneus — épaisse',reference:'PCPE',detail:'Colle cyanoacrylate épaisse 6MIK pour collage des pneus RC.',url:'https://www.evocrc.com/308_6mik'},
+    {brand:'6MIK',category:'Accessoire',name:'Embout et aiguilles pour tube de colle cyano',reference:'PCPA',detail:'Embout applicateur et aiguilles de précision pour colle cyano 6MIK.',url:'https://www.evocrc.com/308_6mik'},
+    {brand:'6MIK',category:'Accessoire',name:'Élastiques de collage pneus (lot de 8)',reference:'PWGB01',detail:'Élastiques de maintien pendant le collage des pneus RC.',url:'https://www.evocrc.com/308_6mik'},
+    {brand:'6MIK',category:'Nettoyant',name:'Opti-Clean nettoyant RC 5-en-1 — 750 ml',reference:'PO19',detail:'Nettoyant multi-usage 6MIK pour entretien des modèles RC.',url:'https://www.evocrc.com/308_6mik'},
+    {brand:'6MIK',category:'Nettoyant',name:'Opti-Clean nettoyant RC 5-en-1 — 5 L',reference:'PO195',detail:'Nettoyant multi-usage 6MIK en grand conditionnement.',url:'https://www.evocrc.com/308_6mik'},
+    // Hot Race : références complémentaires 1/10 confirmées dans le catalogue distributeur 2026.
+    ...[
+      ['SLVR Astro/Carpet','003-0341','Avant 2WD','Hard','Astro / moquette'],
+      ['SLVR Astro','003-0431','Avant 4WD','Medium','Astro'],
+      ['SLVR Astro','003-0441','Avant 4WD','Hard','Astro'],
+      ['Carpet Low Profile','003-0471','Avant 4WD','Soft','Moquette'],
+      ['Carpet Low Profile','003-0481','Avant 4WD','Medium','Moquette'],
+      ['Carpet Low Profile','003-0491','Avant 4WD','Hard','Moquette'],
+      ['V2 Carpet','003-0661','Arrière 2WD/4WD','Soft / Medium','Moquette']
+    ].map(([model,reference,position,compound,surface])=>({
+      brand:'Hot Race Tires',category:'Pneus / roues',name:model+' — '+position+' — '+compound+' — '+surface,
+      reference,compatibility:'Buggy 1/10 — '+position+' — '+surface,
+      detail:'Pneu Hot Race 1/10. Gomme '+compound+' ; référence confirmée dans le catalogue distributeur.',
+      url:'https://b2b.hoeco.shop/tyres/1_10-buggy/1'
+    }))
+
 
   ];
   for (const item of supplementalMaterials) {
