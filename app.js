@@ -6835,6 +6835,12 @@ async function importSharedLinkValue(value){
   const payload=await decodeSharedPayload(encoded);
   return importSharedPayload(payload);
 }
+async function pasteSharedSetupLinkToField(){
+  const field=document.getElementById('sharedSetupLinkInput');if(!field)return;
+  try{const value=await navigator.clipboard.readText();if(value){field.value=value;showToast('Lien collé. Appuie sur « Coller et importer ».');return;}}
+  catch{}
+  field.focus();showToast('Appuie dans le champ puis sélectionne Coller.');
+}
 async function pasteAndImportSharedLink(){
   const field=document.getElementById('sharedSetupLinkInput');let value=field?.value||'';
   if(!value&&navigator.clipboard?.readText){try{value=await navigator.clipboard.readText();}catch{}}
@@ -7039,7 +7045,7 @@ document.getElementById('setupPhotosInput').addEventListener('change', handlePho
 document.getElementById('exportButton').addEventListener('click', exportJson);
 document.getElementById('importInput').addEventListener('change', (event) => { importJson(event.target.files?.[0]); event.target.value = ''; });
 document.getElementById('importSetupInput')?.addEventListener('change', (event) => { importSingleSetup(event.target.files?.[0]); event.target.value = ''; });
-document.getElementById('pasteSharedSetupLinkButton')?.addEventListener('click',pasteAndImportSharedLink);
+document.getElementById('pasteSharedSetupLinkButton')?.addEventListener('click',pasteSharedSetupLinkToField);
 document.getElementById('importSharedSetupLinkButton')?.addEventListener('click',()=>pasteAndImportSharedLink());
 document.querySelectorAll('form').forEach(form=>form.addEventListener('reset',()=>{const keepOpen=form.id==='setupForm'&&form.dataset.preserveOnReset==='true';form.dataset.preserveOnReset='false';setTimeout(()=>{if(keepOpen){skipSetupReset=false;return;}form.classList.add('hidden');if(form.id==='setupForm'){pendingPhotos=[];editingSetupId=null;setupDraftSource=null;renderPhotoPreviews();const submit=form.querySelector('button[type="submit"]');if(submit)submit.textContent='Enregistrer le setup';}},0);}));
 document.getElementById('setupDialog').addEventListener('click', (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
