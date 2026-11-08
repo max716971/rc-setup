@@ -681,3 +681,11 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
 
 /* LiPo + suivi mécanique */
 .battery-list{display:grid;gap:10px;margin-top:18px}.battery-entry{padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}.battery-entry-head,.maintenance-entry-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.battery-entry-head strong,.maintenance-entry-head strong{display:block;font-size:14px}.battery-entry-head p,.maintenance-entry-head p{margin:5px 0;color:var(--muted);font-size:11px}.battery-cycles{flex:0 0 auto;padding:6px 9px;border-radius:9px;background:rgba(197,43,50,.12);color:#ff9aa0;font-size:11px;font-weight:800}.battery-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.battery-metrics span{display:flex;flex-direction:column;gap:4px;padding:9px;border-radius:10px;background:rgba(255,255,255,.035);min-width:0}.battery-metrics small{color:var(--dim);font-size:10px}.battery-metrics b{font-size:12px;overflow-wrap:anywhere}.battery-history{margin-top:10px;color:var(--muted);font-size:11px}.battery-history summary{cursor:pointer;font-weight:750}.battery-history p{margin:8px 0;padding:8px;border-radius:8px;background:rgba(255,255,255,.025);line-height:1.5}.battery-entry-actions,.maintenance-entry-actions{display:flex;justify-content:flex-end;margin-top:7px}.battery-log{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}.battery-log h3{margin:0 0 14px;font-size:15px}.maintenance-entry-head{align-items:center}.maintenance-status{padding:5px 8px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}.maintenance-status.ok{background:rgba(65,170,120,.14);color:#8ed9b2}.maintenance-status.soon{background:rgba(220,160,60,.14);color:#f0c77b}.maintenance-status.overdue{background:rgba(197,43,50,.16);color:#ff9aa0}@media(max-width:600px){.battery-metrics{gap:5px}.battery-metrics span{padding:8px 6px}.battery-metrics b{font-size:11px}.battery-entry,.maintenance-entry{padding:11px}}
+
+
+/* iPhone: prevent accidental page zoom while preserving normal scrolling. */
+html, body { touch-action: pan-x pan-y; }
+button, a, [role="button"] { touch-action: manipulation; }
+@media (max-width: 700px) {
+  input, select, textarea { font-size: 16px; }
+}
