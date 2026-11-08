@@ -1368,7 +1368,14 @@
     if (pickerRefreshTimer) clearTimeout(pickerRefreshTimer);
     pickerRefreshTimer = setTimeout(() => { pickerRefreshTimer = null; refreshPickers(); }, 120);
   }
-  function updateInventorySummary() {\n    const totalQty=savedItems.reduce((sum,item)=>sum+Math.max(0,Number(item.quantity)||0),0);\n    const lowStock=savedItems.filter(item=>Number(item.quantity)<=2).length;\n    const summary=root.querySelector('.inventory-summary');\n    if(summary) summary.innerHTML=`<div class="inventory-stat"><span>Références possédées</span><strong>${savedItems.length}</strong></div><div class="inventory-stat"><span>Quantité totale</span><strong>${totalQty}</strong></div><div class="inventory-stat"><span>Stock faible / nul</span><strong>${lowStock}</strong></div>`;\n  }\n  function render() {\n    const brands = [...new Set([...knownBrands, ...allMaterials().map((item) => item.brand)])].sort((a,b) => a.localeCompare(b,'fr'));
+  function updateInventorySummary() {
+    const totalQty=savedItems.reduce((sum,item)=>sum+Math.max(0,Number(item.quantity)||0),0);
+    const lowStock=savedItems.filter(item=>Number(item.quantity)<=2).length;
+    const summary=root.querySelector('.inventory-summary');
+    if(summary) summary.innerHTML=`<div class="inventory-stat"><span>Références possédées</span><strong>${savedItems.length}</strong></div><div class="inventory-stat"><span>Quantité totale</span><strong>${totalQty}</strong></div><div class="inventory-stat"><span>Stock faible / nul</span><strong>${lowStock}</strong></div>`;
+  }
+  function render() {
+    const brands = [...new Set([...knownBrands, ...allMaterials().map((item) => item.brand)])].sort((a,b) => a.localeCompare(b,'fr'));
     const categories = [...new Set(allMaterials().map((item) => item.category))].sort((a,b) => a.localeCompare(b,'fr'));
     const totalQty = savedItems.reduce((sum,item)=>sum+Math.max(0,Number(item.quantity)||0),0);
     const lowStock = savedItems.filter(item=>Number(item.quantity)<=2).length;
@@ -1395,7 +1402,8 @@
     root.querySelectorAll('#materialBrandPicker [data-brand]').forEach(button=>{const active=brand===button.dataset.brand;button.classList.toggle('selected',active);button.setAttribute('aria-pressed',String(active));});
     root.querySelector('#clearBrandFilter').classList.toggle('active',!brand);
     const cards = root.querySelector('#materialCards');
-    const visibleList = list.slice(0,visibleMaterialCount);\n    cards.innerHTML = visibleList.length ? visibleList.map((item) => {
+    const visibleList = list.slice(0,visibleMaterialCount);
+    cards.innerHTML = visibleList.length ? visibleList.map((item) => {
       const owned = savedItems.some((x) => x.id === item.id), quantity=Math.max(0,Number(item.quantity)||0);
       const stockState=quantity===0?'Épuisé':quantity<=2?'Stock faible':'En stock';
       const stockMarkup=owned?`<div class="inventory-quantity"><span class="stock-state ${quantity===0?'stock-empty':quantity<=2?'stock-low':'stock-ok'}">${stockState}</span><div class="quantity-controls"><button class="quantity-step" data-id="${esc(item.id)}" data-step="-1" type="button" aria-label="Diminuer la quantité">−</button><input class="quantity-value" data-id="${esc(item.id)}" type="number" min="0" step="1" value="${quantity}" aria-label="Quantité possédée"><button class="quantity-step" data-id="${esc(item.id)}" data-step="1" type="button" aria-label="Augmenter la quantité">＋</button></div></div>`:'';
@@ -1408,7 +1416,8 @@
     cards.querySelectorAll('.quantity-step').forEach(button=>button.addEventListener('click',()=>{const item=savedItems.find(x=>x.id===button.dataset.id);if(!item)return;const previous=item.quantity;item.quantity=Math.max(0,(Number(item.quantity)||0)+Number(button.dataset.step));if(persist()){updateInventorySummary();renderCards();}else item.quantity=previous;}));
     cards.querySelectorAll('.quantity-value').forEach(input=>input.addEventListener('change',()=>{const item=savedItems.find(x=>x.id===input.dataset.id);if(!item)return;const previous=item.quantity;item.quantity=Math.max(0,Math.floor(Number(input.value)||0));if(persist()){updateInventorySummary();renderCards();}else input.value=previous;}));
   }
-  function addItem(event) {\n    event.preventDefault(); const d = Object.fromEntries(new FormData(event.currentTarget).entries());
+  function addItem(event) {
+    event.preventDefault(); const d = Object.fromEntries(new FormData(event.currentTarget).entries());
     const item={ id: `custom-${Date.now()}-${Math.random().toString(16).slice(2,7)}`, brand: d.brand.trim(), category: d.category, name: d.name.trim(), reference: d.reference.trim(), quantity: Math.max(0, Math.floor(Number(d.quantity)||0)), compatibility: d.compatibility.trim(), detail: d.detail.trim(), url: d.url.trim() };
     savedItems.unshift(item);
     if (persist()) { invalidateMaterialIndex(); activeTab = 'mine'; render(); window.dispatchEvent(new Event('rc-materials-updated')); }
@@ -1508,8 +1517,10 @@
   refreshPickers();
   setupForm.addEventListener('submit', () => {
     const value = (name) => String(setupForm.elements.namedItem(name)?.value || '').trim();
-    const radio = [['Émetteur',value('txModel')],['Récepteur / gyro',value('rxModel')],['Dual rate / expo',value('radioExpo')],['EPA',value('radioEPA')],['Trim / failsafe',value('radioTrim')],['Autres',value('radio')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
-    const escText = [['Modèle ESC',value('escModel')],['Mode / profil',value('escMode')],['Timing / boost',value('escTiming')],['Punch',value('escPunch')],['Frein / drag brake',value('escBrake')],['Cutoff',value('escCutoff')],['Autres paramètres',value('electronicsNotes')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
+    const radio = [['Émetteur',value('txModel')],['Récepteur / gyro',value('rxModel')],['Dual rate / expo',value('radioExpo')],['EPA',value('radioEPA')],['Trim / failsafe',value('radioTrim')],['Autres',value('radio')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('
+');
+    const escText = [['Modèle ESC',value('escModel')],['Mode / profil',value('escMode')],['Timing / boost',value('escTiming')],['Punch',value('escPunch')],['Frein / drag brake',value('escBrake')],['Cutoff',value('escCutoff')],['Autres paramètres',value('electronicsNotes')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('
+');
     setupForm.elements.namedItem('radio').value = radio;
     setupForm.elements.namedItem('esc').value = escText;
   }, true);
