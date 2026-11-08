@@ -6776,12 +6776,20 @@ function base64UrlDecodeUtf8(value){
   return new TextDecoder().decode(bytes);
 }
 async function decodeSharedPayload(value){
-  if(String(value).startsWith('g:')){
+  const raw=String(value||'').trim();
+  let bytes=base64UrlDecodeBytes(raw);
+  const isGzip=data=>data?.[0]===0x1f&&data?.[1]===0x8b;
+  // Compatibilité avec les liens déjà créés : l'ancien partage ajoutait "g"
+  // devant le Base64 gzip, tandis que certains liens utilisent "g:".
+  if(!isGzip(bytes)&&raw.startsWith('g')){
+    try{const legacyBytes=base64UrlDecodeBytes(raw.slice(1));if(isGzip(legacyBytes))bytes=legacyBytes;}catch{}
+  }
+  if(isGzip(bytes)){
     if(typeof DecompressionStream==='undefined')throw new Error('Décompression non prise en charge par ce navigateur');
-    const bytes=base64UrlDecodeBytes(value),stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
     return JSON.parse(await new Response(stream).text());
   }
-  return JSON.parse(base64UrlDecodeUtf8(value));
+  return JSON.parse(new TextDecoder().decode(bytes));
 }
 function importSharedPayload(payload){
   if(payload?.format!=='rc-setup-single'||!payload.setup||!payload.car?.name||!payload.track?.name)throw new Error('Format de setup partagé invalide');
@@ -6804,7 +6812,7 @@ async function shareSetupByLink(id){
     let encoded;
     if(typeof CompressionStream!=='undefined'){
       const compressed=await new Response(new Blob([json]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer();
-      encoded=base64UrlEncodeBytes(new Uint8Array(compressed),'g');
+      encoded=base64UrlEncodeBytes(new Uint8Array(compressed),'g:');
     }else encoded=base64UrlEncodeUtf8(json);
     const url=location.origin+location.pathname+'?share='+encoded;
     if(url.length>7500){showToast('Même compressé, ce setup dépasse la taille maximale d’un lien. Il faut réduire les informations de la fiche pour le partager.');return;}
@@ -6907,7 +6915,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=140', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=141', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
