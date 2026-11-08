@@ -1286,6 +1286,30 @@
       detail:'Pneu Hot Race 1/10. Gomme '+compound+' ; référence confirmée dans le catalogue distributeur.',
       url:'https://b2b.hoeco.shop/tyres/1_10-buggy/1'
     }))
+,
+    // Inserts supplémentaires : références fabricant JConcepts et 6MIK.
+    ...[
+      ['Dirt-Tech 2WD / 4WD arrière','3232','Arrière 2WD/4WD','2 pièces'],
+      ['Dirt-Tech 60 mm 4WD avant','3234','Avant 4WD','2 pièces'],
+      ['Dirt-Tech 60 mm 2WD avant','3235','Avant 2WD','2 pièces'],
+      ['Dirt-Tech 60 mm arrière','3236','Arrière 2WD/4WD','2 pièces'],
+      ['Dirt-Tech Stadium Truck','3238','Truck 1/10','2 pièces']
+    ].map(([name,reference,position,pack])=>({
+      brand:'JConcepts',category:'Insert pneu',name,reference,
+      compatibility:'1/10 — '+position,
+      detail:'Insert Dirt-Tech closed-cell JConcepts, '+pack+'. Densité medium/firm ; réutilisable.',
+      url:reference==='3232'?'https://jconcepts.net/dirttech-110th-buggy-22-2wd-4wd-rear-insert-2pc':reference==='3234'?'https://jconcepts.net/dirttech-110th-buggy-60mm-4wd-front-insert':reference==='3238'?'https://jconcepts.net/dirttech-110th-truck-insert':'https://jconcepts.net/product_index.asp?page=2'
+    })),
+    {brand:'6MIK',category:'Insert pneu',name:'Mousse arrière 1/10 — Hard noire',reference:'PM114H',compatibility:'Buggy 1/10 — Arrière 2WD/4WD',detail:'Insert mousse arrière 6MIK noir, densité Hard. Même volume que la mousse PM114 blanche, avec une densité supérieure pour améliorer le maintien du pneu.',url:'https://6mik-racing.com/new-1-10-foams/'},
+    // XRAY XB2 — compléments de ressorts Big Bore 42.5 mm avant.
+    ...[
+      ['368381','1 point'],['368382','2 points'],['368383','3 points']
+    ].map(([reference,rate])=>({
+      brand:'XRAY',category:'Ressort',name:'XRAY XB2 — Ressort avant Big Bore 42.5 mm — '+rate,
+      reference,compatibility:'XRAY XB2 1/10 — avant — amortisseur Big Bore',
+      detail:'Ressort conique avant XRAY, longueur 42.5 mm, repérage '+rate+'. Référence du manuel XB2 2025/2026.',
+      url:'https://teamxray.com/downloads/89/xb2_carpet_dirt_2026_manual_low.pdf'
+    }))
 
 
   ];
