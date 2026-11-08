@@ -1238,7 +1238,8 @@
     const score = value => ['name','compatibility','detail','url'].reduce((total, field) => total + (String(value[field] || '').trim() ? 1 : 0), 0);
     if (score(item) > score(existing)) uniqueCatalog.set(key, item);
   }
-  catalog.splice(0, catalog.length, ...uniqueCatalog.values());
+  catalog.length = 0;
+  for (const item of uniqueCatalog.values()) catalog.push(item);
   const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA', 'Hobbywing', 'XTR Racing', '6MIK', 'Team Associated', '1UP Racing', 'SRT', 'Power HD', 'Savöx', 'Schumacher'];
   // Wordmarks SVG intégrés : ils ne dépendent d'aucun hébergeur externe et restent visibles hors ligne.
   function brandWordmark(label, color, secondary = '#222222') {
