@@ -6711,7 +6711,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v217';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v220';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6719,7 +6719,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=113', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=114', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
