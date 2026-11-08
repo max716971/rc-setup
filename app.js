@@ -6711,7 +6711,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v225';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v226';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6719,23 +6719,32 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=119', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=120', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
 }
 function registerServiceWorker() {
+  const splash = document.getElementById('startupSplash');
+  const hideSplash = () => {
+    if (splash) window.setTimeout(() => splash.classList.add('is-hidden'), 650);
+  };
+  window.addEventListener('load', hideSplash, { once: true });
   if (!('serviceWorker' in navigator)) return;
+
+  // Si un nouveau worker prend le contrôle, recharge une seule fois
+  // pour afficher immédiatement les fichiers de la nouvelle version.
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  }, { once: true });
+
   window.addEventListener('load', async () => {
     try {
-      // Le nouveau worker prend le contrôle sans recharger la page :
-      // cela évite le clignotement au démarrage. La version actualisée
-      // sera chargée à la prochaine ouverture ou via le bouton Aide.
       await refreshAppWorker();
     } catch (error) {
       console.error('Échec de la vérification automatique de RC SETUP :', error);
     }
-  });
+  }, { once: true });
 }
 async function checkForAppUpdate() {
   const button = document.getElementById('checkAppUpdate');
