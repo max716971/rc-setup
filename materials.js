@@ -1219,6 +1219,26 @@
   for (const item of supplementalMaterials) {
     if (!catalog.some(existing => existing.brand === item.brand && existing.reference === item.reference && existing.name === item.name)) catalog.push(item);
   }
+  // Déduplique les références fabricant identiques, même si le nom a été saisi en français ou en anglais.
+  // Une référence fabricant non vide identifie un seul article dans une même marque et catégorie.
+  const uniqueCatalog = new Map();
+  for (const item of catalog) {
+    const reference = String(item.reference || '').trim().toLocaleUpperCase('fr');
+    if (!reference || reference === '—' || reference === '-') {
+      uniqueCatalog.set(Symbol(), item);
+      continue;
+    }
+    const key = [String(item.brand || '').trim().toLocaleLowerCase('fr'), String(item.category || '').trim().toLocaleLowerCase('fr'), reference].join('|');
+    const existing = uniqueCatalog.get(key);
+    if (!existing) {
+      uniqueCatalog.set(key, item);
+      continue;
+    }
+    // Conserver la fiche la plus complète et fusionner les informations utiles sans répéter le produit.
+    const score = value => ['name','compatibility','detail','url'].reduce((total, field) => total + (String(value[field] || '').trim() ? 1 : 0), 0);
+    if (score(item) > score(existing)) uniqueCatalog.set(key, item);
+  }
+  catalog.splice(0, catalog.length, ...uniqueCatalog.values());
   const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA', 'Hobbywing', 'XTR Racing', '6MIK', 'Team Associated', '1UP Racing', 'SRT', 'Power HD', 'Savöx', 'Schumacher'];
   // Wordmarks SVG intégrés : ils ne dépendent d'aucun hébergeur externe et restent visibles hors ligne.
   function brandWordmark(label, color, secondary = '#222222') {
