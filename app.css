@@ -728,3 +728,15 @@ button, a, [role="button"] { touch-action: manipulation; }
 .shared-setup-owner { margin: 7px 0 0; color: #8de0ef; font-size: 12px; }
 .shared-setup-banner { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 0 0 14px; padding: 12px 14px; border: 1px solid rgba(83, 190, 213, .4); border-radius: 12px; color: #a8e9f4; background: rgba(35, 91, 108, .18); font-size: 12px; }
 .shared-setup-banner strong { letter-spacing: .08em; font-size: 10px; }
+
+/* Import de setup reçu depuis Safari iOS */
+.share-import-panel{margin:18px 0 22px}
+.share-import-panel textarea{width:100%;min-height:74px;resize:vertical}
+.share-open-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(5,10,16,.88);backdrop-filter:blur(8px)}
+.share-open-card{width:min(100%,480px);max-height:90dvh;overflow:auto;padding:26px 22px;border:1px solid rgba(255,255,255,.12);border-radius:22px;background:#101a25;color:#f4f7fa;box-shadow:0 24px 80px rgba(0,0,0,.45)}
+.share-open-logo{font-size:13px;font-weight:900;letter-spacing:.18em;color:#7dd3fc;margin-bottom:24px}
+.share-open-card h2{font-size:25px;line-height:1.15;margin:9px 0 12px}
+.share-open-card p,.share-open-card li{color:#c2ccd6;line-height:1.55;font-size:14px}
+.share-open-card ol{padding-left:22px;margin:18px 0 22px}
+.share-open-card li+li{margin-top:9px}
+.share-open-card .button{width:100%;margin-top:10px}
