@@ -6763,9 +6763,25 @@ function base64UrlEncodeUtf8(value){
   for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));
   return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 }
+function base64UrlDecodeBytes(value){
+  const normalized=String(value||'').replace(/^[a-z]:/,'').replace(/-/g,'+').replace(/_/g,'/'),binary=atob(normalized+'='.repeat((4-normalized.length%4)%4));
+  return Uint8Array.from(binary,char=>char.charCodeAt(0));
+}
+function base64UrlEncodeBytes(bytes,prefix=''){
+  let binary='';for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));
+  return prefix+btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
 function base64UrlDecodeUtf8(value){
-  const normalized=String(value||'').replace(/-/g,'+').replace(/_/g,'/'),binary=atob(normalized+'='.repeat((4-normalized.length%4)%4));
-  return new TextDecoder().decode(Uint8Array.from(binary,char=>char.charCodeAt(0)));
+  const bytes=base64UrlDecodeBytes(value);
+  return new TextDecoder().decode(bytes);
+}
+async function decodeSharedPayload(value){
+  if(String(value).startsWith('g:')){
+    if(typeof DecompressionStream==='undefined')throw new Error('Décompression non prise en charge par ce navigateur');
+    const bytes=base64UrlDecodeBytes(value),stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    return JSON.parse(await new Response(stream).text());
+  }
+  return JSON.parse(base64UrlDecodeUtf8(value));
 }
 function importSharedPayload(payload){
   if(payload?.format!=='rc-setup-single'||!payload.setup||!payload.car?.name||!payload.track?.name)throw new Error('Format de setup partagé invalide');
@@ -6779,24 +6795,31 @@ function importSharedPayload(payload){
   if(!saveState()){state.setups.shift();if(!carExisting)state.cars=state.cars.filter(c=>c.id!==car.id);return false;}
   renderAll();showToast('Setup de '+sharedBy+' importé. La piste reste renseignée uniquement dans ce setup.');return true;
 }
-function shareSetupByLink(id){
+async function shareSetupByLink(id){
   const setup=state.setups.find(s=>s.id===id);if(!setup)return;
   const sharedBy=String(window.prompt('Quel est le nom du pilote propriétaire de ce setup ?',setup.sharedBy||'')||'').trim();
   if(!sharedBy){showToast('Partage annulé : indique le nom du pilote.');return;}
-  const sharedAt=new Date().toISOString(),payload=buildSingleSetupPayload(setup,sharedBy,sharedAt);
-  const json=JSON.stringify(payload),encoded=base64UrlEncodeUtf8(json),url=location.origin+location.pathname+'?share='+encoded;
-  if(url.length>7500){showToast('Ce setup est trop volumineux pour être partagé par lien. Réduis les photos ou les notes puis réessaie.');return;}
-  const shareData={title:'Setup RC partagé · '+(setup.setupName||getCarById(setup.carId)?.name||'RC SETUP'),text:'Voici un setup partagé par '+sharedBy+'. Ouvre le lien pour l’enregistrer dans RC SETUP.',url};
-  if(navigator.share)navigator.share(shareData).then(()=>showToast('Lien de partage envoyé.')).catch(error=>{if(error?.name==='AbortError')return;if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>showToast('Lien copié. Tu peux maintenant le partager.')).catch(()=>window.prompt('Copie ce lien de partage :',url));else window.prompt('Copie ce lien de partage :',url);});
-  else if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>showToast('Lien copié. Tu peux maintenant le partager.')).catch(()=>window.prompt('Copie ce lien de partage :',url));
-  else window.prompt('Copie ce lien de partage :',url);
+  try{
+    const sharedAt=new Date().toISOString(),payload=buildSingleSetupPayload(setup,sharedBy,sharedAt),json=JSON.stringify(payload);
+    let encoded;
+    if(typeof CompressionStream!=='undefined'){
+      const compressed=await new Response(new Blob([json]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer();
+      encoded=base64UrlEncodeBytes(new Uint8Array(compressed),'g');
+    }else encoded=base64UrlEncodeUtf8(json);
+    const url=location.origin+location.pathname+'?share='+encoded;
+    if(url.length>7500){showToast('Même compressé, ce setup dépasse la taille maximale d’un lien. Il faut réduire les informations de la fiche pour le partager.');return;}
+    const shareData={title:'Setup RC partagé · '+(setup.setupName||getCarById(setup.carId)?.name||'RC SETUP'),text:'Voici un setup partagé par '+sharedBy+'. Ouvre le lien pour l’enregistrer dans RC SETUP.',url};
+    if(navigator.share)navigator.share(shareData).then(()=>showToast('Lien de partage envoyé.')).catch(error=>{if(error?.name==='AbortError')return;if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>showToast('Lien copié. Tu peux maintenant le partager.')).catch(()=>window.prompt('Copie ce lien de partage :',url));else window.prompt('Copie ce lien de partage :',url);});
+    else if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>showToast('Lien copié. Tu peux maintenant le partager.')).catch(()=>window.prompt('Copie ce lien de partage :',url));
+    else window.prompt('Copie ce lien de partage :',url);
+  }catch(error){console.error(error);showToast('Impossible de compresser ce setup pour le partage.');}
 }
-function processIncomingShareLink(){
+async function processIncomingShareLink(){
   const queryValue=new URLSearchParams(location.search).get('share');
   const hashMatch=location.hash.match(/(?:^#|&)share=([^&]+)/);
   const encoded=queryValue||hashMatch?.[1];if(!encoded)return;
   try{
-    const payload=JSON.parse(base64UrlDecodeUtf8(encoded));
+    const payload=await decodeSharedPayload(encoded);
     history.replaceState(null,'',location.pathname);
     window.setTimeout(()=>{try{importSharedPayload(payload);}catch(error){console.error(error);showToast('Lien de partage invalide ou incompatible.');}},500);
   }catch(error){console.error(error);history.replaceState(null,'',location.pathname);showToast('Lien de partage invalide ou incomplet.');}
@@ -6848,7 +6871,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=137', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=138', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
