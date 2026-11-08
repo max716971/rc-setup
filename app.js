@@ -6144,25 +6144,70 @@ function calculateGearing(){
   result.innerHTML='<strong>Rapport externe : '+ratio.toFixed(3)+'</strong>'+(final?'<br>Rapport total : '+final.toFixed(3):'')+(rollout?'<br>Développement théorique : '+rollout.toFixed(1)+' mm par tour moteur (diamètre de roue renseigné).':'')+'<p class="item-sub">Un rapport externe plus élevé tire plus court. Le rapport total nécessite le rapport interne exact du véhicule.</p>';
 }
 function runSetupDiagnosis(){
-  const symptom=document.getElementById('diagnosisSymptom')?.value,grip=document.getElementById('diagnosisGrip')?.value,drive=document.getElementById('diagnosisDrive')?.value;
-  const output=document.getElementById('diagnosisResult');if(!output)return;
-  if(!symptom){output.textContent='Choisis le comportement à corriger pour afficher des pistes de réglage.';return;}
-  const sets={
-    understeer_entry:[['Priorité 1 · Direction','Contrôle les points durs, le servo, le débattement et le pincement avant.','Retrouver une réponse immédiate et régulière à l’inscription.'],['Priorité 2 · Pneus avant','Vérifie gomme, usure, collage et inserts ; teste une gomme plus accrocheuse si nécessaire.','Augmenter le grip latéral du train avant.'],['Priorité 3 · Chasse','Augmente légèrement la chasse si le châssis le permet.','Améliorer le maintien et la précision en entrée.']],
-    understeer_mid:[['Priorité 1 · Grip avant','Contrôle les pneus avant et leur température après quelques tours.','Récupérer du grip constant au milieu du virage.'],['Priorité 2 · Équilibre de roulis','Teste une barre avant plus souple ou une barre arrière légèrement plus ferme, si disponible.','Aider la voiture à pivoter sans rendre les changements brutaux.'],['Priorité 3 · Géométrie','Vérifie carrossage et largeur de voie avant.','Optimiser l’appui du pneu avant en virage.']],
-    understeer_exit:[['Priorité 1 · Transmission','Vérifie le différentiel avant sur 4WD ou le slipper et la remise des gaz sur 2WD.','Éviter que la transmission tire la voiture tout droit.'],['Priorité 2 · Pneus','Contrôle le grip arrière et l’état des pneus avant.','Conserver un équilibre entre motricité et rotation.'],['Priorité 3 · Électronique','Adoucis légèrement punch et réponse des gaz.','Rendre la sortie plus progressive et contrôlable.']],
-    oversteer_entry:[['Priorité 1 · Stabilité arrière','Vérifie le pincement arrière et les jeux de suspension.','Stabiliser la voiture au freinage et au lever de gaz.'],['Priorité 2 · Freinage','Réduis légèrement le frein initial si le train arrière se déleste.','Limiter le blocage et les transferts brusques.'],['Priorité 3 · Pneus arrière','Contrôle gomme, inserts et collage.','Augmenter la réserve de grip arrière.']],
-    oversteer_mid:[['Priorité 1 · Pneus arrière','Vérifie usure, température et propreté.','Retrouver du grip latéral au milieu du virage.'],['Priorité 2 · Barre arrière','Essaie une barre arrière plus souple si le châssis en possède une.','Réduire la vivacité du train arrière.'],['Priorité 3 · Géométrie','Contrôle carrossage et largeur de voie arrière.','Rendre l’appui arrière plus progressif.']],
-    oversteer_exit:[['Priorité 1 · Gaz','Réduis le punch ou augmente légèrement l’expo gaz négative.','Éviter la perte d’adhérence à la remise des gaz.'],['Priorité 2 · Slipper / différentiels','Contrôle le slipper en 2WD ou la cohérence des différentiels en 4WD.','Rendre le transfert de couple plus progressif.'],['Priorité 3 · Suspension arrière','Vérifie détente, précontrainte et liberté des amortisseurs.','Garder le pneu arrière en contact avec le sol.']],
-    traction:[['Priorité 1 · Pneus et inserts','Vérifie gomme, diamètre, inserts et propreté des pneus moteurs.','Augmenter le grip disponible sans toucher au châssis.'],['Priorité 2 · Commande des gaz','Adoucis punch et accélération à la radio/ESC.','Réduire le patinage à l’accélération.'],['Priorité 3 · Suspension','Contrôle droop et liberté des amortisseurs arrière.','Améliorer le suivi du sol et le transfert de charge.']],
-    instability:[['Priorité 1 · Contrôle mécanique','Vérifie jeux, roulements, visserie, triangles et amortisseurs.','Éliminer les réactions parasites avant tout réglage.'],['Priorité 2 · Assiette','Contrôle hauteurs de caisse, droop et symétrie gauche/droite.','Retrouver une voiture équilibrée et prévisible.'],['Priorité 3 · Amortissement','Vérifie huile, pistons et ressorts ; ne change qu’un élément à la fois.','Calmer les rebonds et améliorer le contact au sol.']]
-  };
-  const proposals=sets[symptom]||sets.instability;
-  const gripText=grip==='low'?'Faible grip : privilégie les changements modestes et la progressivité.':grip==='high'?'Fort grip : surveille le roulis, les réactions brusques et le risque de retournement.':'Grip moyen : procède par petits incréments.';
-  const driveText=drive==='2wd'?'2WD':drive==='4wd'?'4WD':'architecture non précisée';
-  output.innerHTML='<strong>Plan d’action · '+driveText+'</strong><div class="diagnosis-proposals">'+proposals.map((p,i)=>'<article class="diagnosis-proposal"><span class="diagnosis-rank">'+(i+1)+'</span><div><strong>'+p[0]+'</strong><p>'+p[1]+'</p><small><b>Effet attendu :</b> '+p[2]+'</small></div></article>').join('')+'</div><p class="item-sub">'+gripText+'</p><p class="item-sub">Teste dans cet ordre, une seule modification à la fois. Les effets dépendent du châssis et de la piste : vérifie toujours le manuel constructeur.</p>';
+ const symptom=document.getElementById('diagnosisSymptom')?.value;
+ const gripValue=document.getElementById('diagnosisGrip')?.value||'medium';
+ const driveValue=document.getElementById('diagnosisDrive')?.value||'unknown';
+ const carId=document.getElementById('diagnosisCar')?.value||'';
+ const setupId=document.getElementById('diagnosisSetup')?.value||'';
+ const trackId=document.getElementById('diagnosisTrack')?.value||'';
+ const setup=state.setups.find(item=>item.id===setupId)||null;
+ const output=document.getElementById('diagnosisResult');if(!output)return;
+ if(!symptom){output.textContent='Choisis le comportement à corriger pour afficher des pistes de réglage.';return;}
+ const symptomMap={understeer_entry:['understeer','entry'],understeer_mid:['understeer','mid'],understeer_exit:['understeer','exit'],oversteer_entry:['oversteer','entry'],oversteer_mid:['oversteer','mid'],oversteer_exit:['oversteer','exit'],traction:['traction','exit'],instability:['bumpy','all']};
+ const [commonSymptom,phase]=symptomMap[symptom]||['lazy','all'];
+ const severity=document.getElementById('diagnosisSeverity')?.value||'medium';
+ const grip={low:'Faible',medium:'Moyenne',high:'Forte'}[gripValue]||'non renseignée';
+ const drive=setup?undefined:driveValue;
+ const trackOverride=trackId?getTrackById(trackId):null;
+ const data=assistantRecommendations(setup,commonSymptom,phase,{carId:carId||setup?.carId,trackId:trackId||setup?.trackId,grip,drive,severity});
+ assistantToolLastProposal=data.items;
+ const context=['<strong>'+escapeHtml(data.car)+' · '+escapeHtml(data.track)+'</strong>','<span>'+escapeHtml(data.surface)+' · '+escapeHtml(data.grip)+'</span>','<p>'+escapeHtml(data.caution)+'</p>','<small>'+escapeHtml(data.scale)+'</small>'];
+ if(setup){
+  const equipment=[['Pneus AV',setup.frontTires],['Pneus AR',setup.rearTires],['Inserts AV',setup.frontInserts],['Inserts AR',setup.rearInserts],['Ressorts AV / AR',[setup.frontSpring,setup.rearSpring].filter(Boolean).join(' / ')],['Huiles AV / AR',[setup.frontShocks,setup.rearShocks].filter(Boolean).join(' / ')],['Pistons AV / AR',[setup.frontPiston,setup.rearPiston].filter(Boolean).join(' / ')],['Moteur',setup.motor],['Variateur',setup.escModel||setup.esc],['Slipper',setup.slipper]].filter(([,value])=>value);
+  context.push('<div class="assistant-context-block"><b>Équipement du setup</b>'+(equipment.length?'<ul>'+equipment.map(([label,value])=>'<li>'+escapeHtml(label)+' : '+escapeHtml(value)+'</li>').join('')+'</ul>':'<p>Équipement non renseigné.</p>')+'</div>');
+  const feedback=(setup.testProposals||[]).filter(item=>item.status&&item.status!=='À tester').slice(-4);
+  if(feedback.length)context.push('<div class="assistant-context-block"><b>Retours sur ce setup</b><ul>'+feedback.map(item=>'<li>'+escapeHtml(item.symptom)+' · '+escapeHtml(item.status)+'</li>').join('')+'</ul></div>');
+ }
+ output.innerHTML='<div class="assistant-context">'+context.join('')+'</div><div class="diagnosis-proposals">'+data.items.map((item,i)=>'<article class="diagnosis-proposal"><span class="diagnosis-rank">'+(i+1)+'</span><div><strong>'+escapeHtml(item[0])+'</strong><p>'+escapeHtml(item[1])+'</p></div></article>').join('')+'</div><p class="item-sub">Même moteur de diagnostic que dans les détails du setup. Teste une seule modification à la fois et vérifie les effets sur la piste.</p>';
+ const saveButton=document.getElementById('diagnosisSaveProposal');
+ if(saveButton){saveButton.disabled=!setup||!data.items.length;saveButton.textContent=setup?'＋ Enregistrer les pistes dans ce setup':'Sélectionne un setup pour enregistrer les pistes';}
 }
-
+let assistantToolLastProposal=[];
+function populateAssistantToolSelectors(){
+ const carSelect=document.getElementById('diagnosisCar'),setupSelect=document.getElementById('diagnosisSetup'),trackSelect=document.getElementById('diagnosisTrack');
+ if(!carSelect||!setupSelect||!trackSelect)return;
+ const carValue=carSelect.value,setupValue=setupSelect.value,trackValue=trackSelect.value;
+ carSelect.innerHTML='<option value="">Aucune voiture</option>'+state.cars.map(car=>'<option value="'+escapeHtml(car.id)+'">'+escapeHtml(car.name)+'</option>').join('');
+ if(state.cars.some(car=>car.id===carValue))carSelect.value=carValue;
+ const eligible=state.setups.filter(item=>!carSelect.value||item.carId===carSelect.value);
+ setupSelect.innerHTML='<option value="">Aucun setup (mode libre)</option>'+eligible.map(item=>'<option value="'+escapeHtml(item.id)+'">'+escapeHtml(item.setupName||'Setup')+' · '+escapeHtml(getCarById(item.carId)?.name||'Voiture')+' · '+escapeHtml(item.sessionDate||'Date inconnue')+'</option>').join('');
+ if(eligible.some(item=>item.id===setupValue))setupSelect.value=setupValue;
+ trackSelect.innerHTML='<option value="">Piste du setup / non précisée</option>'+state.tracks.map(track=>'<option value="'+escapeHtml(track.id)+'">'+escapeHtml(track.name)+'</option>').join('');
+ if(state.tracks.some(track=>track.id===trackValue))trackSelect.value=trackValue;
+ if(setupSelect.value){
+  const selected=state.setups.find(item=>item.id===setupSelect.value);
+  if(selected){
+   carSelect.value=selected.carId||'';
+   if(!trackSelect.value&&selected.trackId)trackSelect.value=selected.trackId;
+  }
+ }
+ const car=getCarById(carSelect.value);
+ const driveSelect=document.getElementById('diagnosisDrive');
+ if(driveSelect&&car){
+  const raw=String(car.drivetrain||car.driveType||car.transmission||car.drive||'').toLowerCase();
+  driveSelect.value=/4wd|4x4|4 roues/.test(raw)?'4wd':/2wd|2 roues|4x2/.test(raw)?'2wd':'unknown';
+ }
+}
+function saveToolAssistantProposal(){
+ const setupId=document.getElementById('diagnosisSetup')?.value;
+ const setup=state.setups.find(item=>item.id===setupId);
+ if(!setup||!assistantToolLastProposal.length)return;
+ const symptom=document.getElementById('diagnosisSymptom');
+ const phaseMap={understeer_entry:'Entrée',understeer_mid:'Milieu',understeer_exit:'Sortie',oversteer_entry:'Entrée',oversteer_mid:'Milieu',oversteer_exit:'Sortie',traction:'Sortie / motricité',instability:'Général'};
+ setup.testProposals=[...(setup.testProposals||[]),{createdAt:new Date().toISOString(),symptom:symptom.options[symptom.selectedIndex].text,phase:phaseMap[symptom.value]||'Général',items:assistantToolLastProposal.map(item=>({area:item[0],advice:item[1]})),status:'À tester'}].slice(-30);
+ if(!saveState())return;
+ showToast('Pistes enregistrées dans le setup sélectionné.');
+}
 function formatDate(value) {
   if (!value) return 'Date non précisée';
   const date = new Date(value);
@@ -6179,7 +6224,7 @@ function populateSelects() {
   if (state.cars.some((car) => car.id === selectedCar)) carSelect.value = selectedCar;
   if (state.tracks.some((track) => track.id === selectedTrack)) trackSelect.value = selectedTrack;
 }
-function renderAll() { renderDashboard(); renderCars(); renderTracks(); renderSetups(); populateSelects(); }
+function renderAll() { renderDashboard(); renderCars(); renderTracks(); renderSetups(); populateSelects(); populateAssistantToolSelectors(); }
 function populateMaintenanceCars(){
  const select=document.getElementById('maintenanceCar');if(!select)return;
  const value=select.value;select.innerHTML='<option value="">Choisir une voiture…</option>'+state.cars.map(car=>'<option value="'+escapeHtml(car.id)+'">'+escapeHtml(car.name)+'</option>').join('');
@@ -6570,12 +6615,14 @@ function removeSetup(id) {
 let assistantSetupId=null;
 let currentDetailSetupId=null;
 let assistantLastProposal=[];
-function assistantRecommendations(setup,symptom,phase){
- const car=getCarById(setup.carId),track=getTrackById(setup.trackId);
+function assistantRecommendations(setup,symptom,phase,options={}){
+ setup=setup||{};
+ const car=getCarById(options.carId||setup.carId),track=getTrackById(options.trackId||setup.trackId);
+
  const drivetrain=String(car?.drivetrain||car?.driveType||car?.transmission||'').toLowerCase();
  const is4wd=/4wd|4x4|4 roues|quatre roues/.test(drivetrain);
  const surface=setup.surface||track?.surface||'surface non précisée';
- const grip=setup.grip||track?.grip||'adhérence non précisée';
+ const grip=setup.grip||track?.grip||options.grip||'adhérence non précisée';
  const bank={
   understeer:{entry:[['Direction / train avant','Vérifie le débattement et l’absence de point dur. Essaie un peu plus de chasse ou une position de biellette qui augmente la réponse initiale, selon le châssis.'],['Pneus avant','Contrôle l’usure, le collage et l’insert. Un pneu avant plus accrocheur peut aider, sans changer plusieurs paramètres à la fois.']],mid:[['Équilibre de roulis','Essaie une barre antiroulis avant plus souple ou arrière plus ferme, si le châssis en est équipé.'],['Géométrie','Teste une légère augmentation du carrossage avant négatif et vérifie la largeur de voie.']],exit:[['Motricité / différentiel','Vérifie si le train avant pousse ou si le train arrière manque d’appui. Sur 4WD, contrôle aussi la cohérence des différentiels.'],['Pneus avant','Vérifie la température et l’état des pneus avant après quelques tours.']],all:[['Avant','Commence par l’état des pneus avant, la direction et les points durs.'],['Équilibre','Compare ensuite barre antiroulis, carrossage et répartition du grip.']]},
   oversteer:{entry:[['Stabilité au freinage','Vérifie le freinage, le pincement arrière et l’état des pneus arrière. Évite de modifier le frein et la géométrie simultanément.'],['Arrière','Essaie davantage de stabilité arrière via le réglage de pincement prévu par le fabricant.']],mid:[['Train arrière','Teste une barre antiroulis arrière plus souple ou une barre avant plus ferme, si disponible.'],['Pneus arrière','Contrôle gomme, inserts, collage et température.']],exit:[['Motricité','Réduis la brutalité de la remise des gaz et vérifie le slipper sur 2WD ou les différentiels sur 4WD.'],['Suspension arrière','Contrôle la détente, la précontrainte et l’amortissement arrière.']],all:[['Arrière','Commence par pneus, pincement arrière et liberté de suspension.'],['Équilibre','Teste ensuite une barre arrière plus souple ou une réponse moteur plus progressive.']]},
@@ -6586,10 +6633,11 @@ function assistantRecommendations(setup,symptom,phase){
   lazy:{entry:[['Direction','Vérifie EPA, dual rate, Ackermann et points durs avant de modifier la géométrie.'],['Train avant','Essaie une réponse avant légèrement plus vive via la chasse ou le point de fixation adapté.']],mid:[['Rotation','Teste une barre arrière légèrement plus ferme ou un avant plus libre, selon les options du châssis.'],['Géométrie','Vérifie carrossage et largeur de voie.']],exit:[['Sortie','Vérifie que le différentiel ou le slipper ne freine pas la rotation et que la remise des gaz reste progressive.'],['Arrière','Contrôle l’accroche arrière : trop de grip peut empêcher la voiture de pivoter.']],all:[['Direction','Vérifie les réglages radio et la liberté mécanique.'],['Équilibre','Teste ensuite un ajustement léger de barre antiroulis et de géométrie.']]}
  };
  const phaseList=bank[symptom]?.[phase]||bank[symptom]?.all||[];
- const severity=document.getElementById('assistantSeverity')?.value||'medium';
+ const severity=options.severity||document.getElementById('assistantSeverity')?.value||'medium';
  const scale=severity==='light'?'Commence par une petite correction.':severity==='strong'?'Fais d’abord un contrôle mécanique : une correction importante peut masquer plusieurs causes.':'Procède par petits incréments et valide sur plusieurs tours.';
- const caution=is4wd?'Transmission détectée comme 4WD : vérifie les différentiels avant, central et arrière réellement présents.':/2wd|2 roues|4x2/.test(drivetrain)?'Transmission détectée comme 2WD : concentre les essais sur le train arrière, le slipper et la progressivité moteur.':'Architecture de transmission à confirmer : les conseils de différentiel/slipper dépendent de la voiture.';
- return {car:car?.name||'Voiture non identifiée',track:track?.name||'Piste non identifiée',surface,grip,drivetrain:drivetrain||'non renseignée',caution,scale,items:phaseList};
+ const effectiveDrive=drivetrain||options.drive||'';
+ const caution=/4wd|4x4|4 roues|quatre roues/.test(effectiveDrive)?'Transmission détectée comme 4WD : vérifie les différentiels réellement présents.':/2wd|2 roues|4x2/.test(effectiveDrive)?'Transmission détectée comme 2WD : concentre les essais sur le train arrière, le slipper et la progressivité moteur.':'Architecture de transmission à confirmer : les conseils de différentiel/slipper dépendent de la voiture.';
+ return {car:car?.name||'Voiture non sélectionnée',track:track?.name||'Piste non sélectionnée',surface,grip,drivetrain:effectiveDrive||'non renseignée',caution,scale,items:phaseList};
 }
 function renderAssistantRecommendations(){
  const setup=state.setups.find(s=>s.id===assistantSetupId);if(!setup)return;
@@ -6733,7 +6781,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v231';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v232';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6741,7 +6789,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=125', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=126', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
@@ -6849,6 +6897,9 @@ try{setTracksideMode(localStorage.getItem('rc-setup-trackside-mode')==='1');}cat
 document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
 document.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);
 document.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
+document.getElementById('diagnosisSaveProposal')?.addEventListener('click',saveToolAssistantProposal);
+['diagnosisCar','diagnosisSetup','diagnosisTrack','diagnosisGrip','diagnosisDrive','diagnosisSeverity'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>{if(id==='diagnosisCar'||id==='diagnosisSetup')populateAssistantToolSelectors();if(document.getElementById('diagnosisSymptom')?.value)runSetupDiagnosis();}));
+document.getElementById('diagnosisSymptom')?.addEventListener('change',runSetupDiagnosis);
 document.getElementById('maintenanceCar')?.addEventListener('change',renderMaintenanceList);
 document.getElementById('batteryForm')?.addEventListener('submit',handleBatterySubmit);
 document.getElementById('batteryLogForm')?.addEventListener('submit',handleBatteryLog);
