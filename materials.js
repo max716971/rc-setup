@@ -1158,6 +1158,33 @@
       detail:`Ressort violet 13 mm de la déclinaison B7.1 Team Kit. Dureté : ${rate} lb/in. Référence constructeur : ${reference}; à distinguer des kits Carpet / versions précédentes.`,
       url:'https://www.sodialed.com/rc-setup-tips/team-associated-rc10-b7-1-manual-pdf'
     })),
+
+    // XRAY — références officielles vérifiées : huiles silicone et ressorts Big Bore.
+    ...[
+      ['359210','100'],['359215','150'],['359220','200'],['359225','250'],['359230','300'],['359240','400'],['359245','450'],['359260','600'],['359270','700'],['359280','800'],['359290','900'],['359301','1000'],['359302','2000'],['359305','5000']
+    ].map(([reference,cst])=>({brand:'XRAY',category:'Huile amortisseur',name:'XRAY Premium Silicone Oil '+cst+' cSt',reference,detail:'Huile silicone XRAY, viscosité fabricant '+cst+' cSt.',url:'https://www.teamxray.com/teamxray/products/prodpart.php?catName=&kategoria=5715&prod_id=5715'})),
+    ...[
+      ['Avant','368384','42.5 mm','4 points'],['Avant','368385','42.5 mm','5 points'],['Avant','368392','49 mm','2 points'],['Arrière','368481','57.5 mm','1 point'],['Arrière','368482','57.5 mm','2 points'],['Arrière','368483','57.5 mm','3 points'],['Arrière','368484','57.5 mm','4 points'],['Arrière','368485','57.5 mm','5 points'],['Arrière','368492','67 mm','2 points']
+    ].map(([position,reference,length,rate])=>({brand:'XRAY',category:'Ressort',name:'XRAY Big Bore Conical Spring '+position+' '+length+' — '+rate,reference,compatibility:'XRAY buggy 1/10 — '+position.toLowerCase(),detail:'Ressort conique Big Bore XRAY, longueur '+length+', repérage '+rate+'. Vérifier la génération d’amortisseur.',url:'https://www.teamxray.com/teamxray/products/prodpart.php'})),
+    // HOT RACE — pneus buggy 1/10, références catalogue avec position, gomme et surface.
+    ...[
+      ['Bangkok Dirt Supersoft','003-0011','Arrière 2WD/4WD','Supersoft','Terre'],['Bangkok Dirt Soft','003-0021','Arrière 2WD/4WD','Soft','Terre'],['Bangkok Dirt Medium','003-0031','Arrière 2WD/4WD','Medium','Terre'],['Bangkok Dirt Clay','003-0051','Arrière 2WD/4WD','Clay','Terre'],
+      ['Bangkok Dirt Supersoft','003-0111','Avant 4WD','Supersoft','Terre'],['Bangkok Dirt Soft','003-0121','Avant 4WD','Soft','Terre'],['Bangkok Dirt Medium','003-0131','Avant 4WD','Medium','Terre'],['Bangkok Dirt Clay','003-0151','Avant 4WD','Clay','Terre'],
+      ['Sahara Dirt Supersoft','003-1111','Avant 4WD','Supersoft','Terre'],['Sahara Dirt Soft','003-1121','Avant 4WD','Soft','Terre'],['Sahara Dirt Medium','003-1131','Avant 4WD','Medium','Terre'],['Sahara Dirt Clay','003-1151','Avant 4WD','Clay','Terre'],
+      ['Sahara Dirt Soft','003-1221','Avant 2WD','Soft','Terre'],['Sahara Dirt Medium','003-1231','Avant 2WD','Medium','Terre'],['Sahara Dirt Clay','003-1251','Avant 2WD','Clay','Terre'],
+      ['Sahara V2 Dirt Supersoft','003-1061','Arrière 2WD/4WD','Supersoft','Terre'],['Sahara V2 Dirt Soft','003-1071','Arrière 2WD/4WD','Soft','Terre'],['Sahara V2 Dirt Clay','003-1081','Arrière 2WD/4WD','Clay','Terre'],
+      ['Sahara V2 Dirt Supersoft','003-1161','Avant 4WD','Supersoft','Terre'],['Sahara V2 Dirt Soft','003-1171','Avant 4WD','Soft','Terre'],['Sahara V2 Dirt Clay','003-1181','Avant 4WD','Clay','Terre'],
+      ['Sahara V2 Dirt Supersoft','003-1261','Avant 2WD','Supersoft','Terre'],['Sahara V2 Dirt Soft','003-1271','Avant 2WD','Soft','Terre'],['Sahara V2 Dirt Clay','003-1281','Avant 2WD','Clay','Terre'],
+      ['Carpet 2WD Soft','003-0311','Avant 2WD','Soft','Moquette'],['Carpet 2WD Medium','003-0321','Avant 2WD','Medium','Moquette'],['Carpet 2WD Hard','003-0351','Avant 2WD','Hard','Moquette'],['Astro 2WD Soft','003-0361','Avant 2WD','Soft','Astro'],['Astro 2WD Medium','003-0371','Avant 2WD','Medium','Astro'],['Astro 2WD Hard','003-0381','Avant 2WD','Hard','Astro'],
+      ['Carpet 4WD Soft','003-0411','Avant 4WD','Soft','Moquette'],['Carpet 4WD Medium','003-0451','Avant 4WD','Medium','Moquette'],['Carpet 4WD Hard','003-0461','Avant 4WD','Hard','Moquette'],
+      ['V1 Carpet Rear Soft','003-0611','Arrière 2WD/4WD','Soft','Moquette'],['V1 Carpet Rear Medium','003-0631','Arrière 2WD/4WD','Medium','Moquette'],['V1 Carpet Rear Hard','003-0641','Arrière 2WD/4WD','Hard','Moquette'],['V2 Carpet Rear Soft','003-0651','Arrière 2WD/4WD','Soft','Moquette'],['V2 Carpet Rear Medium','003-0671','Arrière 2WD/4WD','Medium','Moquette'],['V1 Astro Rear Soft','003-0711','Arrière 2WD/4WD','Soft','Astro'],['V1 Astro Rear Medium','003-0721','Arrière 2WD/4WD','Medium','Astro']
+    ].map(([model,reference,position,compound,surface])=>({brand:'Hot Race Tires',category:'Pneus / roues',name:model+' — '+position+' — '+compound+' — '+surface,reference,compatibility:'Buggy 1/10 — '+position+' — '+surface,detail:'Pneu Hot Race buggy 1/10. Gomme '+compound+', surface '+surface+'. Référence catalogue fabricant.',url:'https://www.hotracetyres.eu/282-110-buggy-dirt'})),
+    ...[
+      ['Insert arrière 1/10 closed cell','003-0502','Arrière 2WD/4WD'],['Insert avant 1/10 closed cell','003-0501','Avant 4WD'],['Insert avant 1/10 gris','003-0503','Avant 4WD'],['Insert arrière 1/10 gris','003-0504','Arrière 2WD/4WD']
+    ].map(([name,reference,position])=>({brand:'Hot Race Tires',category:'Insert pneu',name,reference,compatibility:'Buggy 1/10 — '+position,detail:'Insert Hot Race pour buggy 1/10, '+position+'.',url:'https://www.hotracetyres.eu/283-110-buggy-astrocarpet'})),
+    // Tekin — modèles de servos et familles d'ESC présentes au catalogue officiel.
+    ...['T-120','T-130','T-180','T-190','T-250','T-300','T-360','T-440'].map(model=>({brand:'Tekin',category:'Servo',name:model,reference:model,detail:'Servo Tekin série '+model+'. Caractéristiques exactes à relever sur la fiche constructeur de cette révision.',url:'https://www.teamtekin.com/servos.html'})),
+    ...['RX8','RX8 Gen2','RX8 Gen3','RX4','RSX','RSX PRO','RS GEN3','RS GEN3 SPEC','RS PRO','RS SPEC','FX Series','B1 Series'].map(model=>({brand:'Tekin',category:'Variateur (ESC)',name:model,reference:'',detail:'Famille / génération Tekin identifiée dans le catalogue et les archives constructeur ; SKU non attribué sans preuve.',url:'https://www.teamtekin.com/archive.html'})),
   ];
   const knownBrands = ['Corsatec', 'WS Line', 'Cayote', 'REDS', 'OPTIMA', 'Hobbywing', 'XTR Racing', '6MIK', 'Team Associated', '1UP Racing', 'SRT', 'Power HD', 'Savöx', 'Schumacher'];
   // Wordmarks SVG intégrés : ils ne dépendent d'aucun hébergeur externe et restent visibles hors ligne.
