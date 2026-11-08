@@ -1390,10 +1390,10 @@
     pickerRefreshTimer = setTimeout(() => { pickerRefreshTimer = null; refreshPickers(); }, 120);
   }
   function updateInventorySummary() {
-    const totalQty=savedItems.reduce((sum,item)=>sum+Math.max(0,Number(item.quantity)||0),0);
-    const lowStock=savedItems.filter(item=>Number(item.quantity)<=2).length;
-    const summary=root.querySelector('.inventory-summary');
-    if(summary) summary.innerHTML=`<div class="inventory-stat"><span>Références possédées</span><strong>${savedItems.length}</strong></div><div class="inventory-stat"><span>Quantité totale</span><strong>${totalQty}</strong></div><div class="inventory-stat"><span>Stock faible / nul</span><strong>${lowStock}</strong></div>`;
+    const totalQty = savedItems.reduce((sum, item) => sum + Math.max(0, Number(item.quantity) || 0), 0);
+    const lowStock = savedItems.filter(item => Number(item.quantity) <= 2).length;
+    const summary = root.querySelector('.inventory-summary');
+    if (summary) summary.innerHTML = `<div class="inventory-stat"><span>Références possédées</span><strong>${savedItems.length}</strong></div><div class="inventory-stat"><span>Quantité totale</span><strong>${totalQty}</strong></div><div class="inventory-stat"><span>Stock faible / nul</span><strong>${lowStock}</strong></div>`;
   }
   function render() {
     const brands = [...new Set([...knownBrands, ...allMaterials().map((item) => item.brand)])].sort((a,b) => a.localeCompare(b,'fr'));
@@ -1538,10 +1538,8 @@
   refreshPickers();
   setupForm.addEventListener('submit', () => {
     const value = (name) => String(setupForm.elements.namedItem(name)?.value || '').trim();
-    const radio = [['Émetteur',value('txModel')],['Récepteur / gyro',value('rxModel')],['Dual rate / expo',value('radioExpo')],['EPA',value('radioEPA')],['Trim / failsafe',value('radioTrim')],['Autres',value('radio')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('
-');
-    const escText = [['Modèle ESC',value('escModel')],['Mode / profil',value('escMode')],['Timing / boost',value('escTiming')],['Punch',value('escPunch')],['Frein / drag brake',value('escBrake')],['Cutoff',value('escCutoff')],['Autres paramètres',value('electronicsNotes')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('
-');
+    const radio = [['Émetteur',value('txModel')],['Récepteur / gyro',value('rxModel')],['Dual rate / expo',value('radioExpo')],['EPA',value('radioEPA')],['Trim / failsafe',value('radioTrim')],['Autres',value('radio')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
+    const escText = [['Modèle ESC',value('escModel')],['Mode / profil',value('escMode')],['Timing / boost',value('escTiming')],['Punch',value('escPunch')],['Frein / drag brake',value('escBrake')],['Cutoff',value('escCutoff')],['Autres paramètres',value('electronicsNotes')]].filter(([,v])=>v).map(([k,v])=>`${k}: ${v}`).join('\n');
     setupForm.elements.namedItem('radio').value = radio;
     setupForm.elements.namedItem('esc').value = escText;
   }, true);
