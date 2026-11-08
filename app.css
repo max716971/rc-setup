@@ -32,9 +32,9 @@ button { cursor: pointer; }
 .nav-item { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; flex: 1; border: 0; border-radius: 12px; color: var(--muted); background: transparent; font-size: 13px; font-weight: 650; transition: .2s ease; }
 .nav-item span { font-size: 15px; }
 .nav-item.active { color: var(--accent); background: rgba(197, 43, 50, .1); box-shadow: inset 0 0 0 1px rgba(197, 43, 50, .15); }
-.view { display: none; flex-direction: column; gap: 20px; animation: appear .25s ease both; }
+.view { display: none; flex-direction: column; gap: 20px; }
 .view.active { display: flex; }
-@keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+ to { opacity: 1; transform: translateY(0); } }
 .hero { position: relative; overflow: hidden; min-height: 300px; display: flex; align-items: center; padding: clamp(24px, 5vw, 48px); border: 1px solid rgba(255,255,255,.09); border-radius: 28px; background: linear-gradient(115deg, #182434 0%, #111a28 58%, #1a2831 100%); box-shadow: var(--shadow); }
 .hero::after { content: ""; position: absolute; width: 300px; height: 300px; top: -180px; left: 36%; border-radius: 50%; background: rgba(197,43,50,.11); filter: blur(35px); }
 .hero-copy { position: relative; z-index: 2; width: min(68%, 600px); }
