@@ -6725,9 +6725,13 @@ function downloadJsonFile(data,filename){
 }
 function exportSingleSetup(id){
   const setup=state.setups.find(s=>s.id===id);if(!setup)return;
-  const payload={format:'rc-setup-single',version:1,exportedAt:new Date().toISOString(),car:getCarById(setup.carId)||null,track:getTrackById(setup.trackId)||null,setup:{...setup}};
+  const sharedBy=String(window.prompt('Quel est le nom du pilote propriétaire de ce setup ?',setup.sharedBy||'')||'').trim();
+  if(!sharedBy){showToast('Partage annulé : indique le nom du pilote.');return;}
+  const sharedAt=new Date().toISOString();
+  const sharedSetup={...setup,isShared:true,sharedBy,sharedAt};
+  const payload={format:'rc-setup-single',version:2,exportedAt:sharedAt,sharedBy,car:getCarById(setup.carId)||null,track:getTrackById(setup.trackId)||null,setup:sharedSetup};
   const safe=(setup.setupName||getCarById(setup.carId)?.name||'setup').replace(/[^a-z0-9_-]+/gi,'-').replace(/^-|-$/g,'').slice(0,48)||'setup';
-  downloadJsonFile(payload,'rc-setup-'+safe+'.json');showToast('Setup individuel exporté, prêt à être partagé.');
+  downloadJsonFile(payload,'rc-setup-partage-'+safe+'.json');showToast('Fichier de partage créé pour '+sharedBy+'.');
 }
 function importSingleSetup(file){
   if(!file)return;
@@ -6736,17 +6740,20 @@ function importSingleSetup(file){
     try{
       const payload=JSON.parse(String(event.target?.result||''));
       if(payload?.format!=='rc-setup-single'||!payload.setup||!payload.car?.name||!payload.track?.name)throw new Error('Format de setup partagé invalide');
+      const sharedBy=String(payload.sharedBy||payload.setup.sharedBy||'').trim()||String(window.prompt('Qui est le pilote propriétaire de ce setup ?')||'').trim();
+      if(!sharedBy){showToast('Import annulé : le nom du pilote est nécessaire.');return;}
       const carExisting=state.cars.find(c=>c.name===payload.car.name&&String(c.brand||'')===String(payload.car.brand||''));
       const trackExisting=state.tracks.find(t=>t.name===payload.track.name&&String(t.surface||'')===String(payload.track.surface||''));
-      const car=carExisting||{...payload.car,id:uid('car'),createdAt:new Date().toISOString()};
-      const track=trackExisting||{...payload.track,id:uid('track'),createdAt:new Date().toISOString()};
-      const setup={...payload.setup,id:uid('setup'),carId:car.id,trackId:track.id,photos:Array.isArray(payload.setup.photos)?payload.setup.photos:[],history:[],favorite:false,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
-      if(!confirm('Importer ce setup dans ton garage sans remplacer tes voitures, pistes, setups ou ton inventaire ?'))return;
+      const now=new Date().toISOString();
+      const car=carExisting||{...payload.car,id:uid('car'),createdAt:now};
+      const track=trackExisting||{...payload.track,id:uid('track'),createdAt:now};
+      const setup={...payload.setup,id:uid('setup'),carId:car.id,trackId:track.id,isShared:true,sharedBy,sharedAt:payload.setup.sharedAt||payload.exportedAt||now,photos:Array.isArray(payload.setup.photos)?payload.setup.photos:[],history:[],favorite:false,createdAt:now,updatedAt:now};
+      if(!confirm('Importer le setup de '+sharedBy+' dans ton garage ? Il sera identifié comme setup partagé. Tes voitures, pistes, setups et ton inventaire existants ne seront pas remplacés.'))return;
       if(!carExisting)state.cars.unshift(car);
       if(!trackExisting)state.tracks.unshift(track);
       state.setups.unshift(setup);
       if(!saveState()){state.setups.shift();if(!carExisting)state.cars=state.cars.filter(c=>c.id!==car.id);if(!trackExisting)state.tracks=state.tracks.filter(t=>t.id!==track.id);return;}
-      renderAll();showToast('Setup importé dans ton garage sans écraser tes données.');
+      renderAll();showToast('Setup de '+sharedBy+' importé et identifié comme partagé.');
     }catch(error){console.error(error);showToast('Fichier de setup invalide ou incompatible.');}
   };
   reader.readAsText(file);
@@ -6781,7 +6788,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v235';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v236';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
