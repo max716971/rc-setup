@@ -6711,7 +6711,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v227';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v228';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6719,28 +6719,17 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=121', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=122', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
 }
 function registerServiceWorker() {
-  const splash = document.getElementById('startupSplash');
-  const hideSplash = () => {
-    if (splash) window.setTimeout(() => splash.classList.add('is-hidden'), 650);
-  };
-  window.addEventListener('load', hideSplash, { once: true });
   if (!('serviceWorker' in navigator)) return;
 
-  // Ne recharger que si la page était déjà contrôlée au démarrage.
-  // La première prise de contrôle ne doit jamais provoquer un flash/reload.
-  const hadControllerAtStart = Boolean(navigator.serviceWorker.controller);
-  if (hadControllerAtStart) {
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      window.location.reload();
-    }, { once: true });
-  }
-
+  // Pas de surcouche de lancement ni de rechargement sur controllerchange :
+  // iOS standalone peut repeindre toute la fenêtre lors de ces transitions.
+  // La vérification se fait en arrière-plan ; le bouton Aide recharge à la demande.
   window.addEventListener('load', async () => {
     try {
       await refreshAppWorker();
