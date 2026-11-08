@@ -6727,16 +6727,10 @@ async function refreshAppWorker() {
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   window.addEventListener('load', async () => {
-    const hadController = Boolean(navigator.serviceWorker.controller);
-    let reloading = false;
-    if (hadController) {
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (reloading) return;
-        reloading = true;
-        window.location.reload();
-      }, { once: true });
-    }
     try {
+      // Le nouveau worker prend le contrôle sans recharger la page :
+      // cela évite le clignotement au démarrage. La version actualisée
+      // sera chargée à la prochaine ouverture ou via le bouton Aide.
       await refreshAppWorker();
     } catch (error) {
       console.error('Échec de la vérification automatique de RC SETUP :', error);
