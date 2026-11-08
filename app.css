@@ -721,3 +721,10 @@ button, a, [role="button"] { touch-action: manipulation; }
 #diagnosisResult .assistant-context-block{padding-top:8px;border-top:1px solid var(--border);}
 #diagnosisResult .assistant-context-block ul{margin:6px 0 0;padding-left:20px;}
 #diagnosisSaveProposal:disabled{opacity:.55;cursor:not-allowed;}
+
+/* Identification visuelle des setups reçus d’un autre pilote */
+.setup-card.shared-setup-card { border-color: rgba(83, 190, 213, .42); background: linear-gradient(145deg, rgba(35, 91, 108, .18), rgba(24, 35, 49, .96) 62%); }
+.setup-card .shared-setup-tag { color: #8de0ef; background: rgba(83, 190, 213, .14); }
+.shared-setup-owner { margin: 7px 0 0; color: #8de0ef; font-size: 12px; }
+.shared-setup-banner { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 0 0 14px; padding: 12px 14px; border: 1px solid rgba(83, 190, 213, .4); border-radius: 12px; color: #a8e9f4; background: rgba(35, 91, 108, .18); font-size: 12px; }
+.shared-setup-banner strong { letter-spacing: .08em; font-size: 10px; }
