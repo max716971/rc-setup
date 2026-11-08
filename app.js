@@ -6736,7 +6736,7 @@ function showSetup(id) {
   if(setup.isShared||setup.sharedBy)content.insertAdjacentHTML('afterbegin','<div class="shared-setup-banner"><strong>↗ SETUP PARTAGÉ</strong><span>Propriétaire : '+escapeHtml(setup.sharedBy||'Pilote inconnu')+'</span></div>');
   const history=Array.isArray(setup.history)?setup.history:[];
   const proposals=Array.isArray(setup.testProposals)?setup.testProposals:[];
-  content.insertAdjacentHTML('beforeend',`${renderSavedSetupProposals(setup)}<section class="detail-group"><h3>Historique des modifications</h3>${renderSetupHistory(setup)}</section><div class="item-actions detail-actions"><button class="button button-primary" id="detailAssistantSetup" type="button">✦ Assistant de réglages</button><button class="button button-primary" id="detailEditSetup" type="button">Modifier ce setup</button><button class="button button-soft" id="detailExportSetup" type="button">Partager ce setup</button><button class="button button-soft" id="detailPrintSetup" type="button">Imprimer / PDF</button><button class="button button-soft" id="detailDuplicateSetup" type="button">Dupliquer</button><button class="button button-soft" id="detailFavoriteSetup" type="button">${setup.favorite?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</button></div>`);
+  content.insertAdjacentHTML('beforeend',`${renderSavedSetupProposals(setup)}<section class="detail-group"><h3>Historique des modifications</h3>${renderSetupHistory(setup)}</section><div class="item-actions detail-actions"><button class="button button-primary" id="detailAssistantSetup" type="button">✦ Assistant de réglages</button><button class="button button-primary" id="detailEditSetup" type="button">Modifier ce setup</button><button class="button button-soft" id="detailExportSetup" type="button">Partager par lien</button><button class="button button-soft" id="detailPrintSetup" type="button">Imprimer / PDF</button><button class="button button-soft" id="detailDuplicateSetup" type="button">Dupliquer</button><button class="button button-soft" id="detailFavoriteSetup" type="button">${setup.favorite?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</button></div>`);
   content.querySelectorAll('.restore-version').forEach(button=>button.addEventListener('click',()=>restoreSetupVersion(id,Number(button.dataset.index))));
   content.querySelectorAll('.proposal-status').forEach(button=>button.addEventListener('click',()=>setSetupProposalStatus(id,Number(button.dataset.index),button.dataset.status)));
   content.querySelector('#detailAssistantSetup').addEventListener('click',()=>openSetupAssistant(id));
@@ -6785,7 +6785,7 @@ function shareSetupByLink(id){
   if(!sharedBy){showToast('Partage annulé : indique le nom du pilote.');return;}
   const sharedAt=new Date().toISOString(),payload=buildSingleSetupPayload(setup,sharedBy,sharedAt);
   const json=JSON.stringify(payload),encoded=base64UrlEncodeUtf8(json),url=location.origin+location.pathname+'?share='+encoded;
-  if(url.length>7500){downloadJsonFile(payload,'rc-setup-partage.json');showToast('Ce setup est trop volumineux pour un lien fiable. Le fichier JSON de secours a été créé.');return;}
+  if(url.length>7500){showToast('Ce setup est trop volumineux pour être partagé par lien. Réduis les photos ou les notes puis réessaie.');return;}
   const shareData={title:'Setup RC partagé · '+(setup.setupName||getCarById(setup.carId)?.name||'RC SETUP'),text:'Voici un setup partagé par '+sharedBy+'. Ouvre le lien pour l’enregistrer dans RC SETUP.',url};
   if(navigator.share)navigator.share(shareData).then(()=>showToast('Lien de partage envoyé.')).catch(error=>{if(error?.name==='AbortError')return;if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>showToast('Lien copié. Tu peux maintenant le partager.')).catch(()=>window.prompt('Copie ce lien de partage :',url));else window.prompt('Copie ce lien de partage :',url);});
   else if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(()=>showToast('Lien copié. Tu peux maintenant le partager.')).catch(()=>window.prompt('Copie ce lien de partage :',url));
@@ -6802,10 +6802,8 @@ function processIncomingShareLink(){
   }catch(error){console.error(error);history.replaceState(null,'',location.pathname);showToast('Lien de partage invalide ou incomplet.');}
 }
 function exportSingleSetup(id){
-  const setup=state.setups.find(s=>s.id===id);if(!setup)return;
-  const sharedBy=String(window.prompt('Quel est le nom du pilote propriétaire de ce setup ?',setup.sharedBy||'')||'').trim();if(!sharedBy){showToast('Partage annulé : indique le nom du pilote.');return;}
-  const sharedAt=new Date().toISOString(),payload=buildSingleSetupPayload(setup,sharedBy,sharedAt),safe=(setup.setupName||'setup').replace(/[^a-z0-9_-]+/gi,'-').slice(0,48)||'setup';
-  downloadJsonFile(payload,'rc-setup-partage-'+safe+'.json');showToast('Fichier JSON de secours créé pour '+sharedBy+'.');
+  // L'export individuel est un partage direct par lien ; le JSON reste réservé à la sauvegarde complète.
+  shareSetupByLink(id);
 }
 function importSingleSetup(file){
   if(!file)return;const reader=new FileReader();
