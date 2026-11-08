@@ -1286,6 +1286,8 @@
   if (!root) return;
   let activeTab = 'catalog';
   let selectedBrand = '';
+  const MATERIAL_PAGE_SIZE = 60;
+  let visibleMaterialCount = MATERIAL_PAGE_SIZE;
   function loadSaved() { try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); return Array.isArray(data) ? data : []; } catch { return []; } }
   // Move automatically seeded catalogue entries out of the personal inventory.
   const legacyPrefixes = ['seed-hobbywing-esc-v1-', 'seed-hobbywing-motors-v3-', 'seed-hobbywing-motor-v2-', 'seed-rsrc-xrt-oils-v3-', 'seed-associated-spring-v1-'];
@@ -1302,35 +1304,71 @@
   function esc(value) { return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c]); }
   function allMaterials() { return [...catalog, ...savedItems]; }
   function materialLabel(item) { return `${item.brand} ${item.name}${item.reference ? ` — réf. ${item.reference}` : ''}`; }
+
+  // Index texte et index par catégorie : calculés une seule fois, invalidés uniquement
+  // lorsqu'une référence est ajoutée ou retirée. Les quantités ne changent pas l'index.
+  const searchableText = new WeakMap();
+  let materialIndex = null;
+  function getSearchText(item) {
+    let value = searchableText.get(item);
+    if (value === undefined) {
+      value = [item.brand,item.category,item.name,item.reference,item.detail,item.compatibility,item.type].join(' ').toLocaleLowerCase('fr');
+      searchableText.set(item,value);
+    }
+    return value;
+  }
+  function getMaterialIndex() {
+    if (materialIndex) return materialIndex;
+    const byCategory = new Map();
+    for (const item of catalog) {
+      if (!byCategory.has(item.category)) byCategory.set(item.category,[]);
+      byCategory.get(item.category).push(item);
+    }
+    for (const item of savedItems) {
+      if (!byCategory.has(item.category)) byCategory.set(item.category,[]);
+      byCategory.get(item.category).push(item);
+    }
+    materialIndex = byCategory;
+    return materialIndex;
+  }
+  function invalidateMaterialIndex() { materialIndex = null; }
+
   function refreshPickers() {
+    const index = getMaterialIndex();
+    const carSelect = document.querySelector('#setupForm select[name="carId"]');
+    const hasSelectedCar = Boolean(carSelect?.value);
+    const drive = carSelect?.selectedOptions?.[0]?.dataset?.drive || '';
     document.querySelectorAll('[data-library-category]').forEach((select) => {
       const categories = select.dataset.libraryCategory.split('|');
       const search = select.parentElement.querySelector('[data-library-search]');
       const query = (search?.value || '').trim().toLocaleLowerCase('fr');
       const current = select.value;
       const fieldName = select.dataset.libraryField || '';
-      const carSelect = document.querySelector('#setupForm select[name="carId"]');
-      const hasSelectedCar = Boolean(carSelect?.value);
-      const drive = carSelect?.selectedOptions?.[0]?.dataset?.drive || '';
-      const items = allMaterials().filter((item) => {
-        if (!categories.includes(item.category)) return false;
-        // Sans voiture sélectionnée, afficher tout le catalogue de pneus dans les deux menus.
-        // Dès qu'une voiture est choisie, appliquer les compatibilités avant/arrière et 2WD/4WD.
+      const candidates = categories.flatMap(category => index.get(category) || []);
+      const items = candidates.filter((item) => {
+        // Respecter la position et la transmission de la voiture choisie.
+        const compatibility = String(item.compatibility || '').trim().toLocaleLowerCase('fr');
         if (hasSelectedCar && fieldName === 'frontTires') {
-          const compatibility = String(item.compatibility || '').trim().toLocaleLowerCase('fr');
           if (drive === '2WD' && compatibility && !compatibility.startsWith('avant 2wd')) return false;
           if (drive === '4WD' && compatibility && !compatibility.startsWith('avant 4wd')) return false;
           if (!drive && compatibility && !compatibility.startsWith('avant')) return false;
         }
-        if (hasSelectedCar && fieldName === 'rearTires' && String(item.compatibility || '').trim().toLocaleLowerCase('fr').startsWith('avant')) return false;
-        return !query || [item.brand,item.name,item.reference,item.detail,item.compatibility].join(' ').toLocaleLowerCase('fr').includes(query);
+        if (hasSelectedCar && fieldName === 'rearTires' && compatibility.startsWith('avant')) return false;
+        return !query || getSearchText(item).includes(query);
       });
-      select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => `<option value="${esc(materialLabel(item))}">${esc(item.category)} · ${esc(materialLabel(item))}</option>`).join('');
+      select.innerHTML = '<option value="">Choisir un article…</option>' + items.map((item) => {
+        const label = materialLabel(item);
+        return `<option value="${esc(label)}">${esc(item.category)} · ${esc(label)}</option>`;
+      }).join('');
       if (items.some((item) => materialLabel(item) === current)) select.value = current;
     });
   }
-  function render() {
-    const brands = [...new Set([...knownBrands, ...allMaterials().map((item) => item.brand)])].sort((a,b) => a.localeCompare(b,'fr'));
+  let pickerRefreshTimer = null;
+  function schedulePickerRefresh() {
+    if (pickerRefreshTimer) clearTimeout(pickerRefreshTimer);
+    pickerRefreshTimer = setTimeout(() => { pickerRefreshTimer = null; refreshPickers(); }, 120);
+  }
+  function updateInventorySummary() {\n    const totalQty=savedItems.reduce((sum,item)=>sum+Math.max(0,Number(item.quantity)||0),0);\n    const lowStock=savedItems.filter(item=>Number(item.quantity)<=2).length;\n    const summary=root.querySelector('.inventory-summary');\n    if(summary) summary.innerHTML=`<div class="inventory-stat"><span>Références possédées</span><strong>${savedItems.length}</strong></div><div class="inventory-stat"><span>Quantité totale</span><strong>${totalQty}</strong></div><div class="inventory-stat"><span>Stock faible / nul</span><strong>${lowStock}</strong></div>`;\n  }\n  function render() {\n    const brands = [...new Set([...knownBrands, ...allMaterials().map((item) => item.brand)])].sort((a,b) => a.localeCompare(b,'fr'));
     const categories = [...new Set(allMaterials().map((item) => item.category))].sort((a,b) => a.localeCompare(b,'fr'));
     const totalQty = savedItems.reduce((sum,item)=>sum+Math.max(0,Number(item.quantity)||0),0);
     const lowStock = savedItems.filter(item=>Number(item.quantity)<=2).length;
@@ -1340,38 +1378,40 @@
     root.querySelector('#showMaterialForm').addEventListener('click', () => root.querySelector('#materialForm').classList.toggle('hidden'));
     root.querySelector('#cancelMaterialForm').addEventListener('click', () => root.querySelector('#materialForm').classList.add('hidden'));
     root.querySelector('#materialForm').addEventListener('submit', addItem);
-    ['materialSearch','categoryFilter','positionFilter','scaleFilter','vehicleTypeFilter','stockFilter'].forEach(id=>root.querySelector('#'+id).addEventListener(id==='materialSearch'?'input':'change',renderCards));
-    root.querySelector('#materialBrandPicker').addEventListener('click',event=>{const button=event.target.closest('[data-brand]');if(!button)return;selectedBrand=selectedBrand===button.dataset.brand?'':button.dataset.brand;renderCards();});
-    root.querySelector('#clearBrandFilter').addEventListener('click',()=>{selectedBrand='';renderCards();});
+    ['materialSearch','categoryFilter','positionFilter','scaleFilter','vehicleTypeFilter','stockFilter'].forEach(id=>root.querySelector('#'+id).addEventListener(id==='materialSearch'?'input':'change',()=>{ visibleMaterialCount=MATERIAL_PAGE_SIZE; renderCards(); }));
+    root.querySelector('#materialBrandPicker').addEventListener('click',event=>{const button=event.target.closest('[data-brand]');if(!button)return;selectedBrand=selectedBrand===button.dataset.brand?'':button.dataset.brand;visibleMaterialCount=MATERIAL_PAGE_SIZE;renderCards();});
+    root.querySelector('#clearBrandFilter').addEventListener('click',()=>{selectedBrand='';visibleMaterialCount=MATERIAL_PAGE_SIZE;renderCards();});
     renderCards(); refreshPickers();
   }
   function renderCards() {
     const q = root.querySelector('#materialSearch').value.trim().toLocaleLowerCase('fr');
     const brand = selectedBrand, category = root.querySelector('#categoryFilter').value, position = root.querySelector('#positionFilter').value, scale=root.querySelector('#scaleFilter').value, vehicleType=root.querySelector('#vehicleTypeFilter').value, stock = root.querySelector('#stockFilter').value;
-    const list = (activeTab === 'catalog' ? catalog : savedItems).filter((x) => {
-      const quantity=Number(x.quantity)||0;
-      const searchable=[x.compatibility,x.detail,x.name,x.type].join(' ').toLocaleLowerCase('fr');
-      return (!brand || x.brand === brand) && (!category || x.category === category) && (!position || searchable.includes(position.toLocaleLowerCase('fr'))) && (!scale || searchable.includes(scale.toLocaleLowerCase('fr'))) && (!vehicleType || searchable.includes(vehicleType.toLocaleLowerCase('fr'))) && (!stock || (activeTab==='mine' && (stock==='available'?quantity>2:stock==='low'?quantity>0&&quantity<=2:quantity===0))) && (!q || [x.brand,x.category,x.name,x.reference,x.detail,x.compatibility].join(' ').toLocaleLowerCase('fr').includes(q));
+    const source = activeTab === 'catalog' ? catalog : savedItems;
+    const positionQuery=position.toLocaleLowerCase('fr'), scaleQuery=scale.toLocaleLowerCase('fr'), typeQuery=vehicleType.toLocaleLowerCase('fr');
+    const list = source.filter((x) => {
+      const quantity=Number(x.quantity)||0, searchable=getSearchText(x);
+      return (!brand || x.brand === brand) && (!category || x.category === category) && (!positionQuery || searchable.includes(positionQuery)) && (!scaleQuery || searchable.includes(scaleQuery)) && (!typeQuery || searchable.includes(typeQuery)) && (!stock || (activeTab==='mine' && (stock==='available'?quantity>2:stock==='low'?quantity>0&&quantity<=2:quantity===0))) && (!q || searchable.includes(q));
     });
     root.querySelectorAll('#materialBrandPicker [data-brand]').forEach(button=>{const active=brand===button.dataset.brand;button.classList.toggle('selected',active);button.setAttribute('aria-pressed',String(active));});
     root.querySelector('#clearBrandFilter').classList.toggle('active',!brand);
     const cards = root.querySelector('#materialCards');
-    cards.innerHTML = list.length ? list.map((item) => {
+    const visibleList = list.slice(0,visibleMaterialCount);\n    cards.innerHTML = visibleList.length ? visibleList.map((item) => {
       const owned = savedItems.some((x) => x.id === item.id), quantity=Math.max(0,Number(item.quantity)||0);
       const stockState=quantity===0?'Épuisé':quantity<=2?'Stock faible':'En stock';
       const stockMarkup=owned?`<div class="inventory-quantity"><span class="stock-state ${quantity===0?'stock-empty':quantity<=2?'stock-low':'stock-ok'}">${stockState}</span><div class="quantity-controls"><button class="quantity-step" data-id="${esc(item.id)}" data-step="-1" type="button" aria-label="Diminuer la quantité">−</button><input class="quantity-value" data-id="${esc(item.id)}" type="number" min="0" step="1" value="${quantity}" aria-label="Quantité possédée"><button class="quantity-step" data-id="${esc(item.id)}" data-step="1" type="button" aria-label="Augmenter la quantité">＋</button></div></div>`:'';
       return `<article class="material-card"><div class="material-card-head"><span class="material-category">${esc(item.category)}</span><span class="material-brand">${esc(item.brand)}</span></div><h3>${esc(item.name)}</h3><div class="material-reference">Réf. <strong>${esc(item.reference || 'non indiquée')}</strong></div>${item.compatibility ? `<p>Compatibilité : ${esc(item.compatibility)}</p>` : ''}<p>${esc(item.detail || '')}</p>${stockMarkup}<div class="material-card-actions">${item.url ? `<a class="button button-soft" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">Fiche ↗</a>` : ''}${owned ? `<button class="button button-quiet danger-action remove-material" data-id="${esc(item.id)}" type="button">Retirer</button>` : `<button class="button button-primary save-material" data-id="${esc(item.id)}" type="button">＋ Ajouter à mon stock</button>`}</div></article>`;
     }).join('') : '<div class="empty-state material-empty"><strong>Aucun matériel trouvé</strong><span>Change les filtres ou ajoute ta référence.</span></div>';
-    cards.querySelectorAll('.save-material').forEach((b) => b.addEventListener('click', () => { const x = catalog.find((i) => i.id === b.dataset.id); if (!x || savedItems.some((i) => i.brand === x.brand && i.name === x.name && i.reference === x.reference)) return; const saved={ ...x, quantity:1, id: `saved-${Date.now()}-${Math.random().toString(16).slice(2,7)}` }; savedItems.unshift(saved); if (persist()) { activeTab = 'mine'; render(); window.dispatchEvent(new Event('rc-materials-updated')); } else savedItems=savedItems.filter(i=>i.id!==saved.id); }));
-    cards.querySelectorAll('.remove-material').forEach((b) => b.addEventListener('click', () => { if(!confirm('Retirer cette référence de ton inventaire personnel ?'))return; const previous=savedItems; savedItems = savedItems.filter((i) => i.id !== b.dataset.id); if (persist()) { render(); window.dispatchEvent(new Event('rc-materials-updated')); } else savedItems=previous; }));
-    cards.querySelectorAll('.quantity-step').forEach(button=>button.addEventListener('click',()=>{const item=savedItems.find(x=>x.id===button.dataset.id);if(!item)return;const previous=item.quantity;item.quantity=Math.max(0,(Number(item.quantity)||0)+Number(button.dataset.step));if(persist())render();else item.quantity=previous;}));
-    cards.querySelectorAll('.quantity-value').forEach(input=>input.addEventListener('change',()=>{const item=savedItems.find(x=>x.id===input.dataset.id);if(!item)return;const previous=item.quantity;item.quantity=Math.max(0,Math.floor(Number(input.value)||0));if(persist())render();else input.value=previous;}));
+    if (list.length > visibleList.length) cards.insertAdjacentHTML('beforeend', `<div class="material-load-more"><button type="button" class="button button-soft" id="loadMoreMaterials">Afficher ${Math.min(MATERIAL_PAGE_SIZE,list.length-visibleList.length)} références supplémentaires · ${list.length-visibleList.length} restantes</button></div>`);
+    root.querySelector('#loadMoreMaterials')?.addEventListener('click',()=>{visibleMaterialCount+=MATERIAL_PAGE_SIZE;renderCards();});
+    cards.querySelectorAll('.save-material').forEach((b) => b.addEventListener('click', () => { const x = catalog.find((i) => i.id === b.dataset.id); if (!x || savedItems.some((i) => i.brand === x.brand && i.name === x.name && i.reference === x.reference)) return; const saved={ ...x, quantity:1, id: `saved-${Date.now()}-${Math.random().toString(16).slice(2,7)}` }; savedItems.unshift(saved); if (persist()) { invalidateMaterialIndex(); activeTab = 'mine'; render(); window.dispatchEvent(new Event('rc-materials-updated')); } else savedItems=savedItems.filter(i=>i.id!==saved.id); }));
+    cards.querySelectorAll('.remove-material').forEach((b) => b.addEventListener('click', () => { if(!confirm('Retirer cette référence de ton inventaire personnel ?'))return; const previous=savedItems; savedItems = savedItems.filter((i) => i.id !== b.dataset.id); if (persist()) { invalidateMaterialIndex(); render(); window.dispatchEvent(new Event('rc-materials-updated')); } else savedItems=previous; }));
+    cards.querySelectorAll('.quantity-step').forEach(button=>button.addEventListener('click',()=>{const item=savedItems.find(x=>x.id===button.dataset.id);if(!item)return;const previous=item.quantity;item.quantity=Math.max(0,(Number(item.quantity)||0)+Number(button.dataset.step));if(persist()){updateInventorySummary();renderCards();}else item.quantity=previous;}));
+    cards.querySelectorAll('.quantity-value').forEach(input=>input.addEventListener('change',()=>{const item=savedItems.find(x=>x.id===input.dataset.id);if(!item)return;const previous=item.quantity;item.quantity=Math.max(0,Math.floor(Number(input.value)||0));if(persist()){updateInventorySummary();renderCards();}else input.value=previous;}));
   }
-  function addItem(event) {
-    event.preventDefault(); const d = Object.fromEntries(new FormData(event.currentTarget).entries());
+  function addItem(event) {\n    event.preventDefault(); const d = Object.fromEntries(new FormData(event.currentTarget).entries());
     const item={ id: `custom-${Date.now()}-${Math.random().toString(16).slice(2,7)}`, brand: d.brand.trim(), category: d.category, name: d.name.trim(), reference: d.reference.trim(), quantity: Math.max(0, Math.floor(Number(d.quantity)||0)), compatibility: d.compatibility.trim(), detail: d.detail.trim(), url: d.url.trim() };
     savedItems.unshift(item);
-    if (persist()) { activeTab = 'mine'; render(); window.dispatchEvent(new Event('rc-materials-updated')); }
+    if (persist()) { invalidateMaterialIndex(); activeTab = 'mine'; render(); window.dispatchEvent(new Event('rc-materials-updated')); }
     else savedItems=savedItems.filter(x=>x.id!==item.id);
   }
   // Une référence Team Associated identifie une seule pièce : conserve la fiche B7 vérifiée et fusionne les doublons.
@@ -1427,7 +1467,7 @@
       : `Bibliothèque · ${categoryLabel}`;
     const search = document.createElement('input'); search.type = 'search'; search.placeholder = `Rechercher ${categoryLabel}${side ? ' ' + side : ''} (marque, nom, référence)…`; search.setAttribute('aria-label', label.textContent); search.dataset.librarySearch = 'true';
     const select = document.createElement('select'); select.dataset.libraryCategory = categories; select.dataset.libraryField = fieldName; select.setAttribute('aria-label', 'Choisir un matériel de la bibliothèque');
-    search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
+    search.addEventListener('input', () => { select.value = ''; schedulePickerRefresh(); });
     select.addEventListener('change', () => { if (select.value) input.value = select.value; });
     picker.append(label, search, select);
     // Keep the library controls inside their field label so they do not break the form grid.
@@ -1458,7 +1498,7 @@
       const select = document.createElement('select');
       select.dataset.libraryCategory = categories;
       select.setAttribute('aria-label', 'Choisir un équipement de la bibliothèque');
-      search.addEventListener('input', () => { select.value = ''; refreshPickers(); });
+      search.addEventListener('input', () => { select.value = ''; schedulePickerRefresh(); });
       select.addEventListener('change', () => { if (select.value) input.value = select.value; });
       picker.append(label, search, select);
       input.closest('label')?.insertBefore(picker, input);
