@@ -5816,7 +5816,7 @@ function loadState() {
 
 function saveState() {
   if (stateLoadBlocked) {
-    showToast('Données locales protégées : aucune écriture ne sera faite. Restaure une sauvegarde depuis Aide.');
+    showToast('Données locales protégées : aucune écriture ne sera faite. Restaure une sauvegarde depuis Outils.');
     return false;
   }
   try {
@@ -7157,6 +7157,6 @@ setView('dashboard', false);
 registerServiceWorker();
 setupInstallPrompt();
 if (stateLoadBlocked) {
-  showToast('Lecture des données impossible : elles sont conservées sans écrasement. Consulte Aide pour restaurer une sauvegarde.');
+  showToast('Lecture des données impossible : elles sont conservées sans écrasement. Consulte Outils pour restaurer une sauvegarde.');
 }
 
