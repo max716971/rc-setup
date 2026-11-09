@@ -1406,19 +1406,68 @@
   let selectedBrand = '';
   const MATERIAL_PAGE_SIZE = 60;
   let visibleMaterialCount = MATERIAL_PAGE_SIZE;
-  function loadSaved() { try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); return Array.isArray(data) ? data : []; } catch { return []; } }
-  // Move automatically seeded catalogue entries out of the personal inventory.
+  let materialsLoadBlocked = false;
+  function loadSaved() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw === null) return [];
+      const data = JSON.parse(raw);
+      if (!Array.isArray(data) || data.some(item => !item || typeof item !== 'object' || !item.brand || !item.name || !item.category)) {
+        throw new Error('Structure de la bibliothèque personnelle invalide');
+      }
+      return data;
+    } catch (error) {
+      materialsLoadBlocked = true;
+      console.error('Bibliothèque matérielle protégée : lecture impossible, aucune écriture autorisée.', error);
+      return [];
+    }
+  }
+  // Move automatically seeded catalogue entries only after preserving the exact original JSON.
   const legacyPrefixes = ['seed-hobbywing-esc-v1-', 'seed-hobbywing-motors-v3-', 'seed-hobbywing-motor-v2-', 'seed-rsrc-xrt-oils-v3-', 'seed-associated-spring-v1-'];
   let savedItems = loadSaved();
   const legacyCatalogItems = savedItems.filter(item => legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
   for (const item of legacyCatalogItems) {
     if (!catalog.some(existing => existing.brand === item.brand && existing.name === item.name && existing.reference === item.reference)) catalog.push({ ...item, id: undefined });
   }
-  if (legacyCatalogItems.length) {
-    savedItems = savedItems.filter(item => !legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); } catch {}
+  if (legacyCatalogItems.length && !materialsLoadBlocked) {
+    const migrationBackupKey = 'rc-setup-materials-pre-migration-v1';
+    let backupReady = false;
+    try {
+      if (localStorage.getItem(migrationBackupKey) !== null) backupReady = true;
+      else {
+        const original = localStorage.getItem(STORAGE_KEY);
+        if (original !== null) {
+          localStorage.setItem(migrationBackupKey, original);
+          backupReady = localStorage.getItem(migrationBackupKey) === original;
+        }
+      }
+    } catch (error) {
+      console.error('Migration matérielle annulée : sauvegarde préalable impossible.', error);
+    }
+    if (backupReady) {
+      const migratedItems = savedItems.filter(item => !legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migratedItems));
+        savedItems = migratedItems;
+      } catch (error) {
+        console.error('Migration matérielle annulée : écriture impossible.', error);
+      }
+    }
   }
-  function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); window.dispatchEvent(new Event('rc-setup-data-changed')); return true; } catch { alert('Stockage local plein : retire une fiche ou libère de l’espace.'); return false; } }
+  function persist() {
+    if (materialsLoadBlocked) {
+      alert('Bibliothèque matérielle illisible : les données existantes sont protégées et aucune écriture ne sera effectuée.');
+      return false;
+    }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems));
+      window.dispatchEvent(new Event('rc-setup-data-changed'));
+      return true;
+    } catch {
+      alert('Stockage local plein : retire une fiche ou libère de l’espace.');
+      return false;
+    }
+  }
   function esc(value) { return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c]); }
   function allMaterials() { return [...catalog, ...savedItems]; }
   function materialLabel(item) { return `${item.brand} ${item.name}${item.reference ? ` — réf. ${item.reference}` : ''}`; }
@@ -1497,25 +1546,29 @@
     const categories = [...new Set(allMaterials().map((item) => item.category))].sort((a,b) => a.localeCompare(b,'fr'));
     const totalQty = savedItems.reduce((sum,item)=>sum+Math.max(0,Number(item.quantity)||0),0);
     const summaryMarkup = activeTab === 'mine' ? `<div class="inventory-summary"><div class="inventory-stat"><span>Références possédées</span><strong>${savedItems.length}</strong></div><div class="inventory-stat"><span>Quantité totale</span><strong>${totalQty}</strong></div></div>` : '';
-    root.innerHTML = `${summaryMarkup}<div class="panel material-controls"><div class="material-tabs"><button type="button" class="material-tab ${activeTab === 'catalog' ? 'active' : ''}" data-tab="catalog">Bibliothèque (${catalog.length})</button><button type="button" class="material-tab ${activeTab === 'mine' ? 'active' : ''}" data-tab="mine">Mon matériel (${savedItems.length})</button></div><div class="material-filter-row"><input id="materialSearch" type="search" placeholder="Rechercher marque, référence, catégorie, châssis…"><div class="material-brand-filter"><div class="brand-filter-heading"><strong>Filtrer par marque</strong><button type="button" id="clearBrandFilter" class="brand-clear-button">Toutes les marques</button></div><div id="materialBrandPicker" class="material-brand-grid">${brands.map((v)=>{const logo=MATERIAL_BRAND_LOGOS[v];const initials=esc(v.split(/[\s-]+/).map(w=>w[0]).slice(0,2).join("").toUpperCase());return '<button type="button" class="material-brand-tile'+(logo?' has-brand-logo':'')+'" data-brand="'+esc(v)+'" aria-pressed="false">'+(logo?'<img class="material-brand-logo" src="'+logo+'" alt="" loading="lazy" decoding="async" onload="this.parentElement.classList.add(\'has-logo-loaded\')" onerror="this.parentElement.classList.remove(\'has-brand-logo\');this.remove()">':'')+'<span class="brand-logo-mark">'+initials+'</span><span class="material-brand-name">'+esc(v)+'</span></button>';}).join("")}</div></div><select id="categoryFilter"><option value="">Toutes les catégories</option>${categories.map((v) => `<option>${esc(v)}</option>`).join('')}</select><select id="positionFilter"><option value="">Toutes compatibilités</option><option value="Avant">Avant</option><option value="Arrière">Arrière</option><option value="2WD">2WD</option><option value="4WD">4WD</option></select><select id="scaleFilter"><option value="">Toutes échelles</option><option value="1/10">1/10</option><option value="1/8">1/8</option><option value="1/12">1/12</option><option value="1/16">1/16</option></select><select id="vehicleTypeFilter"><option value="">Tous types de voitures</option><option value="Buggy">Buggy</option><option value="Truggy">Truggy</option><option value="Truck">Truck</option><option value="Short Course">Short Course</option><option value="Touring">Touring</option><option value="Crawler">Crawler</option><option value="Monster Truck">Monster Truck</option></select><select id="stockFilter"><option value="">Tous les stocks</option><option value="available">En stock</option><option value="low">Stock faible (1–2)</option><option value="empty">Épuisé (0)</option></select></div><p class="catalog-note">Recherche globale par marque, référence, catégorie ou compatibilité. Les filtres échelle / type de voiture s’appuient sur les informations de compatibilité renseignées dans chaque fiche ; une référence sans compatibilité précisée ne sera pas classée automatiquement.</p></div><div class="material-add-row"><button type="button" class="button button-primary" id="showMaterialForm">＋ Ajouter manuellement</button></div><form id="materialForm" class="panel material-form hidden"><h2>Ajouter à ma bibliothèque</h2><div class="material-form-grid"><label>Marque<input name="brand" required placeholder="Ex. Schumacher"></label><label>Catégorie<select name="category"><option>Pneus / roues</option><option>Insert pneu</option><option>Huile amortisseur</option><option>Huile différentiel</option><option>Graisse</option><option>Ressort</option><option>Variateur (ESC)</option><option>Moteur</option><option>Servo</option><option>Radio / récepteur</option><option>Outil</option><option>Autre</option></select></label><label>Nom<input name="name" required></label><label>Référence<input name="reference"></label><label>Quantité possédée<input name="quantity" type="number" min="0" step="1" value="1"></label><label>Compatibilité<input name="compatibility" placeholder="Échelle / châssis / avant / arrière"></label><label class="material-wide">Notes<textarea name="detail" rows="2"></textarea></label><label class="material-wide">Lien fiche produit<input name="url" type="url" placeholder="https://…"></label></div><div class="actions-row"><button class="button button-primary" type="submit">Enregistrer</button><button class="button button-soft" id="cancelMaterialForm" type="button">Annuler</button></div></form><div id="materialCards" class="material-grid"></div>`;
-    const stockSelect=root.querySelector('#stockFilter');stockSelect.disabled=activeTab!=='mine';stockSelect.title=activeTab==='mine'?'Filtrer les références selon leur quantité disponible':'Le filtre de stock est disponible dans Mon matériel.';
+    root.innerHTML = `${summaryMarkup}<div class="panel material-controls"><div class="material-tabs"><button type="button" class="material-tab ${activeTab === 'catalog' ? 'active' : ''}" data-tab="catalog">Bibliothèque (${catalog.length})</button><button type="button" class="material-tab ${activeTab === 'mine' ? 'active' : ''}" data-tab="mine">Mon matériel (${savedItems.length})</button></div><div class="material-filter-row"><input id="materialSearch" type="search" placeholder="Rechercher marque, référence, catégorie, châssis…"><div class="material-brand-filter"><div class="brand-filter-heading"><strong>Filtrer par marque</strong><button type="button" id="clearBrandFilter" class="brand-clear-button">Toutes les marques</button></div><div id="materialBrandPicker" class="material-brand-grid">${brands.map((v)=>{const logo=MATERIAL_BRAND_LOGOS[v];const initials=esc(v.split(/[\s-]+/).map(w=>w[0]).slice(0,2).join("").toUpperCase());return '<button type="button" class="material-brand-tile'+(logo?' has-brand-logo':'')+'" data-brand="'+esc(v)+'" aria-pressed="false">'+(logo?'<img class="material-brand-logo" src="'+logo+'" alt="" loading="lazy" decoding="async" onload="this.parentElement.classList.add(\'has-logo-loaded\')" onerror="this.parentElement.classList.remove(\'has-brand-logo\');this.remove()">':'')+'<span class="brand-logo-mark">'+initials+'</span><span class="material-brand-name">'+esc(v)+'</span></button>';}).join("")}</div></div><select id="categoryFilter"><option value="">Toutes les catégories</option>${categories.map((v) => `<option>${esc(v)}</option>`).join('')}</select><select id="positionFilter"><option value="">Toutes compatibilités</option><option value="Avant">Avant</option><option value="Arrière">Arrière</option><option value="2WD">2WD</option><option value="4WD">4WD</option></select><select id="scaleFilter"><option value="">Toutes échelles</option><option value="1/10">1/10</option><option value="1/8">1/8</option><option value="1/12">1/12</option><option value="1/16">1/16</option></select><select id="vehicleTypeFilter"><option value="">Tous types de voitures</option><option value="Buggy">Buggy</option><option value="Truggy">Truggy</option><option value="Truck">Truck</option><option value="Short Course">Short Course</option><option value="Touring">Touring</option><option value="Crawler">Crawler</option><option value="Monster Truck">Monster Truck</option></select><button type="button" id="resetMaterialFilters" class="button button-soft material-reset-button">↺ Réinitialiser les filtres</button></div><p class="catalog-note">Recherche globale par marque, référence, catégorie ou compatibilité. Les filtres échelle / type de voiture s’appuient sur les informations de compatibilité renseignées dans chaque fiche ; une référence sans compatibilité précisée ne sera pas classée automatiquement.</p></div><section class="panel material-manual-add-panel"><p class="catalog-note">Tu ne trouves pas ton matériel dans ta bibliothèque ? Tu peux l’ajouter manuellement ici.</p><div class="actions-row"><button type="button" class="button button-primary" id="showMaterialForm">＋ Ajouter manuellement</button></div></section><form id="materialForm" class="panel material-form hidden"><h2>Ajouter à ma bibliothèque</h2><div class="material-form-grid"><label>Marque<input name="brand" required placeholder="Ex. Schumacher"></label><label>Catégorie<select name="category"><option>Pneus / roues</option><option>Insert pneu</option><option>Huile amortisseur</option><option>Huile différentiel</option><option>Graisse</option><option>Ressort</option><option>Variateur (ESC)</option><option>Moteur</option><option>Servo</option><option>Radio / récepteur</option><option>Outil</option><option>Autre</option></select></label><label>Nom<input name="name" required></label><label>Référence<input name="reference"></label><label>Quantité possédée<input name="quantity" type="number" min="0" step="1" value="1"></label><label>Compatibilité<input name="compatibility" placeholder="Échelle / châssis / avant / arrière"></label><label class="material-wide">Notes<textarea name="detail" rows="2"></textarea></label><label class="material-wide">Lien fiche produit<input name="url" type="url" placeholder="https://…"></label></div><div class="actions-row"><button class="button button-primary" type="submit">Enregistrer</button><button class="button button-soft" id="cancelMaterialForm" type="button">Annuler</button></div></form><div id="materialCards" class="material-grid"></div>`;
     root.querySelectorAll('.material-tab').forEach((b) => b.addEventListener('click', () => { activeTab = b.dataset.tab; render(); }));
-    root.querySelector('#showMaterialForm').addEventListener('click', () => root.querySelector('#materialForm').classList.toggle('hidden'));
+    root.querySelector('#showMaterialForm').addEventListener('click', () => { const form=root.querySelector('#materialForm'); const opening=form.classList.contains('hidden'); form.classList.toggle('hidden'); if(opening) form.scrollIntoView({behavior:'smooth',block:'start'}); });
     root.querySelector('#cancelMaterialForm').addEventListener('click', () => root.querySelector('#materialForm').classList.add('hidden'));
     root.querySelector('#materialForm').addEventListener('submit', addItem);
-    ['materialSearch','categoryFilter','positionFilter','scaleFilter','vehicleTypeFilter','stockFilter'].forEach(id=>root.querySelector('#'+id).addEventListener(id==='materialSearch'?'input':'change',()=>{ visibleMaterialCount=MATERIAL_PAGE_SIZE; renderCards(); }));
+    ['materialSearch','categoryFilter','positionFilter','scaleFilter','vehicleTypeFilter'].forEach(id=>root.querySelector('#'+id).addEventListener(id==='materialSearch'?'input':'change',()=>{ visibleMaterialCount=MATERIAL_PAGE_SIZE; renderCards(); }));
     root.querySelector('#materialBrandPicker').addEventListener('click',event=>{const button=event.target.closest('[data-brand]');if(!button)return;selectedBrand=selectedBrand===button.dataset.brand?'':button.dataset.brand;visibleMaterialCount=MATERIAL_PAGE_SIZE;renderCards();});
     root.querySelector('#clearBrandFilter').addEventListener('click',()=>{selectedBrand='';visibleMaterialCount=MATERIAL_PAGE_SIZE;renderCards();});
+    root.querySelector('#resetMaterialFilters').addEventListener('click',()=>{
+      root.querySelector('#materialSearch').value='';
+      ['categoryFilter','positionFilter','scaleFilter','vehicleTypeFilter'].forEach(id=>{root.querySelector('#'+id).value='';});
+      selectedBrand='';visibleMaterialCount=MATERIAL_PAGE_SIZE;renderCards();
+    });
     renderCards(); refreshPickers();
   }
   function renderCards() {
     const q = root.querySelector('#materialSearch').value.trim().toLocaleLowerCase('fr');
-    const brand = selectedBrand, category = root.querySelector('#categoryFilter').value, position = root.querySelector('#positionFilter').value, scale=root.querySelector('#scaleFilter').value, vehicleType=root.querySelector('#vehicleTypeFilter').value, stock = root.querySelector('#stockFilter').value;
+    const brand = selectedBrand, category = root.querySelector('#categoryFilter').value, position = root.querySelector('#positionFilter').value, scale=root.querySelector('#scaleFilter').value, vehicleType=root.querySelector('#vehicleTypeFilter').value;
     const source = activeTab === 'catalog' ? catalog : savedItems;
     const positionQuery=position.toLocaleLowerCase('fr'), scaleQuery=scale.toLocaleLowerCase('fr'), typeQuery=vehicleType.toLocaleLowerCase('fr');
     const list = source.filter((x) => {
-      const quantity=Number(x.quantity)||0, searchable=getSearchText(x);
-      return (!brand || x.brand === brand) && (!category || x.category === category) && (!positionQuery || searchable.includes(positionQuery)) && (!scaleQuery || searchable.includes(scaleQuery)) && (!typeQuery || searchable.includes(typeQuery)) && (!stock || (activeTab==='mine' && (stock==='available'?quantity>2:stock==='low'?quantity>0&&quantity<=2:quantity===0))) && (!q || searchable.includes(q));
+      const searchable=getSearchText(x);
+      return (!brand || x.brand === brand) && (!category || x.category === category) && (!positionQuery || searchable.includes(positionQuery)) && (!scaleQuery || searchable.includes(scaleQuery)) && (!typeQuery || searchable.includes(typeQuery)) && (!q || searchable.includes(q));
     });
     root.querySelectorAll('#materialBrandPicker [data-brand]').forEach(button=>{const active=brand===button.dataset.brand;button.classList.toggle('selected',active);button.setAttribute('aria-pressed',String(active));});
     root.querySelector('#clearBrandFilter').classList.toggle('active',!brand);
