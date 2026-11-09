@@ -144,3 +144,13 @@
 .inventory-summary>.inventory-stat span{min-width:0;font-size:10px;line-height:1.25;color:var(--muted)}
 .inventory-summary>.inventory-stat strong{flex:0 0 auto;font-size:16px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
 @media(max-width:380px){.inventory-summary{gap:5px}.inventory-summary>.inventory-stat{gap:4px;padding:8px 6px}.inventory-summary>.inventory-stat span{font-size:9px}.inventory-summary>.inventory-stat strong{font-size:14px}}
+
+
+/* Nouveautés validées en Prévisualisation — ajout manuel et filtres. */
+.material-manual-add-panel{margin:14px 0 18px;padding:16px 18px;border-color:rgba(197,43,50,.28);background:linear-gradient(145deg,rgba(197,43,50,.075),rgba(18,27,42,.96))}
+.material-manual-add-panel .catalog-note{margin:0 0 12px;color:var(--muted);font-size:12px;line-height:1.55}
+.material-manual-add-panel .actions-row{margin:0}
+.material-reset-button{grid-column:1/-1;justify-self:start;min-height:34px}
+@media(max-width:480px){
+.material-reset-button{width:100%}
+}
