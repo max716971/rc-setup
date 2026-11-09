@@ -5827,7 +5827,11 @@ function getCarById(id) { return state.cars.find((car) => car.id === id); }
 function getTrackById(id) { return state.tracks.find((track) => track.id === id); }
 function setView(viewName, shouldScroll = true) {
   document.querySelectorAll('.nav-item').forEach((button) => button.classList.toggle('active', button.dataset.view === viewName));
-  document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view.id === `${viewName}View`));
+  document.querySelectorAll('.view').forEach((view) => {
+    const isActive = view.id === `${viewName}View`;
+    view.hidden = !isActive;
+    view.classList.toggle('active', isActive);
+  });
   if(viewName==='tools'){populateMaintenanceCars();}
   if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
