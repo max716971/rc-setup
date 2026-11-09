@@ -1,0 +1,30 @@
+name: RC SETUP data protection tests
+
+on:
+  push:
+    branches:
+      - hardening/selective-protection-20261109
+    paths:
+      - 'app.js'
+      - 'materials.js'
+      - 'backup.js'
+      - 'sw.js'
+      - 'tests/**'
+      - '.github/workflows/data-protection-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  data-protection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout isolated hardening branch
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run data protection regression tests
+        run: node --test tests/data-protection.test.cjs
