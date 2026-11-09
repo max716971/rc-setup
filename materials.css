@@ -136,3 +136,11 @@
 .material-brand-tile[data-brand="Fan RC"] .material-brand-logo{object-fit:cover;transform:scale(1.45);}
 .material-brand-tile[data-brand="Kyosho"] .material-brand-logo{transform:scale(1.12);}
 .material-brand-tile[data-brand="PR Racing"] .material-brand-logo{transform:scale(1.45);}
+
+
+/* Compteurs de l'inventaire : toujours sur une seule ligne, y compris sur iPhone. */
+.inventory-summary{display:flex!important;flex-flow:row nowrap!important;align-items:stretch;gap:8px;width:100%;margin:0 0 12px}
+.inventory-summary>.inventory-stat{display:flex;flex:1 1 0;min-width:0;align-items:center;justify-content:space-between;gap:6px;padding:10px 9px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.035)}
+.inventory-summary>.inventory-stat span{min-width:0;font-size:10px;line-height:1.25;color:var(--muted)}
+.inventory-summary>.inventory-stat strong{flex:0 0 auto;font-size:16px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+@media(max-width:380px){.inventory-summary{gap:5px}.inventory-summary>.inventory-stat{gap:4px;padding:8px 6px}.inventory-summary>.inventory-stat span{font-size:9px}.inventory-summary>.inventory-stat strong{font-size:14px}}
