@@ -5816,7 +5816,7 @@ function loadState() {
 
 function saveState() {
   if (stateLoadBlocked) {
-    showToast('Données locales protégées : aucune écriture ne sera faite. Restaure une sauvegarde depuis Outils.');
+    showToast('Données locales protégées : aucune écriture ne sera faite. Restaure une sauvegarde depuis Aide.');
     return false;
   }
   try {
@@ -6994,7 +6994,7 @@ async function refreshAppWorker() {
   // Le Service Worker est seul responsable du cycle de vie de ses caches.
   // Ne jamais supprimer ici les caches actifs : ils peuvent contenir la version
   // hors-ligne actuellement utilisée pendant le téléchargement de la suivante.
-  const registration = await navigator.serviceWorker.register('./sw.js?v=259', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=260', { updateViaCache: 'none' });
   await registration.update();
   return registration;
 }
@@ -7157,6 +7157,6 @@ setView('dashboard', false);
 registerServiceWorker();
 setupInstallPrompt();
 if (stateLoadBlocked) {
-  showToast('Lecture des données impossible : elles sont conservées sans écrasement. Consulte Outils pour restaurer une sauvegarde.');
+  showToast('Lecture des données impossible : elles sont conservées sans écrasement. Consulte Aide pour restaurer une sauvegarde.');
 }
 

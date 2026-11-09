@@ -9,6 +9,19 @@
   const restoreButton = document.getElementById('restoreAutoBackupButton');
   let timer = null;
   let databasePromise = null;
+  let lastBackupError = null;
+
+  function describeError(error) {
+    const name = error && error.name ? error.name : 'Erreur inconnue';
+    const message = error && error.message ? error.message : String(error || 'Aucun détail fourni');
+    return name + ' : ' + message;
+  }
+
+  function showBackupError(error, context) {
+    lastBackupError = context + ' — ' + describeError(error);
+    console.error('Diagnostic sauvegarde automatique : ' + lastBackupError, error);
+    if (status) status.textContent = 'Sauvegarde automatique indisponible. ' + lastBackupError + '. Utilise Exporter JSON pour conserver une copie.';
+  }
 
   function openDatabase() {
     if (!('indexedDB' in window)) return Promise.reject(new Error('IndexedDB indisponible'));
@@ -40,7 +53,7 @@
   async function saveSnapshot() {
     let data;
     try { data = readSnapshotData(); } catch (error) {
-      console.warn('Sauvegarde automatique ignorée : données locales illisibles.', error);
+      showBackupError(error, 'Lecture des données locales impossible');
       return;
     }
     if (!data) return;
@@ -54,10 +67,10 @@
         tx.onabort = () => reject(tx.error || new Error('Sauvegarde annulée'));
       });
       await pruneSnapshots(db);
+      lastBackupError = null;
       updateStatus();
     } catch (error) {
-      console.error('Échec de la sauvegarde automatique', error);
-      if (status) status.textContent = 'Sauvegarde automatique indisponible sur cet appareil. Pense à exporter un fichier JSON.';
+      showBackupError(error, 'Écriture ou vérification IndexedDB impossible');
     }
   }
 
@@ -96,11 +109,11 @@
       const latest = await getLatestSnapshot();
       restoreButton.disabled = !latest;
       status.textContent = latest
-        ? 'Dernière copie automatique : ' + new Date(latest.createdAt).toLocaleString('fr-FR') + ' · 10 copies maximum conservées.'
-        : 'La première sauvegarde automatique sera créée après tes prochaines modifications.';
+        ? 'Dernière copie automatique : ' + new Date(latest.createdAt).toLocaleString('fr-FR') + ' · 10 copies maximum conservées.' + (lastBackupError ? ' · Dernier diagnostic : ' + lastBackupError : '')
+        : (lastBackupError ? 'Test IndexedDB échoué : ' + lastBackupError + '. Utilise Exporter JSON pour conserver une copie.' : 'IndexedDB est accessible. La première sauvegarde automatique sera créée après tes prochaines modifications.');
     } catch (error) {
       restoreButton.disabled = true;
-      status.textContent = 'Sauvegarde automatique indisponible. Utilise l’export JSON pour conserver une copie.';
+      showBackupError(error, 'Test de lecture IndexedDB impossible');
     }
   }
 
@@ -123,8 +136,23 @@
       if (!parsed || !Array.isArray(parsed.cars) || !Array.isArray(parsed.tracks) || !Array.isArray(parsed.setups) || !Array.isArray(parsedMaterials)) {
         throw new Error('Sauvegarde invalide');
       }
-      localStorage.setItem(MAIN_KEY, latest.main);
-      localStorage.setItem(MATERIALS_KEY, JSON.stringify(parsedMaterials));
+      const previousMain = localStorage.getItem(MAIN_KEY);
+      const previousMaterials = localStorage.getItem(MATERIALS_KEY);
+      try {
+        localStorage.setItem(MAIN_KEY, latest.main);
+        localStorage.setItem(MATERIALS_KEY, JSON.stringify(parsedMaterials));
+      } catch (writeError) {
+        // If either write fails, restore both previous values before reporting failure.
+        try {
+          if (previousMain === null) localStorage.removeItem(MAIN_KEY);
+          else localStorage.setItem(MAIN_KEY, previousMain);
+          if (previousMaterials === null) localStorage.removeItem(MATERIALS_KEY);
+          else localStorage.setItem(MATERIALS_KEY, previousMaterials);
+        } catch (rollbackError) {
+          console.error('Échec du retour arrière de la restauration', rollbackError);
+        }
+        throw writeError;
+      }
       location.reload();
     } catch (error) {
       console.error('Restauration automatique impossible', error);
