@@ -123,8 +123,23 @@
       if (!parsed || !Array.isArray(parsed.cars) || !Array.isArray(parsed.tracks) || !Array.isArray(parsed.setups) || !Array.isArray(parsedMaterials)) {
         throw new Error('Sauvegarde invalide');
       }
-      localStorage.setItem(MAIN_KEY, latest.main);
-      localStorage.setItem(MATERIALS_KEY, JSON.stringify(parsedMaterials));
+      const previousMain = localStorage.getItem(MAIN_KEY);
+      const previousMaterials = localStorage.getItem(MATERIALS_KEY);
+      try {
+        localStorage.setItem(MAIN_KEY, latest.main);
+        localStorage.setItem(MATERIALS_KEY, JSON.stringify(parsedMaterials));
+      } catch (writeError) {
+        // If either write fails, restore both previous values before reporting failure.
+        try {
+          if (previousMain === null) localStorage.removeItem(MAIN_KEY);
+          else localStorage.setItem(MAIN_KEY, previousMain);
+          if (previousMaterials === null) localStorage.removeItem(MATERIALS_KEY);
+          else localStorage.setItem(MATERIALS_KEY, previousMaterials);
+        } catch (rollbackError) {
+          console.error('Échec du retour arrière de la restauration', rollbackError);
+        }
+        throw writeError;
+      }
       location.reload();
     } catch (error) {
       console.error('Restauration automatique impossible', error);
