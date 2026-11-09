@@ -5784,23 +5784,36 @@ let setupDraftSource = null;
 let skipSetupReset = false;
 const emptyStateTemplate = document.getElementById('emptyStateTemplate');
 
+let stateLoadBlocked = false;
+
 function loadState() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw === null) return { cars: [], tracks: [], setups: [], maintenance: [], batteries: [] };
+    const saved = JSON.parse(raw);
+    if (!saved || typeof saved !== 'object' || Array.isArray(saved) ||
+        !Array.isArray(saved.cars) || !Array.isArray(saved.tracks) || !Array.isArray(saved.setups)) {
+      throw new Error('Structure des données locales invalide');
+    }
     return {
-      cars: Array.isArray(saved.cars) ? saved.cars : [],
-      tracks: Array.isArray(saved.tracks) ? saved.tracks : [],
-      setups: Array.isArray(saved.setups) ? saved.setups : [],
+      cars: saved.cars,
+      tracks: saved.tracks,
+      setups: saved.setups,
       maintenance: Array.isArray(saved.maintenance) ? saved.maintenance : [],
       batteries: Array.isArray(saved.batteries) ? saved.batteries : []
     };
   } catch (error) {
-    console.error('Impossible de lire les données locales', error);
+    stateLoadBlocked = true;
+    console.error('Lecture des données locales bloquée pour éviter leur écrasement', error);
     return { cars: [], tracks: [], setups: [], maintenance: [], batteries: [] };
   }
 }
 
 function saveState() {
+  if (stateLoadBlocked) {
+    showToast('Données locales illisibles : aucune sauvegarde ne sera écrite pour les protéger.');
+    return false;
+  }
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     window.dispatchEvent(new Event('rc-setup-data-changed'));
@@ -5823,6 +5836,7 @@ function showToast(message) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove('visible'), 3000);
 }
+if (stateLoadBlocked) showToast('Données locales illisibles : elles sont protégées et aucune écriture ne sera effectuée.');
 function getCarById(id) { return state.cars.find((car) => car.id === id); }
 function getTrackById(id) { return state.tracks.find((track) => track.id === id); }
 function setView(viewName, shouldScroll = true) {
@@ -6943,18 +6957,11 @@ function importJson(file) {
   };
   reader.readAsText(file);
 }
-const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v256';
-async function clearObsoleteAppCaches() {
-  if (!('caches' in window)) return;
-  const cacheNames = await caches.keys();
-  const obsolete = cacheNames.filter(name => name.startsWith(RC_SETUP_CACHE_PREFIX) && name !== RC_SETUP_CURRENT_CACHE);
-  await Promise.all(obsolete.map(name => caches.delete(name)));
-}
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=145', { updateViaCache: 'none' });
+  // Le service worker gère ses propres caches. Ne jamais supprimer les caches
+  // ici : CacheStorage est partagé entre les applications du même origin.
+  const registration = await navigator.serviceWorker.register('./sw.js?v=146', { updateViaCache: 'none' });
   await registration.update();
-  await clearObsoleteAppCaches();
   return registration;
 }
 function registerServiceWorker() {
@@ -6991,8 +6998,8 @@ async function checkForAppUpdate() {
     return;
   }
   button.disabled = true;
-  button.textContent = 'Nettoyage et mise à jour…';
-  status.textContent = 'Recherche de la dernière version et suppression des anciens fichiers en cache. Tes voitures et réglages sont conservés.';
+  button.textContent = 'Vérification et mise à jour…';
+  status.textContent = 'Recherche de la dernière version. Tes données locales sont conservées.';
   try {
     await refreshAppWorker();
     status.textContent = 'Vérification terminée. Rechargement de la dernière version…';
