@@ -1,7 +1,7 @@
 const CACHE_NAME = 'rc-setup-v258';
 const APP_SHELL = ['./', './index.html', './app.css?v=61', './materials.css?v=41', './app.js?v=167', './materials.js?v=112', './backup.js?v=2', './manifest.webmanifest', './assets/rc-setup-logo.png?v=177', './icon.svg'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))); self.skipWaiting(); });
-self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => /^rc-setup-v\\d+$/.test(key) && key !== CACHE_NAME).map(key => caches.delete(key))))); self.clients.claim(); });
+self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => /^rc-setup-v\d+$/.test(key) && key !== CACHE_NAME).map(key => caches.delete(key))))); self.clients.claim(); });
 const LOGO_HOSTS = new Set(['www.hobbywingdirect.com','apps.associatedelectrics.com','schumacher-racing.com','atomfire.com','6mik-racing.com','cdn.houseofrc.com','www.cmldistribution.co.uk','www.wartelle-shop.com','upload.wikimedia.org','www.pr-rc.com']);
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
