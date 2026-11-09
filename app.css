@@ -622,7 +622,8 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
 
 /* Accueil : distinguer l'atelier (espaces principaux) des outils d'analyse */
 #dashboardView .welcome-features{
-#dashboardView .home-capabilities-heading{border-left:4px solid #c52b32;background:linear-gradient(120deg,rgba(197,43,50,.09),rgba(24,35,49,.98) 34%,rgba(16,24,33,.98));}
+  border-left:4px solid #c52b32;
+  background:linear-gradient(120deg,rgba(197,43,50,.09),rgba(24,35,49,.98) 34%,rgba(16,24,33,.98));
 }
 #dashboardView .welcome-heading{max-width:680px;margin-bottom:23px}
 #dashboardView .welcome-heading h2{font-size:clamp(27px,4vw,39px);line-height:1.08;letter-spacing:-.055em}
