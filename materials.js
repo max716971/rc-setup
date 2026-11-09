@@ -1406,68 +1406,19 @@
   let selectedBrand = '';
   const MATERIAL_PAGE_SIZE = 60;
   let visibleMaterialCount = MATERIAL_PAGE_SIZE;
-  let materialsLoadBlocked = false;
-  function loadSaved() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw === null) return [];
-      const data = JSON.parse(raw);
-      if (!Array.isArray(data) || data.some(item => !item || typeof item !== 'object' || !item.brand || !item.name || !item.category)) {
-        throw new Error('Structure de la bibliothèque personnelle invalide');
-      }
-      return data;
-    } catch (error) {
-      materialsLoadBlocked = true;
-      console.error('Bibliothèque matérielle protégée : lecture impossible, aucune écriture autorisée.', error);
-      return [];
-    }
-  }
-  // Move automatically seeded catalogue entries only after preserving the exact original JSON.
+  function loadSaved() { try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); return Array.isArray(data) ? data : []; } catch { return []; } }
+  // Move automatically seeded catalogue entries out of the personal inventory.
   const legacyPrefixes = ['seed-hobbywing-esc-v1-', 'seed-hobbywing-motors-v3-', 'seed-hobbywing-motor-v2-', 'seed-rsrc-xrt-oils-v3-', 'seed-associated-spring-v1-'];
   let savedItems = loadSaved();
   const legacyCatalogItems = savedItems.filter(item => legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
   for (const item of legacyCatalogItems) {
     if (!catalog.some(existing => existing.brand === item.brand && existing.name === item.name && existing.reference === item.reference)) catalog.push({ ...item, id: undefined });
   }
-  if (legacyCatalogItems.length && !materialsLoadBlocked) {
-    const migrationBackupKey = 'rc-setup-materials-pre-migration-v1';
-    let backupReady = false;
-    try {
-      if (localStorage.getItem(migrationBackupKey) !== null) backupReady = true;
-      else {
-        const original = localStorage.getItem(STORAGE_KEY);
-        if (original !== null) {
-          localStorage.setItem(migrationBackupKey, original);
-          backupReady = localStorage.getItem(migrationBackupKey) === original;
-        }
-      }
-    } catch (error) {
-      console.error('Migration matérielle annulée : sauvegarde préalable impossible.', error);
-    }
-    if (backupReady) {
-      const migratedItems = savedItems.filter(item => !legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(migratedItems));
-        savedItems = migratedItems;
-      } catch (error) {
-        console.error('Migration matérielle annulée : écriture impossible.', error);
-      }
-    }
+  if (legacyCatalogItems.length) {
+    savedItems = savedItems.filter(item => !legacyPrefixes.some(prefix => String(item.id || '').startsWith(prefix)));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); } catch {}
   }
-  function persist() {
-    if (materialsLoadBlocked) {
-      alert('Bibliothèque matérielle illisible : les données existantes sont protégées et aucune écriture ne sera effectuée.');
-      return false;
-    }
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems));
-      window.dispatchEvent(new Event('rc-setup-data-changed'));
-      return true;
-    } catch {
-      alert('Stockage local plein : retire une fiche ou libère de l’espace.');
-      return false;
-    }
-  }
+  function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(savedItems)); window.dispatchEvent(new Event('rc-setup-data-changed')); return true; } catch { alert('Stockage local plein : retire une fiche ou libère de l’espace.'); return false; } }
   function esc(value) { return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c]); }
   function allMaterials() { return [...catalog, ...savedItems]; }
   function materialLabel(item) { return `${item.brand} ${item.name}${item.reference ? ` — réf. ${item.reference}` : ''}`; }
