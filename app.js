@@ -5771,6 +5771,7 @@ const SETUP_FIELDS = [
   'escModel', 'escMode', 'escMotorTiming', 'escBoost', 'escTurbo', 'escTurboDelay', 'escTiming', 'escPunch', 'escBrake', 'escDragBrake', 'escBrakeFrequency', 'escThrottleFrequency', 'escNeutralRange', 'escCutoff', 'escBec', 'escThermal', 'escReverse', 'escBrakeRate', 'escThrottleRate', 'electronicsNotes', 'esc', 'radio', 'radioSteeringDualRate', 'radioSteeringExpo', 'radioEPA', 'radioSteeringTrim', 'radioSubtrim', 'radioSteeringReverse', 'radioThrottleExpo', 'radioThrottleEPA', 'radioThrottleTrim', 'radioThrottleReverse', 'radioBrakeEPA', 'radioBrakeExpo', 'radioFailsafe', 'radioTrim', 'txModel', 'rxModel', 'lapTime', 'rating', 'notes', 'runLaps', 'averageLapTime', 'lapConsistency', 'cornerEntry', 'cornerMid', 'cornerExit', 'tractionLevel', 'stabilityLevel', 'testedChanges', 'testConclusion', 'nextTest'
 ];
 
+let stateLoadBlocked = false;
 const state = loadState();
 const installButton = document.getElementById('installButton');
 let deferredPrompt = null;
@@ -5783,8 +5784,6 @@ let editingTrackId = null;
 let setupDraftSource = null;
 let skipSetupReset = false;
 const emptyStateTemplate = document.getElementById('emptyStateTemplate');
-
-let stateLoadBlocked = false;
 
 function loadState() {
   try {
