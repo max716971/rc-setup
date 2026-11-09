@@ -5837,6 +5837,40 @@ function renderDashboard() {
   document.getElementById('carCount').textContent = state.cars.length;
   document.getElementById('trackCount').textContent = state.tracks.length;
   document.getElementById('setupCount').textContent = state.setups.length;
+  const nudge = document.getElementById('homeNudge');
+  if (nudge) {
+    const title = document.getElementById('homeNudgeTitle');
+    const message = document.getElementById('homeNudgeText');
+    const action = document.getElementById('homeNudgeAction');
+    const icon = document.getElementById('homeNudgeIcon');
+    let nextView = 'cars', nextForm = '';
+    if (!state.cars.length) {
+      title.textContent = 'Commence par ton garage';
+      message.textContent = 'Ajoute ta première voiture pour organiser ses équipements et ses réglages.';
+      action.textContent = 'Ajouter une voiture →';
+      icon.textContent = '🚗';
+      nextView = 'cars'; nextForm = 'carForm';
+    } else if (!state.setups.length) {
+      title.textContent = 'Ta première fiche de réglages';
+      message.textContent = 'Ton garage est prêt. Crée un setup pour garder une trace de ta configuration.';
+      action.textContent = 'Créer un setup →';
+      icon.textContent = '⚙️';
+      nextView = 'setups'; nextForm = 'setupForm';
+    } else {
+      title.textContent = 'Ton atelier est en route';
+      message.textContent = state.setups.length + ' fiche' + (state.setups.length > 1 ? 's' : '') + ' enregistrée' + (state.setups.length > 1 ? 's' : '') + '. Continue à noter tes essais pour suivre tes progrès.';
+      action.textContent = 'Voir mes setups →';
+      icon.textContent = '🏁';
+      nextView = 'setups';
+    }
+    action.onclick = () => {
+      setView(nextView);
+      if (nextForm) {
+        const form = document.getElementById(nextForm);
+        if (form) { form.classList.remove('hidden'); form.scrollIntoView({behavior:'smooth',block:'start'}); }
+      }
+    };
+  }
   const container = document.getElementById('recentSetups');
   container.replaceChildren();
   const recent = [...state.setups].sort((a,b)=>new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0)).slice(0,4);
@@ -5934,7 +5968,7 @@ function renderSetups() {
   filtered.forEach(setup=>{
     const car=getCarById(setup.carId),track=getTrackById(setup.trackId),item=document.createElement('article');
     item.className='list-item setup-card';
-    item.innerHTML=`<div class="setup-card-top"><span class="setup-tag">${setup.favorite?'★ FAVORI':'SETUP'}</span><span class="setup-date">${escapeHtml(setup.sessionDate||formatDate(setup.createdAt))}</span></div><div class="item-main"><h3>${escapeHtml(setup.setupName||getSetupCarName(setup)||'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name||setup.sharedTrackName||'Piste inconnue')}</h3><p class="item-sub">${escapeHtml(getSetupCarName(setup))} · ${escapeHtml(setup.surface||track?.surface||'Surface non renseignée')} · ${escapeHtml(setup.grip||track?.grip||'Adhérence non renseignée')}</p></div>${setup.photos?.length?`<div class="setup-photo-strip">${setup.photos.slice(0,3).map(photo=>`<img src="${photo}" alt="Photo du setup" loading="lazy">`).join('')}<span>${setup.photos.length} photo(s)</span></div>`:''}<div class="setup-chips">${setup.frontTires||setup.rearTires?`<span>Pneus · ${escapeHtml(setup.frontTires||'—')} / ${escapeHtml(setup.rearTires||'—')}</span>`:''}${setup.lapTime?`<span>⏱ ${escapeHtml(setup.lapTime)}</span>`:''}${setup.rating?`<span>${escapeHtml(setup.rating)}</span>`:''}<span>${(setup.history||[]).length} modification(s)</span></div><div class="item-actions"><button class="button button-soft view-setup" data-id="${escapeHtml(setup.id)}" type="button">Détails</button><button class="button button-soft share-setup" data-id="${escapeHtml(setup.id)}" type="button">Partager</button><button class="button button-soft edit-setup" data-id="${escapeHtml(setup.id)}" type="button">Modifier</button><button class="button button-soft duplicate-setup" data-id="${escapeHtml(setup.id)}" type="button">Dupliquer</button><button class="button button-primary print-setup" data-id="${escapeHtml(setup.id)}" type="button">⇩ PDF</button><button class="button button-quiet favorite-setup" data-id="${escapeHtml(setup.id)}" type="button">${setup.favorite?'★':'☆'}</button><button class="button button-quiet danger-action delete-setup" data-id="${escapeHtml(setup.id)}" type="button">Supprimer</button></div>`;
+    item.innerHTML=`<div class="setup-card-top"><span class="setup-tag">${setup.favorite?'★ FAVORI':'SETUP'}</span><span class="setup-date">${escapeHtml(setup.sessionDate||formatDate(setup.createdAt))}</span></div><div class="item-main"><h3>${escapeHtml(setup.setupName||getSetupCarName(setup)||'Voiture inconnue')} <span class="arrow">→</span> ${escapeHtml(track?.name||setup.sharedTrackName||'Piste inconnue')}</h3><p class="item-sub">${escapeHtml(getSetupCarName(setup))} · ${escapeHtml(setup.surface||track?.surface||'Surface non renseignée')} · ${escapeHtml(setup.grip||track?.grip||'Adhérence non renseignée')}</p></div>${setup.photos?.length?`<div class="setup-photo-strip">${setup.photos.slice(0,3).map(photo=>`<img src="${photo}" alt="Photo du setup" loading="lazy">`).join('')}<span>${setup.photos.length} photo(s)</span></div>`:''}<div class="setup-chips">${setup.frontTires||setup.rearTires?`<span>Pneus · ${escapeHtml(setup.frontTires||'—')} / ${escapeHtml(setup.rearTires||'—')}</span>`:''}${setup.lapTime?`<span>⏱ ${escapeHtml(setup.lapTime)}</span>`:''}${setup.rating?`<span>${escapeHtml(setup.rating)}</span>`:''}<span>${(setup.history||[]).length} modification(s)</span></div><div class="item-actions"><button class="button button-soft view-setup" data-id="${escapeHtml(setup.id)}" type="button">Détails</button><button class="button button-soft share-setup" data-id="${escapeHtml(setup.id)}" type="button">Partager</button><button class="button button-soft edit-setup" data-id="${escapeHtml(setup.id)}" type="button">Modifier</button><button class="button button-soft duplicate-setup" data-id="${escapeHtml(setup.id)}" type="button">Dupliquer</button><button class="button button-primary print-setup" data-id="${escapeHtml(setup.id)}" type="button">⇩ PDF</button><button class="button button-quiet favorite-setup" data-id="${escapeHtml(setup.id)}" type="button" aria-label="${setup.favorite?'Retirer des favoris':'Ajouter aux favoris'}" title="${setup.favorite?'Retirer des favoris':'Ajouter aux favoris'}">${setup.favorite?'★':'☆'}</button><button class="button button-quiet danger-action delete-setup" data-id="${escapeHtml(setup.id)}" type="button">Supprimer</button></div>`;
     if(setup.isShared||setup.sharedBy){
       item.classList.add('shared-setup-card');
       const tag=item.querySelector('.setup-tag');
@@ -6156,13 +6190,6 @@ function compareSetups(){
 }
 
 
-
-function setTracksideMode(enabled){
-  document.body.classList.toggle('trackside-mode',enabled);
-  const button=document.getElementById('tracksideModeButton');
-  if(button){button.setAttribute('aria-pressed',String(enabled));button.textContent=enabled?'Quitter mode piste':'Mode piste';}
-  try{localStorage.setItem('rc-setup-trackside-mode',enabled?'1':'0');}catch{}
-}
 
 function parsePositiveNumber(value){const n=Number(String(value||'').replace(',','.'));return Number.isFinite(n)&&n>0?n:null;}
 function calculateGearing(){
@@ -6755,7 +6782,11 @@ function downloadJsonFile(data,filename){
   link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();URL.revokeObjectURL(url);
 }
 function buildSingleSetupPayload(setup,sharedBy,sharedAt){
-  const sharedSetup={...setup,isShared:true,sharedBy,sharedAt,photos:[]},sourceCar=getCarById(setup.carId)||null,car=sourceCar?{...sourceCar,photos:[]}:null,track=getTrackById(setup.trackId)|| (setup.sharedTrackName?{name:setup.sharedTrackName,surface:setup.sharedTrackSurface||setup.surface||'',grip:setup.sharedTrackGrip||setup.grip||'',location:setup.sharedTrackLocation||'',details:setup.sharedTrackDetails||''}:null);
+  const sharedSetup={...setup,isShared:true,sharedBy,sharedAt,photos:[]};
+  const sourceCar=getCarById(setup.carId)||setup.sharedCar||null;
+  const car=sourceCar?{...sourceCar,name:sourceCar.name||getSetupCarName(setup)||'Voiture non renseignée',photos:[]}:{name:getSetupCarName(setup)||'Voiture non renseignée',photos:[]};
+  const sourceTrack=getTrackById(setup.trackId)||setup.sharedTrack||null;
+  const track=sourceTrack?{...sourceTrack,name:sourceTrack.name||setup.sharedTrackName||setup.trackName||'Piste non renseignée'}:{name:setup.sharedTrackName||setup.trackName||'Piste non renseignée',surface:setup.sharedTrackSurface||setup.surface||'',grip:setup.sharedTrackGrip||setup.grip||'',location:setup.sharedTrackLocation||'',details:setup.sharedTrackDetails||''};
   return {format:'rc-setup-single',version:3,exportedAt:sharedAt,sharedBy,car,track,setup:sharedSetup};
 }
 function base64UrlEncodeUtf8(value){
@@ -6909,7 +6940,7 @@ function importJson(file) {
   reader.readAsText(file);
 }
 const RC_SETUP_CACHE_PREFIX = 'rc-setup-';
-const RC_SETUP_CURRENT_CACHE = 'rc-setup-v242';
+const RC_SETUP_CURRENT_CACHE = 'rc-setup-v256';
 async function clearObsoleteAppCaches() {
   if (!('caches' in window)) return;
   const cacheNames = await caches.keys();
@@ -6917,7 +6948,7 @@ async function clearObsoleteAppCaches() {
   await Promise.all(obsolete.map(name => caches.delete(name)));
 }
 async function refreshAppWorker() {
-  const registration = await navigator.serviceWorker.register('./sw.js?v=144', { updateViaCache: 'none' });
+  const registration = await navigator.serviceWorker.register('./sw.js?v=145', { updateViaCache: 'none' });
   await registration.update();
   await clearObsoleteAppCaches();
   return registration;
@@ -7031,8 +7062,6 @@ document.getElementById('setupForm').elements.namedItem('carId').addEventListene
 ['frontDiffType','centerDiffType','rearDiffType','slipperPresence'].forEach(name=>document.getElementById('setupForm').elements.namedItem(name).addEventListener('change',updateVehicleSpecificFields));
 document.getElementById('setupSearch')?.addEventListener('input',renderSetups);
 ['setupCarFilter','setupTrackFilter','setupSurfaceFilter','setupGripFilter','setupDateFrom','setupDateTo'].forEach(id=>document.getElementById(id)?.addEventListener('change',renderSetups));
-document.getElementById('tracksideModeButton')?.addEventListener('click',()=>{const enabled=!document.body.classList.contains('trackside-mode');setTracksideMode(enabled);if(enabled)setView('setups');});
-try{setTracksideMode(localStorage.getItem('rc-setup-trackside-mode')==='1');}catch{}
 document.getElementById('compareSetupsButton')?.addEventListener('click',compareSetups);
 document.getElementById('calculateGearingButton')?.addEventListener('click',calculateGearing);
 document.getElementById('diagnoseSetupButton')?.addEventListener('click',runSetupDiagnosis);
