@@ -1490,3 +1490,6 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
     grid-column: 1 / -1;
   }
 }
+
+/* Keep the final word of the home headline intact on small screens. */
+#dashboardView .home-hero h1 em{hyphens:none;-webkit-hyphens:none}
