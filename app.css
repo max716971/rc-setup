@@ -622,8 +622,7 @@ input:focus,select:focus,textarea:focus{border-color:rgba(197,43,50,.65);box-sha
 
 /* Accueil : distinguer l'atelier (espaces principaux) des outils d'analyse */
 #dashboardView .welcome-features{
-  border-left:4px solid #c52b32;
-  background:linear-gradient(120deg,rgba(197,43,50,.09),rgba(24,35,49,.98) 34%,rgba(16,24,33,.98));
+#dashboardView .home-capabilities-heading{border-left:4px solid #c52b32;background:linear-gradient(120deg,rgba(197,43,50,.09),rgba(24,35,49,.98) 34%,rgba(16,24,33,.98));}
 }
 #dashboardView .welcome-heading{max-width:680px;margin-bottom:23px}
 #dashboardView .welcome-heading h2{font-size:clamp(27px,4vw,39px);line-height:1.08;letter-spacing:-.055em}
@@ -1270,9 +1269,6 @@ button, a, [role="button"] { touch-action: manipulation; }
 
 
 /* Styles spécifiques à la version principale conservés */
-  --accent: #c52b32;
-  --accent-dark: #a51f2a;
- to { opacity: 1; transform: translateY(0); } }
 .hero::after { content: ""; position: absolute; width: 300px; height: 300px; top: -180px; left: 36%; border-radius: 50%; background: rgba(197,43,50,.11); filter: blur(35px); }
 .hero-car { position: absolute; top: 93px; right: 21px; width: 194px; height: 82px; display: grid; place-items: center; transform: skew(-18deg) rotate(-8deg); border: 2px solid rgba(197,43,50,.72); border-radius: 44% 34% 23% 25%; color: rgba(197,43,50,.72); font-size: 42px; font-weight: 950; letter-spacing: -.08em; text-shadow: 0 0 20px rgba(197,43,50,.25); box-shadow: 0 14px 0 -7px rgba(197,43,50,.15), 0 24px 35px rgba(0,0,0,.25); }
 .orbit { position: absolute; width: 235px; height: 80px; right: 0; top: 100px; border: 1px solid rgba(197,43,50,.22); border-radius: 50%; transform: rotate(-24deg); }
@@ -1320,8 +1316,6 @@ input:focus, select:focus, textarea:focus { border-color: rgba(197,43,50,.6); bo
 #dashboardView .feature-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:rgba(197,43,50,.1);font-size:21px}
 #dashboardView .stat-card{min-height:122px;border-radius:18px;background:linear-gradient(145deg,#182638,#111a28);border-color:rgba(197,43,50,.14)}
 #dashboardView .quick-action:hover{border-color:rgba(197,43,50,.42)}
-  border:1px solid rgba(197,43,50,.22);border-radius:50%;background:transparent;filter:none;
-  box-shadow:0 0 0 28px rgba(197,43,50,.035),0 0 0 58px rgba(197,43,50,.025)
 #dashboardView .hero-copy .kicker{color:#a51f2a;font-weight:900;letter-spacing:.19em}
 #dashboardView .hero .button-primary{background:#c52b32;border-color:#c52b32;color:#fff;box-shadow:0 8px 20px rgba(197,43,50,.22)}
 #dashboardView .hero-car{width:180px;height:180px;border:2px solid #c52b32;border-radius:38px 12px 38px 12px;background:linear-gradient(145deg,#253242,#101821);color:#f4f6f8;font-size:76px;box-shadow:0 0 0 10px rgba(197,43,50,.09),0 24px 55px rgba(25,35,47,.25)}
